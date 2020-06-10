@@ -1,0 +1,31 @@
+.row {
+	width: 100%;
+}
+
+body {
+	font-family: "Source Code Pro", "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+.spacer {
+	height: 50px;
+}
+
+#slider-div {
+	margin-top: 20px;
+}
+
+#play-button-div {
+	/*width: 55px;*/
+	text-align: center;
+}
+
+#play-button {
+	width: 40px;
+	text-align: center;
+	margin-top: 5px;
+	margin-right: 20px;
+}
+
+#date-display {
+	margin-top: 8px;
+}
