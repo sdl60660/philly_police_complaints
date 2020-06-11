@@ -15,8 +15,10 @@ FlowChart.prototype.initVis = function() {
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
-        .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 1000 1200")
+        // .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        // .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
     vis.g = vis.svg.append("g")
         .attr("class", vis.parentGroupClass)
