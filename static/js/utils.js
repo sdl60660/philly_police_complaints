@@ -4,3 +4,19 @@ function addDays(date, days) {
   result.setDate(result.getDate() + days);
   return result;
 }
+
+function monthDiff(d1, d2) {
+    var months;
+    months = (d2.getFullYear() - d1.getFullYear()) * 12;
+    months -= d1.getMonth();
+    months += d2.getMonth();
+    return months;
+}
+
+function addMonths(date, months) {
+	returnDate = new Date(date.getTime());
+	returnDate.setMonth(date.getMonth() + months);
+	return returnDate;
+}
+
+
