@@ -19,7 +19,7 @@ function initSlider(maxDate) {
     $("#slider-div").slider({
         max: maxDate,
         min: 0,
-        step: 7,
+        step: 30,
         range: false,
         value: 0,
         slide: function(event, ui) {
@@ -66,7 +66,7 @@ function step() {
     // displayYear = displayYear == 2020 ? startYear : displayYear + 1;
     // $("#yearLabel").text((displayYear - 1) + '-' + (displayYear));
     // $("#slider-div").slider("value", displayYear);
-    currentDate = addDays(currentDate, 7);
+    currentDate = addDays(currentDate, 30);
     var sliderValue = (currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
     $("#slider-div").slider("value", sliderValue);
     updateCharts();

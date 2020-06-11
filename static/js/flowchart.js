@@ -142,8 +142,10 @@ FlowChart.prototype.updateVis = function() {
 
     var newElementIndex = 0;
     vis.flowchart.enter().each(function(d) {
-        d.enter_index = newElementIndex;
-        newElementIndex += 1
+        if (d.investigative_findings == "Sustained Finding") {
+            d.enter_index = newElementIndex;
+            newElementIndex += 1
+        }
     })
 
     // ENTER new elements present in the data...
