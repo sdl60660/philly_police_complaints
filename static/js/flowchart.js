@@ -47,7 +47,7 @@ FlowChart.prototype.initVis = function() {
         .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange))
         // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
-    vis.sortOrder = ["black", "white", "asian", "latino"];
+    vis.reverseSortOrder = ["asian", "latino", "white", "black"];
 
     var col1x = 100;
     var col2x = 500;
@@ -100,7 +100,7 @@ FlowChart.prototype.wrangleData = function() {
         return d.date_received >= startRange && d.date_received <= endRange;
     })
     .sort(function(a, b) {
-        return vis.sortOrder.indexOf(a.complainant_race) - vis.sortOrder.indexOf(b.complainant_race);
+        return vis.reverseSortOrder.indexOf(b.complainant_race) - vis.reverseSortOrder.indexOf(a.complainant_race);
     });
 
     vis.initialOutcomeIndices = {
@@ -164,7 +164,10 @@ FlowChart.prototype.updateVis = function() {
             .append("rect")
                 .attr("class", "complaint-box")
                 .style("opacity", 0.8)
-                .attr("y", 250)
+                // .attr("y", function(d) {
+                //     return 220 + d.enter_index * vis.trueBlockWidth;
+                // })
+                .attr("y", 220)
                 .attr("x", 10)
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
