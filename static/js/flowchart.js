@@ -43,8 +43,8 @@ FlowChart.prototype.initVis = function() {
         .attr("x", 0)
         .attr("y", 30)
         .attr("text-anchor", "start")
-        .style("font-size", "18pt")
-        .text(d3.timeFormat("%B %Y")(currentDate))
+        .style("font-size", "14pt")
+        .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange))
         // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
     vis.sortOrder = ["black", "white", "asian", "latino"];
@@ -97,7 +97,7 @@ FlowChart.prototype.wrangleData = function() {
 
     vis.chartData = officerDisciplineResults.filter(function(d) {
         // Revisit this later
-        return d.date_received <= currentDate;
+        return d.date_received >= startRange && d.date_received <= endRange;
     })
     .sort(function(a, b) {
         return vis.sortOrder.indexOf(a.complainant_race) - vis.sortOrder.indexOf(b.complainant_race);
@@ -164,32 +164,37 @@ FlowChart.prototype.updateVis = function() {
             .append("rect")
                 .attr("class", "complaint-box")
                 .style("opacity", 0.8)
-                .attr("y", 0)
-                .attr("x", 0)
+                .attr("y", 250)
+                .attr("x", 10)
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
                 .attr("fill", function(d) {
                     return vis.color(d.complainant_race);
                 })
                 .transition()
+                    .delay(100)
                     .duration(300)
                     .attr("opacity", 1)
                     .attr("x",  function(d,i) {
+
                         if (d.investigative_findings == "Sustained Finding") {
                             var coordinateIndex = d.enter_index
                         }
                         else {
                             var coordinateIndex = d.initial_state_index;
                         }
+
                         return vis.outcomeCoordinates[d.investigative_findings][0] + vis.trueBlockWidth * (coordinateIndex%vis.blockGroupWidth);
                     })
                     .attr("y", function(d,i) {
+
                         if (d.investigative_findings == "Sustained Finding") {
                             var coordinateIndex = d.enter_index
                         }
                         else {
                             var coordinateIndex = d.initial_state_index;
                         }
+
                         return vis.outcomeCoordinates[d.investigative_findings][1] + vis.trueBlockWidth * Math.floor(coordinateIndex/vis.blockGroupWidth);
                     })
                     .transition()
@@ -208,11 +213,12 @@ FlowChart.prototype.updateVis = function() {
         .transition()
             .duration(300)
             .delay(function(d) {
+
                 if (d.investigative_findings == "Sustained Finding") {
-                    return 700;
+                    return 800;
                 }
                 else {
-                    return 0;
+                    return 100;
                 }
             })
                 .attr("x",  function(d,i) {

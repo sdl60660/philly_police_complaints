@@ -4,7 +4,8 @@ var officerDisciplineResults;
 var phoneBrowsing = false;
 
 var startDate = new Date("04/01/2015");
-var currentDate = addMonths(startDate, 0);
+var startRange = addMonths(startDate, 0);
+var endRange = addMonths(startDate, 1);
 
 var flowChart;
 var interval;
@@ -23,22 +24,27 @@ function initSlider(maxDate) {
         max: maxDate,
         min: 0,
         step: 1,
-        range: false,
-        value: 0,
-        change: function(event, ui) {
-            currentDate = addMonths(startDate, ui.value);
+        range: true,
+        values: [0, 1],
+        slide: function(event, ui) {
+            if ( ( ui.values[0] + 1 ) >= ui.values[1] ) {
+                return false;
+            }
+
+            startRange = addMonths(startDate, ui.values[0]);
+            endRange = addMonths(startDate, ui.values[1]);
 
             updateCharts();
             // $("#yearLabel").text((ui.value - 1) + '-' + (ui.value));
 
-        },
-        slide: function(event, ui) {
-            currentDate = addMonths(startDate, ui.value);
-
-            // update date label
-            $(".date-text")
-                .text(d3.timeFormat("%B %Y")(currentDate));
         }
+        // slide: function(event, ui) {
+        //     currentDate = addMonths(startDate, ui.value);
+
+        //     // update date label
+        //     $(".date-text")
+        //         .text(d3.timeFormat("%B %Y")(currentDate));
+        // }
     })
 
 }
@@ -78,11 +84,11 @@ function step() {
     // $("#slider-div").slider("value", displayYear);
     // var sliderValue = (currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
 
-    currentDate = monthDiff(startDate, currentDate) >= maxDateOffset ? startDate : addMonths(currentDate, 1);
+    endRange = monthDiff(startDate, endRange) >= maxDateOffset ? addMonths(startRange, 1) : addMonths(endRange, 1);
     
-    var sliderValue = monthDiff(startDate, currentDate);
+    var sliderValue = monthDiff(startDate, endRange);
     $("#slider-div")
-        .slider("value", sliderValue);
+        .slider("values", 1, sliderValue);
     
     updateCharts();
 }
@@ -90,7 +96,7 @@ function step() {
 
 function updateCharts() {
     $(".date-text")
-        .text(d3.timeFormat("%B %Y")(currentDate));
+        .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange));
 
     flowChart.wrangleData();
 }
@@ -139,7 +145,7 @@ Promise.all(promises).then(function(allData) {
         }
     })
 
-    officerDisciplineResults = officerDisciplineResults.filter(function(d) {
+    officerDisciplineResults =officerDisciplineResults.filter(function(d) {
          return d.investigative_findings != "Not Applicable";
     })
 
