@@ -16,7 +16,7 @@ FlowChart.prototype.initVis = function() {
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 1000 1200")
+        .attr("viewBox", "0 0 1000 1300")
         // .attr("width", vis.width + vis.margin.left + vis.margin.right)
         // .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
@@ -33,9 +33,10 @@ FlowChart.prototype.initVis = function() {
     vis.blockGroupWidth = 35;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
+    vis.representedVals = ["black", "white", "latino"];
     vis.color = d3.scaleOrdinal()
-        .domain(["black", "white", "asian", "latino"])
-        .range(["blue", "red", "green", "orange"])
+        .domain(vis.representedVals)
+        .range(["blue", "red", "orange"])
         .unknown("gray")
 
     vis.dateText = d3.select("#date-display").append("text")
@@ -47,7 +48,7 @@ FlowChart.prototype.initVis = function() {
         .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange))
         // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
-    vis.reverseSortOrder = ["asian", "latino", "white", "black"];
+    vis.reverseSortOrder = ["latino", "white", "black"]; // asian
 
     var col1x = 100;
     var col2x = 500;
@@ -56,30 +57,35 @@ FlowChart.prototype.initVis = function() {
         
         "Sustained Finding": [col1x, 30],
         "Investigation Pending": [col1x, 170],
-        "No Sustained Findings": [col1x, 330],
+        "No Sustained Findings": [col1x, 350],
 
         "Guilty Finding": [col2x, 30],
         "Training/Counseling": [col2x, 170],
-        "No Guilty Findings": [col2x, 330],
-        "Discipline Pending": [col2x, 490]
+        "No Guilty Findings": [col2x, 350],
+        "Discipline Pending": [col2x, 510]
     }
 
+    vis.outcomeLabels = {}
     vis.outcomeCounts = {}
 
     for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
-        vis.g.append("text")
+        var outcomeLabel = vis.g.append("text")
             .attr("class", "group-label")
             .attr("x", value[0])
             .attr("y", value[1] - 30)
             .style("font-size", "12pt")
             .text(key)
 
-        // vis.outcomeCounts[key] = vis.g.append("text")
-        //                             .attr("class", "outcome-counts")
-        //                             .attr("x", value[0] + vis.fullBlockWidth - 30)
-        //                             .attr("y", value[1])
-        //                             .style("font-size", "10pt")
-        //                             .text("Outcome Counts Test")
+        var labelWidth = outcomeLabel.node().getBoundingClientRect().width;
+
+        vis.outcomeLabels[key] = outcomeLabel;
+        vis.outcomeCounts[key] = vis.g.append("text")
+                                    .attr("class", "outcome-counts")
+                                    .attr("x", value[0] + labelWidth)
+                                    .attr("y", value[1] - 60)
+                                    .attr("text-anchor", "start")
+                                    .style("font-size", "8pt")
+                                    .text("Outcome Counts Test")
     }
 
     vis.wrangleData();
@@ -89,8 +95,6 @@ FlowChart.prototype.initVis = function() {
 
 FlowChart.prototype.wrangleData = function() {
     var vis = this;
-
-    console.log(new Date());
 
     // vis.dateText
     //     .text(d3.timeFormat("%B %d, %Y")(currentDate))
@@ -118,6 +122,7 @@ FlowChart.prototype.wrangleData = function() {
         "Investigation Pending": 0
     }
 
+
     vis.chartData.forEach(function(d) {
         d.initial_state_index = vis.initialOutcomeIndices[d.investigative_findings];
         vis.initialOutcomeIndices[d.investigative_findings] += 1
@@ -133,7 +138,6 @@ FlowChart.prototype.wrangleData = function() {
 
 FlowChart.prototype.updateVis = function() {
     var vis = this;
-    console.log(new Date());
 
     // JOIN data with any existing elements
     vis.flowchart = vis.g
@@ -155,8 +159,6 @@ FlowChart.prototype.updateVis = function() {
             newElementIndex += 1
         }
     })
-
-    console.log(new Date());
 
     // ENTER new elements present in the data...
     vis.flowchart
@@ -209,8 +211,7 @@ FlowChart.prototype.updateVis = function() {
                         .attr("y", function(d,i) {
                             return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(d.final_state_index/vis.blockGroupWidth);
                         })
-
-    console.log(new Date());
+                        .on("end", vis.updateCounts())
                     
     vis.flowchart
         .transition()
@@ -230,7 +231,37 @@ FlowChart.prototype.updateVis = function() {
                 .attr("y", function(d,i) {
                     return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(1.0*(d.final_state_index)/vis.blockGroupWidth);
                 })
-    console.log(new Date());
+
+
+}
+
+FlowChart.prototype.updateCounts = function() {
+    var vis = this;
+
+    Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
+        var outputString = '';
+        var labelX = vis.outcomeLabels[outcome].node().getBoundingClientRect().width + vis.outcomeCoordinates[outcome][0];
+
+        var stateVar = 'end_state'
+        if (outcome == 'Sustained Finding') {
+            stateVar = 'investigative_findings';
+        }
+
+        vis.representedVals.forEach(function(group) {
+            var groupCount = vis.chartData.filter(function(d) {
+                return d[stateVar] == outcome && d.complainant_race == group;
+            }).length
+            
+            var groupTotal = vis.chartData.filter(function(d) {
+                return d.complainant_race == group;
+            }).length
+            // var groupTotal = vis.finalOutcomeIndices[outcome]
+
+            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + `;" dy='1.2em'>${group}: ${groupCount} (${d3.format('.1f')(100*(groupCount/groupTotal))}%)</tspan>`;
+        })
+        vis.outcomeCounts[outcome]
+            .html(outputString);
+    })
 }
 
 
