@@ -10,6 +10,10 @@ body {
 	height: 50px;
 }
 
+.d3-tip {
+	max-width: 350px;
+}
+
 #slider-div {
 	margin-top: 20px;
 }

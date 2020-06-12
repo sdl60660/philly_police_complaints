@@ -9,7 +9,7 @@ FlowChart = function(_parentElement) {
 FlowChart.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 50, right: 30, bottom: 45, left: 30};
+    vis.margin = {top: 120, right: 30, bottom: 45, left: 30};
     // vis.width = 900 - vis.margin.left - vis.margin.right;
     // vis.height = 1000 - vis.margin.top - vis.margin.bottom;
 
@@ -131,8 +131,10 @@ FlowChart.prototype.wrangleData = function() {
         vis.finalOutcomeIndices[d.end_state] += 1
     })
 
-    
-    this.updateVis();
+
+
+    vis.setToolTips();
+    vis.updateVis();
 }
 
 
@@ -176,6 +178,8 @@ FlowChart.prototype.updateVis = function() {
                 .attr("fill", function(d) {
                     return vis.color(d.complainant_race);
                 })
+                .on("mouseover", vis.tip.show)
+                .on("mouseout", vis.tip.hide)
                 .transition()
                     .delay(100)
                     .duration(300)
@@ -238,6 +242,15 @@ FlowChart.prototype.updateVis = function() {
 FlowChart.prototype.updateCounts = function() {
     var vis = this;
 
+    // for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
+    //     vis.g.append("text")
+    //         .attr("class", "group-label")
+    //         .attr("x", value[0])
+    //         .attr("y", value[1] - 30)
+    //         .style("font-size", "12pt")
+    //         .text(key)
+    // }
+
     Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
         var outputString = '';
         var labelX = vis.outcomeLabels[outcome].node().getBoundingClientRect().width + vis.outcomeCoordinates[outcome][0];
@@ -257,7 +270,7 @@ FlowChart.prototype.updateCounts = function() {
             }).length
             // var groupTotal = vis.finalOutcomeIndices[outcome]
 
-            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + `;" dy='1.2em'>${group}: ${groupCount} (${d3.format('.1f')(100*(groupCount/groupTotal))}%)</tspan>`;
+            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + `;" dy='1.2em'>${group}: ${groupCount}/${groupTotal} (${d3.format('.1f')(100*(groupCount/groupTotal))}%)</tspan>`;
         })
         vis.outcomeCounts[outcome]
             .html(outputString);
@@ -273,51 +286,22 @@ FlowChart.prototype.setToolTips = function() {
         .offset([-10, 0])
         .html(function(d) {
 
-            var areaName = d.city;
-            var playerCount = d.players;
-            var tipUnit = "City";
+            var tipText = "<strong>Complaint Date: </strong><span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
+            tipText += "<strong>District: </strong><span class='details'>" + d.district_occurrence + "<br><br></span>";
 
-            if(currentProperty == 'num_all_stars') {
-                var playerUnit = 'All-Stars'
-            }
-            else {
-                var playerUnit = 'NBA Players'
-            }
 
-            if (d.population == null || d.population == 0) {
-                var displayPopulation = 'N/A'
-                var displayDensity = 'N/A'
-            }
-            else {
-                var displayPopulation = d3.format(',')(d.population);
-                var displayDensity = d3.format('.1f')(d.per_capita);
-            }
+            tipText += "<strong>Officer ID: </strong><span class='details'>" + d.officer_id + "<br></span>";
+            tipText += "<strong>Officer Demographics: </strong><span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
 
-            var tipText = "<strong>" + tipUnit + ": </strong><span class='details'>" + areaName + "<br><br></span>"
-            tipText += "<strong>Population: </strong><span class='details'>" + displayPopulation + "<br></span>";
-            tipText += "<strong>" + playerUnit + ": </strong><span class='details'>" + playerCount + "<br></span>";
-            tipText += "<strong>" + playerUnit + "/100,000 People: </strong><span class='details'>" + displayDensity + "</span>";
+            tipText += "<strong>Complaint ID: </strong><span class='details'>" + d.complaint_id + "<br></span>";
+            tipText += "<strong>Complainant Demographics: </strong><span class='details'>" + d.complainant_race + ', ' + d.complainant_sex + ', ' + d.complainant_age + "<br><br></span>";
 
-            if (phoneBrowsing == true) {
-                infoBoxActive = true;
+            tipText += "<strong>Complaint Type: </strong><span class='details'>" + d.general_cap_classification + "<br></span>";
+            tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";
 
-                infoBoxSelection = d;
-                infoBoxMapUnit = 'cities';
-
-                tipText += '<br><br><div id="pop-up-player-info-text" style="overflow-y:auto;"></div>';
-            }
             return tipText;
         })
-
     vis.svg.call(vis.tip);
-    for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
-        vis.g.append("text")
-            .attr("class", "group-label")
-            .attr("x", value[0])
-            .attr("y", value[1] - 30)
-            .style("font-size", "12pt")
-            .text(key)
-    }
 
 }
 

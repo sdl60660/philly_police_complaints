@@ -41,10 +41,10 @@ for k, v in disciplines.items():
 
 			for person in case_complainants[1:]:
 				if person['complainant_race'] != default_details['complainant_race']:
-					default_details['complainant_race'] = 'multiple complainants, different races'
+					default_details['complainant_race'] = '[multiple complainants of different races]'
 
 				if person['complainant_sex'] != default_details['complainant_sex']:
-					default_details['complainant_sex'] = 'multiple complainant, different genders'
+					default_details['complainant_sex'] = '[multiple complainants of different genders]'
 
 				if default_details['complainant_age'] == None or (person['complainant_age'] and person['complainant_age'] > default_details['complainant_age']):
 					default_details['complainant_age'] = person['complainant_age']
