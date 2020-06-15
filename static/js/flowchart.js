@@ -1,3 +1,7 @@
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
 
 FlowChart = function(_parentElement) {
     this.parentElement = _parentElement;
@@ -85,8 +89,12 @@ FlowChart.prototype.initVis = function() {
                                     .attr("y", value[1] - 60)
                                     .attr("text-anchor", "start")
                                     .style("font-size", "8pt")
-                                    .text("Outcome Counts Test")
+                                    .text("")
     }
+
+    vis.incidentTypes = ['Departmental Violations', 'Lack Of Service', 'Physical Abuse','Verbal Abuse','Unprofessional Conduct','Non-Investigatory Incident','Harassment','Criminal Allegation','Civil Rights Complaint','Domestic','Sexual Crime/Misconduct','Falsification','Drugs']
+    // vis.setComplaintTypes();
+
 
     vis.wrangleData();
 }
@@ -96,9 +104,6 @@ FlowChart.prototype.initVis = function() {
 FlowChart.prototype.wrangleData = function() {
     var vis = this;
 
-    // vis.dateText
-    //     .text(d3.timeFormat("%B %d, %Y")(currentDate))
-
     vis.chartData = officerDisciplineResults.filter(function(d) {
         // Revisit this later
         return d.date_received >= startRange && d.date_received <= endRange;
@@ -106,6 +111,7 @@ FlowChart.prototype.wrangleData = function() {
     .sort(function(a, b) {
         return vis.reverseSortOrder.indexOf(b.complainant_race) - vis.reverseSortOrder.indexOf(a.complainant_race);
     });
+
 
     vis.initialOutcomeIndices = {
         "No Sustained Findings": 0,
@@ -215,7 +221,6 @@ FlowChart.prototype.updateVis = function() {
                         .attr("y", function(d,i) {
                             return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(d.final_state_index/vis.blockGroupWidth);
                         })
-                        .on("end", vis.updateCounts())
                     
     vis.flowchart
         .transition()
@@ -236,20 +241,15 @@ FlowChart.prototype.updateVis = function() {
                     return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(1.0*(d.final_state_index)/vis.blockGroupWidth);
                 })
 
+    sleep(1100).then(() => {
+        vis.updateCounts();
+    })
+
 
 }
 
 FlowChart.prototype.updateCounts = function() {
     var vis = this;
-
-    // for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
-    //     vis.g.append("text")
-    //         .attr("class", "group-label")
-    //         .attr("x", value[0])
-    //         .attr("y", value[1] - 30)
-    //         .style("font-size", "12pt")
-    //         .text(key)
-    // }
 
     Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
         var outputString = '';
@@ -277,6 +277,18 @@ FlowChart.prototype.updateCounts = function() {
     })
 }
 
+FlowChart.prototype.setComplaintTypes = function() {
+    var vis = this;
+
+    // vis.chartData.map(function(a) {return a.general_cap_classification})
+
+    vis.incidentTypes.forEach(function(complaintName) {
+        $("div#incident-type-select")
+            .append('<input checked type="checkbox" id="' + complaintName + '" name="' + complaintName + '" value="' + complaintName + '"><label for="' + complaintName + '"> ' + complaintName + '</label><br>');
+    })
+
+}
+
 
 FlowChart.prototype.setToolTips = function() {
     var vis = this;
@@ -294,7 +306,14 @@ FlowChart.prototype.setToolTips = function() {
             tipText += "<strong>Officer Demographics: </strong><span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
 
             tipText += "<strong>Complaint ID: </strong><span class='details'>" + d.complaint_id + "<br></span>";
-            tipText += "<strong>Complainant Demographics: </strong><span class='details'>" + d.complainant_race + ', ' + d.complainant_sex + ', ' + d.complainant_age + "<br><br></span>";
+            tipText += "<strong>Complainant Demographics: </strong><span class='details'>";
+
+            tipText += [d.complainant_race, d.complainant_sex, d.complainant_age].filter(function(attr) {
+                return attr;
+            }).join(', ');
+
+
+            tipText += "<br><br></span>";
 
             tipText += "<strong>Complaint Type: </strong><span class='details'>" + d.general_cap_classification + "<br></span>";
             tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";

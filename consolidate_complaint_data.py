@@ -54,12 +54,11 @@ for k, v in disciplines.items():
 	except KeyError:
 		v = {**v, **{'complainant_race': '', 'complainant_sex': '', 'complainant_age': ''}}
 
+	v['general_cap_classification'] = v['general_cap_classification'].title()
+
 	disciplines[k] = v
 
-unclear_race = 0
-for v in disciplines.values():
-	if v['complainant_race'] == 'Multiple Races':
-		unclear_race += 1
+
 
 with open('static/data/complaint_discipline_viz_data.json', 'w') as f:
 	json.dump(list(disciplines.values()), f)

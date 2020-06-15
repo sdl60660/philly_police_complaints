@@ -108,12 +108,6 @@ var promises = [
 
 Promise.all(promises).then(function(allData) {
 
-    // $('.loading-spinner')
-    //     .remove();
-
-    // Initialize D3 elements (timeline, maps, bar chart)
-    // timeline = new Timeline("#slider-div");
-
     officerDisciplineResults = allData[0];
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
@@ -122,7 +116,6 @@ Promise.all(promises).then(function(allData) {
 
     // var maxDateOffset = (datasetDateRange[1].getTime() - datasetDateRange[0].getTime()) / (1000 * 3600 * 24);
     maxDateOffset = monthDiff(datasetDateRange[0], datasetDateRange[1]);
-    console.log(maxDateOffset);
 
     initSlider(maxDateOffset);
 
@@ -149,15 +142,7 @@ Promise.all(promises).then(function(allData) {
          return d.investigative_findings != "Not Applicable";
     })
 
-    // console.log(officerDisciplineResults);
-
     flowChart = new FlowChart("#chart-area")
-
-    // interval = setInterval(step, 1300);
-    // for (i=0; i < 100; i++) {
-    //     currentDate = addDays(currentDate, 1);
-    //     updateCharts();
-    // }
 
 
 });
