@@ -125,6 +125,13 @@ Promise.all(promises).then(function(allData) {
     officerDisciplineResults.forEach(function(d) {
         d.date_received = new Date(d.date_received);
 
+        if (!d.complainant_race) {
+            d.complainant_race = 'unknown';
+        }
+        if (!d.complainant_sex) {
+            d.complainant_sex = 'unknown';
+        }
+
         if(d.investigative_findings == "Pending") {
             d.investigative_findings = "Investigation Pending";
         }
@@ -145,7 +152,20 @@ Promise.all(promises).then(function(allData) {
          return d.investigative_findings != "Not Applicable";
     })
 
-    flowChart = new FlowChart("#chart-area")
+    flowChart = new FlowChart("#chart-area");
+
+    $('.chosen-select').on('change', function(event){
+        flowChart.wrangleData();
+    });
+    // $(".search-choice-close")
+    //     .click(function() {
+    //         flowChart.wrangleData();
+    //     });
+    //
+    // $("ul.chosen-results li.active-result")
+    //     .click(function() {
+    //         flowChart.wrangleData();
+    //     })
 
 
 });

@@ -59,7 +59,7 @@ FlowChart.prototype.initVis = function() {
         .text(d3.timeFormat("%B %Y")(endRange))
         // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
-    vis.reverseSortOrder = ["latino", "white", "black"]; // asian
+    vis.reverseSortOrder = ["asian", "latino", "white", "black"]; // asian
 
     var col1x = 100;
     var col2x = 500;
@@ -92,16 +92,15 @@ FlowChart.prototype.initVis = function() {
         vis.outcomeLabels[key] = outcomeLabel;
         vis.outcomeCounts[key] = vis.g.append("text")
                                     .attr("class", "outcome-counts")
-                                    .attr("x", value[0] + labelWidth)
+                                    .attr("x", value[0] + labelWidth - 10)
                                     .attr("y", value[1] - 60)
                                     .attr("text-anchor", "start")
                                     .style("font-size", "8pt")
                                     .text("")
     }
 
-    vis.incidentTypes = ['Departmental Violations', 'Lack Of Service', 'Physical Abuse','Verbal Abuse','Unprofessional Conduct','Non-Investigatory Incident','Harassment','Criminal Allegation','Civil Rights Complaint','Domestic','Sexual Crime/Misconduct','Falsification','Drugs']
-    // vis.setComplaintTypes();
-
+    vis.incidentTypes = ['Departmental Violations', 'Lack Of Service', 'Physical Abuse',  'Verbal Abuse','Unprofessional Conduct', 'Criminal Allegation', 'Harassment','Civil Rights Complaint','Domestic', 'Falsification', 'Sexual Crime/Misconduct','Drugs']
+    vis.setComplaintTypes();
 
     vis.wrangleData();
 }
@@ -112,13 +111,18 @@ FlowChart.prototype.wrangleData = function() {
     var vis = this;
 
     vis.chartData = officerDisciplineResults.filter(function(d) {
-        // Revisit this later
         return d.date_received >= startRange && d.date_received <= endRange;
+    })
+
+    vis.updateComplaintTypes();
+
+    vis.chartData = vis.chartData.filter(function(d) {
+        // Revisit this later
+        return vis.selectedComplaintTypes.includes(d.general_cap_classification);
     })
     .sort(function(a, b) {
         return vis.reverseSortOrder.indexOf(b.complainant_race) - vis.reverseSortOrder.indexOf(a.complainant_race);
     });
-
 
     vis.initialOutcomeIndices = {
         "No Sustained Findings": 0,
@@ -277,12 +281,20 @@ FlowChart.prototype.updateCounts = function() {
             }).length
             // var groupTotal = vis.finalOutcomeIndices[outcome]
 
-            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + `;" dy='1.2em'>${group}: ${groupCount}/${groupTotal} (${d3.format('.1f')(100*(groupCount/groupTotal))}%)</tspan>`;
+            if (groupTotal > 0) {
+                var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
+            }
+            else {
+                var percentageVal = '';
+            }
+
+            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</tspan>';
         })
         vis.outcomeCounts[outcome]
             .html(outputString);
     })
 }
+
 
 FlowChart.prototype.setComplaintTypes = function() {
     var vis = this;
@@ -290,10 +302,28 @@ FlowChart.prototype.setComplaintTypes = function() {
     // vis.chartData.map(function(a) {return a.general_cap_classification})
 
     vis.incidentTypes.forEach(function(complaintName) {
-        $("div#incident-type-select")
-            .append('<input checked type="checkbox" id="' + complaintName + '" name="' + complaintName + '" value="' + complaintName + '"><label for="' + complaintName + '"> ' + complaintName + '</label><br>');
+        $("select#incident-type-select")
+            .append('<option selected id="' + complaintName.replace(/ /g, '-').replace(/\//g, '-') + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
     })
 
+    $(".chosen-select").chosen();
+
+}
+
+
+FlowChart.prototype.updateComplaintTypes = function() {
+    var vis = this;
+
+    vis.selectedComplaintTypes = Array.from(
+        $('#incident-type-select :selected').map((d,i) => $(i).val())
+    );
+
+    vis.selectedComplaintTypes.forEach(function(d) {
+        var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
+        $(("#incident-type-select option#" + d.replace(/ /g, '-').replace(/\//g, '-'))).text((d + ' (' + numInstances + ')'));
+    })
+    $("#incident-type-select").trigger("chosen:updated");
+    
 }
 
 

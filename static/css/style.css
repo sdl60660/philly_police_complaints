@@ -43,3 +43,9 @@ body {
 .date-display-container {
 	margin-top: 15px;
 }
+
+.chosen-container {
+    max-height:100px;
+	font-size: 8pt;
+	position: fixed;
+}
