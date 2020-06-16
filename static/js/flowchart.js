@@ -43,13 +43,20 @@ FlowChart.prototype.initVis = function() {
         .range(["blue", "red", "orange"])
         .unknown("gray")
 
-    vis.dateText = d3.select("#date-display").append("text")
-        .attr("class", "date-text")
+    vis.startDateText = d3.select("#start-date-display").append("text")
+        .attr("class", "date-display")
         .attr("x", 0)
         .attr("y", 30)
         .attr("text-anchor", "start")
-        .style("font-size", "14pt")
-        .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange))
+        .style("font-size", "12pt")
+        .text(d3.timeFormat("%B %Y")(startRange))
+    vis.endDateText = d3.select("#end-date-display").append("text")
+        .attr("class", "date-display")
+        .attr("x", 0)
+        .attr("y", 30)
+        .attr("text-anchor", "start")
+        .style("font-size", "12pt")
+        .text(d3.timeFormat("%B %Y")(endRange))
         // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
     vis.reverseSortOrder = ["latino", "white", "black"]; // asian
@@ -298,7 +305,11 @@ FlowChart.prototype.setToolTips = function() {
         .offset([-10, 0])
         .html(function(d) {
 
-            var tipText = "<strong>Complaint Date: </strong><span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
+            var tipText = "<div class='tip-text'>";
+            tipText += "<strong>Complaint Date: </strong><span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
+            if(d.incident_time) {
+                tipText += "<strong>Incident Date: </strong><span class='details'>" + d.incident_time + "<br></span>"
+            }
             tipText += "<strong>District: </strong><span class='details'>" + d.district_occurrence + "<br><br></span>";
 
 
@@ -317,6 +328,7 @@ FlowChart.prototype.setToolTips = function() {
 
             tipText += "<strong>Complaint Type: </strong><span class='details'>" + d.general_cap_classification + "<br></span>";
             tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";
+            tipText += "</div>";
 
             return tipText;
         })

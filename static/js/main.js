@@ -95,8 +95,11 @@ function step() {
 
 
 function updateCharts() {
-    $(".date-text")
-        .text(d3.timeFormat("%B %Y")(startRange) + " — " + d3.timeFormat("%B %Y")(endRange));
+    $("#start-date-display")
+        .text(d3.timeFormat("%B %Y")(startRange));
+
+    $("#end-date-display")
+        .text( d3.timeFormat("%B %Y")(endRange));
 
     flowChart.wrangleData();
 }
