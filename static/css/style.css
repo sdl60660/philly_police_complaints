@@ -57,6 +57,7 @@ body {
 }
 
 .chosen-choices {
+	font-size: 8pt;
 	max-height: 120px;
 	overflow-y: auto !important;
 }
