@@ -2,6 +2,9 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
+function formatSpacedStrings(str) {
+    return str.replace(/ /g, '-').replace(/\//g, '-');
+}
 
 FlowChart = function(_parentElement) {
     this.parentElement = _parentElement;
@@ -14,15 +17,26 @@ FlowChart.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 120, right: 30, bottom: 45, left: 30};
-    // vis.width = 900 - vis.margin.left - vis.margin.right;
-    // vis.height = 1000 - vis.margin.top - vis.margin.bottom;
+    vis.width = 1000 - vis.margin.left - vis.margin.right;
+    vis.height = 1300 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select(vis.parentElement)
-        .append("svg")
+        .append("svg");
+        // .attr("width", 1000)
+        // .attr("height", 1500)
+
+    if(phoneBrowsing) {
+        vis.svg
+            .attr("width", vis.width + vis.margin.left + vis.margin.right)
+            .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+
+    }
+    else {
+        vis.svg
         .attr("preserveAspectRatio", "xMinYMin meet")
         .attr("viewBox", "0 0 1000 1500")
-        // .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        // .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+    }
+
 
     vis.g = vis.svg.append("g")
         .attr("class", vis.parentGroupClass)
@@ -80,18 +94,19 @@ FlowChart.prototype.initVis = function() {
 
     for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
         var outcomeLabel = vis.g.append("text")
-            .attr("class", "group-label")
+            .attr("class", "group-label " + formatSpacedStrings(key))
             .attr("x", value[0])
             .attr("y", value[1] - 30)
-            .style("font-size", "12pt")
+            // .style("font-size", "12pt")
             .text(key)
 
-        var labelWidth = outcomeLabel.node().getBoundingClientRect().width;
+        // var svgW
+        var labelWidth = outcomeLabel.node().getBBox().width + outcomeLabel.node().getBBox().x;
 
         vis.outcomeLabels[key] = outcomeLabel;
         vis.outcomeCounts[key] = vis.g.append("text")
-                                    .attr("class", "outcome-counts")
-                                    .attr("x", value[0] + labelWidth - 10)
+                                    .attr("class", "outcome-counts " + formatSpacedStrings(key))
+                                    .attr("x", labelWidth - 10)
                                     .attr("y", value[1] - 60)
                                     .attr("text-anchor", "start")
                                     .style("font-size", "7pt")
@@ -161,7 +176,7 @@ FlowChart.prototype.updateVis = function() {
     vis.flowchart = vis.g
         .selectAll("rect")
         .data(vis.chartData , function(d) {
-            return d.officer_complaint_id;
+            return d.discipline_id;
         })
 
 
@@ -253,6 +268,38 @@ FlowChart.prototype.updateVis = function() {
 
     sleep(1100).then(() => {
         vis.updateCounts();
+        // vis.setPathArrows();
+    })
+
+
+}
+
+FlowChart.prototype.setPathArrows = function() {
+    var vis = this;
+
+
+    var svgCoordinates = vis.svg.node().getBBox();
+    var start = vis.svg.select('.outcome-counts.Sustained-Finding').node().getBBox();
+
+    var disciplinaryOutcomes = ["Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"]
+    disciplinaryOutcomes.forEach(function(outcome) {
+        var end = vis.svg.select('.group-label.' + formatSpacedStrings(outcome)).node().getBBox();
+
+        var curve = d3.line().curve(d3.curveNatural);
+        var points = [[start.x + 2*(start.width), (svgCoordinates.y + (start.y + start.height)/2)], [end.x , (svgCoordinates.y + (end.y + end.height))]]
+
+        // console.log(vis.svg.attr("x"), vis.svg.attr("y"))
+        // console.log(vis.svg.select('.outcome-counts.Sustained-Finding').attr("x"), vis.svg.select('.outcome-counts.Sustained-Finding').attr("y"))
+        // console.log(start, end);
+        // console.log(points);
+        vis.svg
+            .append('path')
+            .attr('d', curve(points))
+            .attr('stroke', 'black')
+            // with multiple points defined, if you leave out fill:none,
+            // the overlapping space defined by the points is filled with
+            // the default value of 'black'
+            .attr('fill', 'none');
     })
 
 
@@ -302,7 +349,7 @@ FlowChart.prototype.setComplaintTypes = function() {
 
     vis.incidentTypes.forEach(function(complaintName) {
         $("select#incident-type-select")
-            .append('<option selected id="' + complaintName.replace(/ /g, '-').replace(/\//g, '-') + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
+            .append('<option selected id="' + formatSpacedStrings(complaintName) + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
     })
 
     $(".chosen-select").chosen();
@@ -319,7 +366,7 @@ FlowChart.prototype.updateComplaintTypes = function() {
 
     vis.selectedComplaintTypes.forEach(function(d) {
         var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
-        $(("#incident-type-select option#" + d.replace(/ /g, '-').replace(/\//g, '-'))).text((d + ' (' + numInstances + ')'));
+        $(("#incident-type-select option#" + formatSpacedStrings(d))).text((d + ' (' + numInstances + ')'));
     })
     $("#incident-type-select").trigger("chosen:updated");
 
@@ -341,8 +388,12 @@ FlowChart.prototype.setToolTips = function() {
             }
             tipText += "<strong>District: </strong><span class='details'>" + d.district_occurrence + "<br><br></span>";
 
-
-            tipText += "<strong>Officer ID: </strong><span class='details'>" + d.officer_id + "<br></span>";
+            if (d.officer_id) {
+                tipText += "<strong>Officer ID: </strong><span class='details'>" + d.officer_id + "<br></span>";
+            }
+            if (d.officer_initials) {
+                tipText += "<strong>Officer Initials: </strong><span class='details'>" + d.officer_initials + "<br></span>";
+            }
             tipText += "<strong>Officer Demographics: </strong><span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
 
             tipText += "<strong>Complaint ID: </strong><span class='details'>" + d.complaint_id + "<br></span>";
@@ -356,7 +407,14 @@ FlowChart.prototype.setToolTips = function() {
             tipText += "<br><br></span>";
 
             tipText += "<strong>Complaint Type: </strong><span class='details'>" + d.general_cap_classification + "<br></span>";
-            tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";
+
+            if (d.summary) {
+                tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";
+            }
+            else if (d.shortened_summary) {
+                tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.shortened_summary + "<br></span>";
+            }
+
             tipText += "</div>";
 
             return tipText;

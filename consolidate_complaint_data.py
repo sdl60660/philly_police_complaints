@@ -27,13 +27,16 @@ def find_prior_complaints(officer_id, data, data_index):
 
 
 with open('raw_data/ppd_complaint_disciplines.csv', 'r') as f:
-    disciplines = {x['officer_complaint_id']: dict(x) for x in csv.DictReader(f) if x['officer_id'] or x['officer_initials']}
+    disciplines = {x['discipline_id']: dict(x) for x in csv.DictReader(f) if x['officer_id'] or x['officer_initials']}
 
 with open('raw_data/ppd_complaints.csv', 'r', encoding="utf-8") as f:
     complaints = {x['complaint_id']: dict(x) for x in csv.DictReader(f)}
 
 with open('raw_data/ppd_complainant_demographics.csv', 'r', encoding="utf-8") as f:
     complainants = [dict(x) for x in csv.DictReader(f)]
+
+with open('raw_data/district_data.csv', 'r', encoding="utf-8") as f:
+    districts = {x['district']: dict(x) for x in csv.DictReader(f)}
 
 # Create arrays of complainants by complaint_id for cases where there is more than one complainant.
 # This will allow us to consolidate demographic data where necessary.
@@ -74,6 +77,26 @@ for k, v in disciplines.items():
         v = {**v, **{'complainant_race': '', 'complainant_sex': '', 'complainant_age': ''}}
 
     v['general_cap_classification'] = v['general_cap_classification'].title()
+
+    try:
+        try:
+            v['district_population'] = int(districts[v['district_occurrence']]['total_district_population'])
+        except ValueError:
+            v['district_population'] = None
+
+        try:
+            v['district_income'] = float(districts[v['district_occurrence']]['median_district_income'])
+        except ValueError:
+            v['district_income'] = None
+
+        try:
+            v['district_pct_black'] = float(districts[v['district_occurrence']]['pct_black'])
+        except ValueError:
+            v['district_pct_black'] = None
+
+    except KeyError:
+        v['district_population'] = v['district_income'] = v['district_pct_black'] = None
+
 
     disciplines[k] = v
 

@@ -31,13 +31,15 @@ body {
 #play-button-div {
 	/*width: 55px;*/
 	text-align: center;
+	/*margin-right: 10px;*/
 }
 
 #play-button {
-	width: 40px;
+	width: 90%;
+	max-width: 55px;
 	text-align: center;
 	margin-top: 5px;
-	margin-right: 20px;
+	/*margin-right: 20px;*/
 }
 
 .date-display {

@@ -13,8 +13,7 @@ from imblearn.over_sampling import SMOTE
 
 
 categorical_cols = ['complainant_race', 'complainant_sex', 'po_race', 'po_sex', 'general_cap_classification']
-non_categorical_cols = ['complainant_age'] +  ['officer_prior_complaints', 'officer_prior_sustained_complaints'] # 'district_median_income',
-
+non_categorical_cols = ['complainant_age', 'district_population', 'district_income', 'district_pct_black'] # +  ['officer_prior_complaints', 'officer_prior_sustained_complaints'] # 'district_median_income', 'complainant_age'
 # print(len([x for x in data if x['incident_time']]))
 
 def build_dataframe(data):
@@ -30,7 +29,7 @@ def build_dataframe(data):
         else:
             continue
 
-        if all([x in list(row.keys()) and row[x] != '' for x in (categorical_cols + non_categorical_cols)]):
+        if all([x in list(row.keys()) and row[x] != '' and row[x] for x in (categorical_cols + non_categorical_cols)]):
             for col in (categorical_cols + non_categorical_cols):
                 dataset_row[col] = row[col]
 
@@ -85,20 +84,27 @@ def main():
     X = df.loc[:, df.columns != 'investigative_outcome']
     y = df.loc[:, df.columns == 'investigative_outcome']
 
-    print(len(X), len(y))
+    print(X.loc[[323]])
+    min_max_scaler = sklearn.preprocessing.MinMaxScaler()
+    X = pd.DataFrame(min_max_scaler.fit_transform(X), columns=X.columns, index=X.index)
+    print(X.loc[[323]])
+
+    # Rebalance dataset
     os_data_X, os_data_y = oversample(X, y)
-    print(len(os_data_y[os_data_y['investigative_outcome']==0]), len(os_data_y[os_data_y['investigative_outcome']==1]))
+    print(len(os_data_X), len(os_data_y))
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    logreg = LogisticRegression()
+    # Recursive Feature Elimination
+    # logreg = LogisticRegression()
+    #
+    # rfe = RFE(logreg, 15)
+    # rfe = rfe.fit(os_data_X, os_data_y.values.ravel())
+    # print(rfe.support_)
+    # print(rfe.ranking_)
+    # print(os_data_X.columns)
 
-    rfe = RFE(logreg, 15)
-    rfe = rfe.fit(os_data_X, os_data_y.values.ravel())
-    print(rfe.support_)
-    print(rfe.ranking_)
-    print(os_data_X.columns)
-
+    # Run logistic regression with raw set, as well as the re-balanced set
     import statsmodels.api as sm
     logit_model = sm.Logit(y.astype(float), X.astype(float))
     result = logit_model.fit()

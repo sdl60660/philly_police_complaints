@@ -44,7 +44,7 @@ Timeline.prototype.updateDimensions = function() {
         .style("font-family", "Helvetica Neue,helvetica,arial,sans-serif")
 		.call(d3.axisBottom(vis.x)
             .tickSize(10)
-			.ticks(6)
+			// .ticks(6)
 			// .tickValues([2015, 2016, 2017, 2018, 2019, 2020])
 			.tickFormat(d3.timeFormat("%Y")))
             .selectAll("text")
