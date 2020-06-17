@@ -352,7 +352,8 @@ FlowChart.prototype.setComplaintTypes = function() {
             .append('<option selected id="' + formatSpacedStrings(complaintName) + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
     })
 
-    $(".chosen-select").chosen();
+    $(".chosen-select")
+        .chosen()
 
 }
 
