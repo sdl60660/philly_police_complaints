@@ -383,22 +383,22 @@ FlowChart.prototype.setToolTips = function() {
         .html(function(d) {
 
             var tipText = "<div class='tip-text'>";
-            tipText += "<strong>Complaint Date: </strong><span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
+            tipText += "<span class='detail-title'>Complaint Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
             if(d.incident_time) {
-                tipText += "<strong>Incident Date: </strong><span class='details'>" + d.incident_time + "<br></span>"
+                tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d.incident_time + "<br></span>"
             }
-            tipText += "<strong>District: </strong><span class='details'>" + d.district_occurrence + "<br><br></span>";
+            tipText += "<span class='detail-title'>District</span>: <span class='details'>" + d.district_occurrence + "<br><br></span>";
 
             if (d.officer_id) {
-                tipText += "<strong>Officer ID: </strong><span class='details'>" + d.officer_id + "<br></span>";
+                tipText += "<span class='detail-title'>Officer ID</span>: <span class='details'>" + d.officer_id + "<br></span>";
             }
             if (d.officer_initials) {
-                tipText += "<strong>Officer Initials: </strong><span class='details'>" + d.officer_initials + "<br></span>";
+                tipText += "<span class='detail-title'>Officer Initials</span>: <span class='details'>" + d.officer_initials + "<br></span>";
             }
-            tipText += "<strong>Officer Demographics: </strong><span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
+            tipText += "<span class='detail-title'>Officer Demographics</span>: <span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
 
-            tipText += "<strong>Complaint ID: </strong><span class='details'>" + d.complaint_id + "<br></span>";
-            tipText += "<strong>Complainant Demographics: </strong><span class='details'>";
+            tipText += "<span class='detail-title'>Complaint ID</span>: <span class='details'>" + d.complaint_id + "<br></span>";
+            tipText += "<span class='detail-title'>Complainant Demographics</span>: <span class='details'>";
 
             tipText += [d.complainant_race, d.complainant_sex, d.complainant_age].filter(function(attr) {
                 return attr;
@@ -407,13 +407,13 @@ FlowChart.prototype.setToolTips = function() {
 
             tipText += "<br><br></span>";
 
-            tipText += "<strong>Complaint Type: </strong><span class='details'>" + d.general_cap_classification + "<br></span>";
+            tipText += "<span class='detail-title'>Complaint Type</span>: <span class='details'>" + d.general_cap_classification + "<br></span>";
 
             if (d.summary) {
-                tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.summary + "<br></span>";
+                tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details'>" + d.summary + "<br></span>";
             }
             else if (d.shortened_summary) {
-                tipText += "<strong>Complaint Summary: </strong><span class='details'>" + d.shortened_summary + "<br></span>";
+                tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details'>" + d.shortened_summary + "<br></span>";
             }
 
             tipText += "</div>";
