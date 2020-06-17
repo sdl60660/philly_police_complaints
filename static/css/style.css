@@ -5,6 +5,7 @@
 body {
 	/*font-family: "Source Code Pro", "Helvetica Neue", helvetica, arial, sans-serif;*/
 	font-family: 'Inconsolata', Monaco, "Lucida Console", Consolas, "Courier New";
+	background-color: #f9f9f9;
 }
 
 .spacer {
@@ -13,6 +14,10 @@ body {
 
 .d3-tip {
 	max-width: 350px;
+	background-color: white;
+	color: black;
+	border-radius: 5px;
+	border: 1px solid black;
 }
 
 .tip-text {
@@ -47,5 +52,15 @@ body {
 .chosen-container {
     max-height:100px;
 	font-size: 8pt;
-	position: fixed;
+	/*position: fixed;*/
+}
+
+.ui-slider {
+	visibility: hidden;
+	padding: 0px;
+	border-width: 0px;
+}
+
+.ui-slider-handle {
+	visibility: visible;
 }

@@ -3,11 +3,12 @@
 var officerDisciplineResults;
 var phoneBrowsing = false;
 
-var startDate = new Date("04/01/2015");
+var startDate = new Date("01/01/2013");
 var startRange = addMonths(startDate, 0);
 var endRange = addMonths(startDate, 1);
 
 var flowChart;
+var timeline;
 var interval;
 
 var maxDateOffset;
@@ -58,7 +59,7 @@ $("#play-button")
         var button = $(this);
 
         if (button.text() == "▶") {
-            button.text("❙ ❙");
+            button.text("❙❙");
             interval = setInterval(step, 1300);
         }
         else {
@@ -73,17 +74,11 @@ $("#play-button")
 // Resize timeline on window size/jquery ui slider size change
 $(window)
     .resize(function() {
-        // timeline.updateDimensions();
+        timeline.updateDimensions();
     })
 
 
 function step() {
-    // console.log(displayYear);
-    // displayYear = displayYear == 2020 ? startYear : displayYear + 1;
-    // $("#yearLabel").text((displayYear - 1) + '-' + (displayYear));
-    // $("#slider-div").slider("value", displayYear);
-    // var sliderValue = (currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
-
     endRange = monthDiff(startDate, endRange) >= maxDateOffset ? addMonths(startRange, 1) : addMonths(endRange, 1);
     
     var sliderValue = monthDiff(startDate, endRange);
@@ -117,6 +112,8 @@ Promise.all(promises).then(function(allData) {
         return new Date(d.date_received);
     });
 
+    console.log(datasetDateRange)
+
     // var maxDateOffset = (datasetDateRange[1].getTime() - datasetDateRange[0].getTime()) / (1000 * 3600 * 24);
     maxDateOffset = monthDiff(datasetDateRange[0], datasetDateRange[1]);
 
@@ -149,7 +146,7 @@ Promise.all(promises).then(function(allData) {
     })
 
     officerDisciplineResults =officerDisciplineResults.filter(function(d) {
-         return d.investigative_findings != "Not Applicable";
+         return d.investigative_findings != "Not Applicable" && !(d.investigative_findings == "Sustained Finding" && d.disciplinary_findings == "Not Applicable");
     })
 
     flowChart = new FlowChart("#chart-area");
@@ -157,15 +154,8 @@ Promise.all(promises).then(function(allData) {
     $('.chosen-select').on('change', function(event){
         flowChart.wrangleData();
     });
-    // $(".search-choice-close")
-    //     .click(function() {
-    //         flowChart.wrangleData();
-    //     });
-    //
-    // $("ul.chosen-results li.active-result")
-    //     .click(function() {
-    //         flowChart.wrangleData();
-    //     })
+
+    timeline = new Timeline("#slider-div");
 
 
 });

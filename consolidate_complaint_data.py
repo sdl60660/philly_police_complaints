@@ -8,6 +8,9 @@ from pprint import pprint
 
 
 def find_prior_complaints(officer_id, data, data_index):
+    if not officer_id:
+        return None, None
+
     prior_complaint_ids = []
     prior_sustained_ids = []
 
@@ -23,13 +26,13 @@ def find_prior_complaints(officer_id, data, data_index):
     return len(list(set(prior_complaint_ids))), len(list(set(prior_sustained_ids)))
 
 
-with open('ppd_complaint_disciplines.csv', 'r') as f:
-    disciplines = {x['officer_complaint_id']: dict(x) for x in csv.DictReader(f) if x['officer_id']}
+with open('raw_data/ppd_complaint_disciplines.csv', 'r') as f:
+    disciplines = {x['officer_complaint_id']: dict(x) for x in csv.DictReader(f) if x['officer_id'] or x['officer_initials']}
 
-with open('ppd_complaints.csv', 'r', encoding="utf-8") as f:
+with open('raw_data/ppd_complaints.csv', 'r', encoding="utf-8") as f:
     complaints = {x['complaint_id']: dict(x) for x in csv.DictReader(f)}
 
-with open('ppd_complainant_demographics.csv', 'r', encoding="utf-8") as f:
+with open('raw_data/ppd_complainant_demographics.csv', 'r', encoding="utf-8") as f:
     complainants = [dict(x) for x in csv.DictReader(f)]
 
 # Create arrays of complainants by complaint_id for cases where there is more than one complainant.
@@ -80,7 +83,7 @@ for i, complaint in enumerate(out_data):
     out_data[i]['officer_prior_complaints'], out_data[i]['officer_prior_sustained_complaints']  = find_prior_complaints(complaint['officer_id'], out_data, i)
 
     # Parse incident time out of complaint summary
-    match = re.search(r'(\d+-\d+-\d+) at \d+:\d+\s?(?:AM|PM|am|pm)', complaint['summary'])
+    match = re.search(r'(\d+-\d+-\d+) at \d+:\d+\s?(?:AM|PM|am|pm)', complaint['shortened_summary'])
     if match:
         try:
             out_data[i]['incident_time'] = str(datetime.strptime(match.group(), '%m-%d-%y at %I:%M%p'))

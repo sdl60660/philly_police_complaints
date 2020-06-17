@@ -20,7 +20,7 @@ FlowChart.prototype.initVis = function() {
     vis.svg = d3.select(vis.parentElement)
         .append("svg")
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 1000 1300")
+        .attr("viewBox", "0 0 1000 1500")
         // .attr("width", vis.width + vis.margin.left + vis.margin.right)
         // .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
 
@@ -30,11 +30,11 @@ FlowChart.prototype.initVis = function() {
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.blockSize = 6;
+    vis.blockSize = 5;
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
-    vis.blockGroupWidth = 35;
+    vis.blockGroupWidth = 45;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
     vis.representedVals = ["black", "white", "latino"];
@@ -48,18 +48,17 @@ FlowChart.prototype.initVis = function() {
         .attr("x", 0)
         .attr("y", 30)
         .attr("text-anchor", "start")
-        .style("font-size", "12pt")
+        .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(startRange))
     vis.endDateText = d3.select("#end-date-display").append("text")
         .attr("class", "date-display")
         .attr("x", 0)
         .attr("y", 30)
         .attr("text-anchor", "start")
-        .style("font-size", "12pt")
+        .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(endRange))
-        // {'black': 3312, 'white': 1027, '': 636, 'latino': 392, 'multiple complainants, different races': 101, 'asian': 96, 'other': 30, 'indian': 15, 'multi ethnic': 10, 'middle east': 2}
 
-    vis.reverseSortOrder = ["asian", "latino", "white", "black"]; // asian
+    vis.reverseSortOrder = ["asian", "latino", "white", "black"];
 
     var col1x = 100;
     var col2x = 500;
@@ -67,13 +66,13 @@ FlowChart.prototype.initVis = function() {
     vis.outcomeCoordinates = {
         
         "Sustained Finding": [col1x, 30],
-        "Investigation Pending": [col1x, 170],
-        "No Sustained Findings": [col1x, 350],
+        "Investigation Pending": [col1x, 190],
+        "No Sustained Findings": [col1x, 390],
 
         "Guilty Finding": [col2x, 30],
-        "Training/Counseling": [col2x, 170],
-        "No Guilty Findings": [col2x, 350],
-        "Discipline Pending": [col2x, 510]
+        "Training/Counseling": [col2x, 190],
+        "No Guilty Findings": [col2x, 390],
+        "Discipline Pending": [col2x, 550]
     }
 
     vis.outcomeLabels = {}
@@ -95,7 +94,7 @@ FlowChart.prototype.initVis = function() {
                                     .attr("x", value[0] + labelWidth - 10)
                                     .attr("y", value[1] - 60)
                                     .attr("text-anchor", "start")
-                                    .style("font-size", "8pt")
+                                    .style("font-size", "7pt")
                                     .text("")
     }
 
@@ -323,7 +322,7 @@ FlowChart.prototype.updateComplaintTypes = function() {
         $(("#incident-type-select option#" + d.replace(/ /g, '-').replace(/\//g, '-'))).text((d + ' (' + numInstances + ')'));
     })
     $("#incident-type-select").trigger("chosen:updated");
-    
+
 }
 
 

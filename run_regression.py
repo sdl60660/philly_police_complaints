@@ -13,7 +13,7 @@ from imblearn.over_sampling import SMOTE
 
 
 categorical_cols = ['complainant_race', 'complainant_sex', 'po_race', 'po_sex', 'general_cap_classification']
-non_categorical_cols = ['officer_prior_complaints', 'officer_prior_sustained_complaints', 'complainant_age'] # 'district_median_income'
+non_categorical_cols = ['complainant_age'] +  ['officer_prior_complaints', 'officer_prior_sustained_complaints'] # 'district_median_income',
 
 # print(len([x for x in data if x['incident_time']]))
 

@@ -13,9 +13,9 @@ Timeline.prototype.initVis = function() {
     vis.svg = d3.select(vis.parentElement)
                 .append("svg")
                 .attr("preserveAspectRatio", "xMinYMin meet")
-            	.attr("width", "105%")
+            	.attr("width", "110%")
             	.attr("height", "360%")
-            	.attr("visibility", "visible");
+            	.attr("visibility", "visible")
 
     // Create an axis to overlay on top of scrollbar with same width and ticks (this is the "timeline")
     vis.timelineAxis = vis.svg
@@ -33,20 +33,20 @@ Timeline.prototype.initVis = function() {
 
 // Update dimensions of timeline on a window resize so that it stays the same size as the hidden jquery ui slider under it
 Timeline.prototype.updateDimensions = function() {
-	
 	var vis = this;
 
-	vis.x = d3.scaleLinear()
-    	.domain([1947,2020])
-    	.range([0, $('.ui-slider').width()])
+	vis.x = d3.scaleTime()
+    	.domain([startDate, addMonths(startDate, maxDateOffset)])
+    	.range([0, $('.ui-slider').outerWidth()])
 
 	vis.timelineAxis
-        .style("font-size", "12pt")
+        .style("font-size", "14px")
         .style("font-family", "Helvetica Neue,helvetica,arial,sans-serif")
 		.call(d3.axisBottom(vis.x)
             .tickSize(10)
-			.tickValues([1960, 1980, 2000, 2020])
-			.tickFormat(d3.format("")))
+			.ticks(6)
+			// .tickValues([2015, 2016, 2017, 2018, 2019, 2020])
+			.tickFormat(d3.timeFormat("%Y")))
             .selectAll("text")
                 .attr("transform", "translate(0,3)")
                 .attr("class", "timeline-year-tick-label");

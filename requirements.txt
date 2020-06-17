@@ -1,2 +1,9 @@
 Flask
 gunicorn
+six>=1.15.0
+pandas
+numpy
+scipy
+scikit-learn>=0.23.1
+imblearn
+statsmodels
