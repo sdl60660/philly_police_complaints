@@ -78,23 +78,23 @@ FlowChart.prototype.initVis = function() {
         .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(endRange))
 
-    var col1x = 0;
-    var col2x = 175;
-    var col3x = 700;
+    vis.col1x = 0;
+    vis.col2x = 175;
+    vis.col3x = 700;
 
-    var row1y = -35;
+    vis.row1y = -35;
 
     vis.outcomeCoordinates = {
 
-        "Investigation Pending": [col1x, row1y],
+        "Investigation Pending": [vis.col1x, vis.row1y],
 
-        "No Sustained Findings": [col2x, row1y],
+        "No Sustained Findings": [vis.col2x, vis.row1y],
 
-        "Sustained Finding": [col3x, row1y],
-        "Guilty Finding": [col3x, row1y + 55],
-        "Training/Counseling": [col3x, row1y + 175],
-        "No Guilty Findings": [col3x, row1y + 395],
-        "Discipline Pending": [col3x, row1y + 525]
+        "Sustained Finding": [vis.col3x, vis.row1y],
+        "Guilty Finding": [vis.col3x, vis.row1y + 55],
+        "Training/Counseling": [vis.col3x, vis.row1y + 175],
+        "No Guilty Findings": [vis.col3x, vis.row1y + 395],
+        "Discipline Pending": [vis.col3x, vis.row1y + 525]
     }
 
     vis.colWidths = {
@@ -145,13 +145,13 @@ FlowChart.prototype.initVis = function() {
 
     // Outline all Sustained Finding subgroups to make relationship more clear
     vis.svg.append("rect")
-        .attr("x", col3x + 25)
-        .attr("y", row1y + 80)
+        .attr("x", vis.col3x + 25)
+        .attr("y", vis.row1y + 80)
         .attr("width", vis.fullBlockWidth*1.1)
         .attr("height", 620)
         .attr("stroke-width", "1px")
         .attr("stroke", "black")
-        .attr("fill", "rgba(255,255,255,0.4)")
+        .attr("fill", "rgba(255,255,255,0.5)")
         .attr("rx", 10)
         .attr("ry", 10)
         .lower()
@@ -317,7 +317,7 @@ FlowChart.prototype.updateVis = function() {
                 //     return 220 + d.enter_index * vis.trueBlockWidth;
                 // })
                 .attr("y", -100)
-                .attr("x", vis.width/2)
+                .attr("x", vis.col2x + vis.trueBlockWidth * vis.colWidths["No Sustained Findings"]/2)
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
                 .attr("fill", function(d) {

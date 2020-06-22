@@ -157,3 +157,7 @@ body {
 	border: none;
 	/*max-width: 5px;*/
 }
+
+#flowchart-tile.group-label {
+	z-index: 20;
+}
