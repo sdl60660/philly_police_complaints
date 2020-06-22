@@ -175,6 +175,7 @@ FlowChart.prototype.wrangleData = function() {
                 // Revisit this later
                 return vis.selectedComplaintTypes.includes(d.general_cap_classification);
             })
+            .sort((a, b) => a.date_received - b.date_received);
     }
 
     else {
@@ -183,10 +184,12 @@ FlowChart.prototype.wrangleData = function() {
 
     vis.reverseSortOrder = vis.representedVals[vis.representedAttribute].slice().reverse();
 
-    vis.chartData = vis.chartData
-        .sort(function(a, b) {
-            return vis.reverseSortOrder.indexOf(b[vis.representedAttribute]) - vis.reverseSortOrder.indexOf(a[vis.representedAttribute]);
-        });
+    if (vis.representedAttribute != 'no_group') {
+        vis.chartData = vis.chartData
+            .sort(function (a, b) {
+                return vis.reverseSortOrder.indexOf(b[vis.representedAttribute]) - vis.reverseSortOrder.indexOf(a[vis.representedAttribute]);
+            });
+    }
 
     vis.initialOutcomeIndices = {
         "No Sustained Findings": 0,
