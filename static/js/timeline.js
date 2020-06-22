@@ -10,6 +10,10 @@ Timeline.prototype.initVis = function() {
     var vis = this;
 
     // Create an SVG inside of hidden slider element, but with additional height so ticks are visible
+	d3.select(vis.parentElement)
+		.selectAll("svg")
+		.remove();
+
     vis.svg = d3.select(vis.parentElement)
                 .append("svg")
                 .attr("preserveAspectRatio", "xMinYMin meet")

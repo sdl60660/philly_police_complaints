@@ -6,22 +6,98 @@ body {
 	/*font-family: "Source Code Pro", "Helvetica Neue", helvetica, arial, sans-serif;*/
 	font-family: 'Inconsolata', Monaco, "Lucida Console", Consolas, "Courier New";
 	background-color: #f9f9f9;
+	height: 9000px;
 }
 
 .spacer {
 	height: 50px;
 }
 
+/* Graph Scroll */
+
+#container{
+  position: relative;
+}
+
+#sections{
+  width: 340px;
+}
+
+#graph{
+  margin-left: 40px;
+  width: 500px;
+  position: sticky;
+  top: 0px;
+  float: right;
+}
+
+@media (max-width: 925px)  {
+  #graph{
+    width: 100%;
+    margin-left: 0px;
+    float: none;
+  }
+
+  #sections{
+    position: relative;
+    margin: 0px auto;
+    padding-top: 400px;
+  }
+}
+
+
+/**/
+
+.viz-tile {
+	/*visibility: hidden;*/
+	display: none;
+	position: fixed;
+	margin-top: 10px;
+	margin-right: 15px;
+}
+
 .d3-tip {
-	max-width: 350px;
+	max-width: 400px;
 	background-color: white;
 	color: black;
 	border-radius: 5px;
 	border: 1px solid black;
+	z-index: 100;
 }
 
 .tip-text {
 	font-size: 9pt;
+}
+
+#sections {
+	position: absolute;
+	display: inline-block;
+	width: 250px;
+	top: 0px;
+	z-index: 50;
+}
+
+.step {
+	margin-bottom: 200px;
+}
+
+.container {
+	margin-left: 15%;
+	margin-right: 15%;
+	position: absolute;
+	/*display: inline-block;*/
+	/*position: inline;*/
+	/*top: 60px;*/
+	z-index: 2;
+}
+
+#map-tile {
+	position: fixed;
+}
+
+#flowchart-tile {
+	position: fixed;
+	/*top: 800px;*/
 }
 
 #slider-div {

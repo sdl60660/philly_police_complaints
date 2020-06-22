@@ -1,0 +1,15 @@
+{
+  "name": "scrollstory",
+  "homepage": "https://github.com/sjwilliams/scrollstory",
+  "version": "1.1.0",
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "7a3094091e05889bfa932a9991e2949b08f45d96"
+  },
+  "_source": "https://github.com/sjwilliams/scrollstory.git",
+  "_target": "^1.1.0",
+  "_originalSource": "scrollstory",
+  "_direct": true
+}

@@ -16,9 +16,9 @@ FlowChart = function(_parentElement) {
 FlowChart.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 120, right: 30, bottom: 45, left: 30};
-    vis.width = 1000 - vis.margin.left - vis.margin.right;
-    vis.height = 1300 - vis.margin.top - vis.margin.bottom;
+    vis.margin = {top: 95, right: 45, bottom: 45, left: 40};
+    vis.width = 1100 - vis.margin.left - vis.margin.right;
+    vis.height = 1100 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg");
@@ -34,7 +34,7 @@ FlowChart.prototype.initVis = function() {
     else {
         vis.svg
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 1000 1500")
+        .attr("viewBox", "0 0 1000 1100")
     }
 
 
@@ -48,12 +48,18 @@ FlowChart.prototype.initVis = function() {
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
-    vis.blockGroupWidth = 45;
+    vis.blockGroupWidth = 40;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
-    vis.representedVals = ["black", "white", "latino"];
+    vis.representedAttribute = 'no_group';
+
+    vis.representedVals = {
+        'no_group': ["default"],
+        'complainant_race': ["black", "white", "latino"],
+        'po_race': ["black", "white", "latino"],
+        'district_income': ['high', 'middle', 'low']
+    };
     vis.color = d3.scaleOrdinal()
-        .domain(vis.representedVals)
         .range(["blue", "red", "orange"])
         .unknown("gray")
 
@@ -72,21 +78,35 @@ FlowChart.prototype.initVis = function() {
         .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(endRange))
 
-    vis.reverseSortOrder = ["asian", "latino", "white", "black"];
+    var col1x = 0;
+    var col2x = 175;
+    var col3x = 700;
 
-    var col1x = 100;
-    var col2x = 500;
+    var row1y = -35;
 
     vis.outcomeCoordinates = {
-        
-        "Sustained Finding": [col1x, 30],
-        "Investigation Pending": [col1x, 190],
-        "No Sustained Findings": [col1x, 390],
 
-        "Guilty Finding": [col2x, 30],
-        "Training/Counseling": [col2x, 190],
-        "No Guilty Findings": [col2x, 390],
-        "Discipline Pending": [col2x, 550]
+        "Investigation Pending": [col1x, row1y],
+
+        "No Sustained Findings": [col2x, row1y],
+
+        "Sustained Finding": [col3x, row1y],
+        "Guilty Finding": [col3x, row1y + 55],
+        "Training/Counseling": [col3x, row1y + 175],
+        "No Guilty Findings": [col3x, row1y + 395],
+        "Discipline Pending": [col3x, row1y + 525]
+    }
+
+    vis.colWidths = {
+        "Investigation Pending": Math.round(0.5*vis.blockGroupWidth),
+
+        "No Sustained Findings": Math.round(2.0*vis.blockGroupWidth),
+
+        "Sustained Finding": Math.round(1.0*vis.blockGroupWidth),
+        "Guilty Finding": Math.round(1.0*vis.blockGroupWidth),
+        "Training/Counseling": Math.round(1.0*vis.blockGroupWidth),
+        "No Guilty Findings": Math.round(1.0*vis.blockGroupWidth),
+        "Discipline Pending": Math.round(1.0*vis.blockGroupWidth)
     }
 
     vis.outcomeLabels = {}
@@ -95,9 +115,17 @@ FlowChart.prototype.initVis = function() {
     for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
         var outcomeLabel = vis.g.append("text")
             .attr("class", "group-label " + formatSpacedStrings(key))
-            .attr("x", value[0])
+            .attr("x", value[0] + (vis.trueBlockWidth * vis.colWidths[key] / 2))
             .attr("y", value[1] - 30)
-            // .style("font-size", "12pt")
+            .attr("text-anchor", "middle")
+            .style("font-size", function() {
+                if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(key)) {
+                    return "12pt";
+                }
+                else {
+                    return "9pt";
+                }
+            })
             .text(key)
 
         // var svgW
@@ -114,7 +142,19 @@ FlowChart.prototype.initVis = function() {
     }
 
     vis.incidentTypes = ['Departmental Violations', 'Lack Of Service', 'Physical Abuse',  'Verbal Abuse','Unprofessional Conduct', 'Criminal Allegation', 'Harassment','Civil Rights Complaint','Domestic', 'Falsification', 'Sexual Crime/Misconduct','Drugs']
-    vis.setComplaintTypes();
+
+    // Outline all Sustained Finding subgroups to make relationship more clear
+    vis.svg.append("rect")
+        .attr("x", col3x + 25)
+        .attr("y", row1y + 80)
+        .attr("width", vis.fullBlockWidth*1.1)
+        .attr("height", 620)
+        .attr("stroke-width", "1px")
+        .attr("stroke", "black")
+        .attr("fill", "rgba(255,255,255,0.4)")
+        .attr("rx", 10)
+        .attr("ry", 10)
+        .lower()
 
     vis.wrangleData();
 }
@@ -124,19 +164,29 @@ FlowChart.prototype.initVis = function() {
 FlowChart.prototype.wrangleData = function() {
     var vis = this;
 
-    vis.chartData = officerDisciplineResults.filter(function(d) {
-        return d.date_received >= startRange && d.date_received <= endRange;
-    })
+    if (initFlowChart === false) {
+        vis.updateComplaintTypes();
 
-    vis.updateComplaintTypes();
+        vis.chartData = officerDisciplineResults
+            .filter(function (d) {
+                return d.date_received >= startRange && d.date_received <= endRange;
+            })
+            .filter(function(d) {
+                // Revisit this later
+                return vis.selectedComplaintTypes.includes(d.general_cap_classification);
+            })
+    }
 
-    vis.chartData = vis.chartData.filter(function(d) {
-        // Revisit this later
-        return vis.selectedComplaintTypes.includes(d.general_cap_classification);
-    })
-    .sort(function(a, b) {
-        return vis.reverseSortOrder.indexOf(b.complainant_race) - vis.reverseSortOrder.indexOf(a.complainant_race);
-    });
+    else {
+        vis.chartData = officerDisciplineResults;
+    }
+
+    vis.reverseSortOrder = vis.representedVals[vis.representedAttribute].slice().reverse();
+
+    vis.chartData = vis.chartData
+        .sort(function(a, b) {
+            return vis.reverseSortOrder.indexOf(b[vis.representedAttribute]) - vis.reverseSortOrder.indexOf(a[vis.representedAttribute]);
+        });
 
     vis.initialOutcomeIndices = {
         "No Sustained Findings": 0,
@@ -163,9 +213,70 @@ FlowChart.prototype.wrangleData = function() {
     })
 
 
+    vis.color
+        .domain(vis.representedVals[vis.representedAttribute])
 
     vis.setToolTips();
-    vis.updateVis();
+
+    if (initFlowChart == true) {
+        initFlowChart = false;
+
+        vis.chartData.sort(function (a, b) { return 0.5 - Math.random() });
+    }
+    else {
+        vis.updateVis();
+    }
+}
+
+
+FlowChart.prototype.visEntrance = function() {
+    var vis = this;
+
+    endRange = addMonths(startRange, maxDateOffset);
+    $("#end-date-display")
+        .text( d3.timeFormat("%B %Y")(endRange));
+
+    var sliderValue = monthDiff(startDate, endRange);
+    $("#slider-div")
+        .slider("values", 1, sliderValue);
+
+    // JOIN data with any existing elements
+    vis.flowchart = vis.g
+        .selectAll("rect")
+        .data(vis.chartData , function(d) {
+            return d.discipline_id;
+        })
+
+    // ENTER new elements present in the data...
+    vis.flowchart
+        .enter()
+            .append("rect")
+                .attr("class", "complaint-box")
+                .style("opacity", 0.0)
+                .attr("y", -100)
+                // .attr("x", vis.width/2)
+                .attr("x",  function(d,i) {
+                    return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
+                })
+                .attr("height", vis.blockSize)
+                .attr("width", vis.blockSize)
+                .attr("fill", function(d) {
+                    return vis.color(d[vis.representedAttribute]);
+                })
+                .on("mouseover", vis.tip.show)
+                .on("mouseout", vis.tip.hide)
+                .transition()
+                    .duration(200)
+                    .delay(function(d,i) {
+                        return i * 0.13;
+                    })
+                    .style("opacity", 0.8)
+                    .attr("y", function(d,i) {
+                        return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
+                    })
+
+    vis.setComplaintTypes();
+
 }
 
 
@@ -202,49 +313,49 @@ FlowChart.prototype.updateVis = function() {
                 // .attr("y", function(d) {
                 //     return 220 + d.enter_index * vis.trueBlockWidth;
                 // })
-                .attr("y", 220)
-                .attr("x", 10)
+                .attr("y", -100)
+                .attr("x", vis.width/2)
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
                 .attr("fill", function(d) {
-                    return vis.color(d.complainant_race);
+                    return vis.color(d[vis.representedAttribute]);
                 })
                 .on("mouseover", vis.tip.show)
                 .on("mouseout", vis.tip.hide)
-                .transition()
-                    .delay(100)
-                    .duration(300)
-                    .attr("opacity", 1)
-                    .attr("x",  function(d,i) {
-
-                        if (d.investigative_findings == "Sustained Finding") {
-                            var coordinateIndex = d.enter_index
-                        }
-                        else {
-                            var coordinateIndex = d.initial_state_index;
-                        }
-
-                        return vis.outcomeCoordinates[d.investigative_findings][0] + vis.trueBlockWidth * (coordinateIndex%vis.blockGroupWidth);
-                    })
-                    .attr("y", function(d,i) {
-
-                        if (d.investigative_findings == "Sustained Finding") {
-                            var coordinateIndex = d.enter_index
-                        }
-                        else {
-                            var coordinateIndex = d.initial_state_index;
-                        }
-
-                        return vis.outcomeCoordinates[d.investigative_findings][1] + vis.trueBlockWidth * Math.floor(coordinateIndex/vis.blockGroupWidth);
-                    })
+                // .transition()
+                //     .delay(100)
+                //     .duration(300)
+                //     .attr("opacity", 1)
+                //     .attr("x",  function(d,i) {
+                //
+                //         if (d.investigative_findings == "Sustained Finding") {
+                //             var coordinateIndex = d.enter_index
+                //         }
+                //         else {
+                //             var coordinateIndex = d.initial_state_index;
+                //         }
+                //
+                //         return vis.outcomeCoordinates[d.investigative_findings][0] + vis.trueBlockWidth * (coordinateIndex%vis.colWidths[d.investigative_findings]);
+                //     })
+                //     .attr("y", function(d,i) {
+                //
+                //         if (d.investigative_findings == "Sustained Finding") {
+                //             var coordinateIndex = d.enter_index
+                //         }
+                //         else {
+                //             var coordinateIndex = d.initial_state_index;
+                //         }
+                //
+                //         return vis.outcomeCoordinates[d.investigative_findings][1] + vis.trueBlockWidth * Math.floor(coordinateIndex/vis.colWidths[d.investigative_findings]);
+                //     })
                     .transition()
                         .duration(300)
-                        .delay(400)
+                        .delay(100)
                         .attr("x",  function(d,i) {
-                            return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.blockGroupWidth);
+                            return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
                         })
                         .attr("y", function(d,i) {
-                            return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(d.final_state_index/vis.blockGroupWidth);
+                            return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(d.final_state_index/vis.colWidths[d.end_state]);
                         })
                     
     vis.flowchart
@@ -253,23 +364,26 @@ FlowChart.prototype.updateVis = function() {
             .delay(function(d) {
 
                 if (d.investigative_findings == "Sustained Finding") {
-                    return 800;
+                    return 100;
                 }
                 else {
                     return 100;
                 }
             })
                 .attr("x",  function(d,i) {
-                    return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.blockGroupWidth);
+                    return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%(vis.colWidths[d.end_state]));
                 })
                 .attr("y", function(d,i) {
-                    return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(1.0*(d.final_state_index)/vis.blockGroupWidth);
+                    return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(1.0*(d.final_state_index)/vis.colWidths[d.end_state]);
+                })
+                .attr("fill", function(d) {
+                    return vis.color(d[vis.representedAttribute]);
                 })
 
-    sleep(1100).then(() => {
-        vis.updateCounts();
-        // vis.setPathArrows();
-    })
+    // sleep(1100).then(() => {
+    //     vis.updateCounts();
+    //     // vis.setPathArrows();
+    // })
 
 
 }
@@ -319,11 +433,11 @@ FlowChart.prototype.updateCounts = function() {
 
         vis.representedVals.forEach(function(group) {
             var groupCount = vis.chartData.filter(function(d) {
-                return d[stateVar] == outcome && d.complainant_race == group;
+                return d[stateVar] == outcome && d[vis.representedAttribute] == group;
             }).length
             
             var groupTotal = vis.chartData.filter(function(d) {
-                return d.complainant_race == group;
+                return d[vis.representedAttribute] == group;
             }).length
             // var groupTotal = vis.finalOutcomeIndices[outcome]
 
@@ -379,13 +493,13 @@ FlowChart.prototype.setToolTips = function() {
 
     vis.tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset([-10, 0])
+        .offset([-vis.blockSize, 0])
         .html(function(d) {
 
             var tipText = "<div class='tip-text'>";
             tipText += "<span class='detail-title'>Complaint Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
             if(d.incident_time) {
-                tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d.incident_time + "<br></span>"
+                tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.incident_time) + "<br></span>"
             }
             tipText += "<span class='detail-title'>District</span>: <span class='details'>" + d.district_occurrence + "<br><br></span>";
 

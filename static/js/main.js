@@ -3,17 +3,22 @@
 var officerDisciplineResults;
 var phoneBrowsing = false;
 
+var districtGeoJSON;
+
 var startDate = new Date("01/01/2013");
 var startRange = addMonths(startDate, 0);
 var endRange = addMonths(startDate, 1);
 
 var flowChart;
+var districtMap;
 var timeline;
 var interval;
 
 var maxDateOffset;
 
-// Determine if the user is browsing on mobile and adjust worldMapWidth if they are
+var initFlowChart = true;
+
+// Determine if the user is browsing on mobile
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     phoneBrowsing = true;
 }
@@ -36,16 +41,7 @@ function initSlider(maxDate) {
             endRange = addMonths(startDate, ui.values[1]);
 
             updateCharts();
-            // $("#yearLabel").text((ui.value - 1) + '-' + (ui.value));
-
         }
-        // slide: function(event, ui) {
-        //     currentDate = addMonths(startDate, ui.value);
-
-        //     // update date label
-        //     $(".date-text")
-        //         .text(d3.timeFormat("%B %Y")(currentDate));
-        // }
     })
 
 }
@@ -96,17 +92,51 @@ function updateCharts() {
     $("#end-date-display")
         .text( d3.timeFormat("%B %Y")(endRange));
 
+    var sliderValue = monthDiff(startDate, endRange);
+    $("#slider-div")
+        .slider("values", 1, sliderValue);
+
     flowChart.wrangleData();
 }
 
 
+var scroll = scroller()
+    .container(d3.select('body'));
+
+scroll(d3.selectAll('.step'));
+
+scroll.on('active', function(index){
+    console.log(index);
+
+    // plot.activate(index);
+    if (index == 2) {
+        $("#flowchart-tile")
+            .show()
+
+        // initFlowChart = true;
+        flowChart.visEntrance();
+        timeline = new Timeline("#slider-div");
+    }
+})
+
+scroll.on('progress', function(index, progress) {
+    if (index == 2) {
+        // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
+        // updateCharts();
+    }
+
+    console.log(index, progress);
+})
+
 var promises = [
-    d3.json("static/data/complaint_discipline_viz_data.json")
+    d3.json("static/data/complaint_discipline_viz_data.json"),
+    d3.json("static/data/district_demos.geojson")
 ];
 
 Promise.all(promises).then(function(allData) {
 
     officerDisciplineResults = allData[0];
+    districtGeoJSON = allData[1];
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
@@ -143,6 +173,12 @@ Promise.all(promises).then(function(allData) {
         else {
             d.end_state = d.disciplinary_findings;
         }
+
+        if(d.incident_time) {
+            d.incident_time = d3.timeParse("%Y-%m-%d %H:%M:%S")(d.incident_time);
+        }
+
+        d.no_group = 'default';
     })
 
     officerDisciplineResults =officerDisciplineResults.filter(function(d) {
@@ -155,7 +191,7 @@ Promise.all(promises).then(function(allData) {
         flowChart.wrangleData();
     });
 
-    timeline = new Timeline("#slider-div");
+    districtMap = new DistrictMap("#map-area")
 
 
 });

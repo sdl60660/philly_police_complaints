@@ -4,10 +4,13 @@ from datetime import datetime
 import pandas as pd
 import numpy as np
 
-import sklearn
+import statsmodels.api as sm
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import RFE
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
 
 from imblearn.over_sampling import SMOTE
 
@@ -16,18 +19,29 @@ categorical_cols = ['complainant_race', 'complainant_sex', 'po_race', 'po_sex', 
 non_categorical_cols = ['complainant_age', 'district_population', 'district_income', 'district_pct_black'] # +  ['officer_prior_complaints', 'officer_prior_sustained_complaints'] # 'district_median_income', 'complainant_age'
 # print(len([x for x in data if x['incident_time']]))
 
-def build_dataframe(data):
+def build_dataframe(data, outcome="disciplinary"):
     dataset = []
 
     for row in data:
         dataset_row = {}
 
-        if row['investigative_findings'] == 'No Sustained Findings':
-            dataset_row['investigative_outcome'] = 0
-        elif row['investigative_findings'] == 'Sustained Finding':
-            dataset_row['investigative_outcome'] = 1
+        if outcome == 'investigative':
+            # # Investigative Outcome
+            if row['investigative_findings'] == 'No Sustained Findings':
+                dataset_row['investigative_outcome'] = 0
+            elif row['investigative_findings'] == 'Sustained Finding':
+                dataset_row['investigative_outcome'] = 1
+            else:
+                continue
+
         else:
-            continue
+            # # Disciplinary Outcome
+            if row['disciplinary_findings'] == 'Guilty Finding':
+                dataset_row['investigative_outcome'] = 1
+            elif 'Pending' in row['disciplinary_findings'] or 'Pending' in row['investigative_findings']:
+                continue
+            else:
+                dataset_row['investigative_outcome'] = 0
 
         if all([x in list(row.keys()) and row[x] != '' and row[x] for x in (categorical_cols + non_categorical_cols)]):
             for col in (categorical_cols + non_categorical_cols):
@@ -47,7 +61,7 @@ def encode_categoricals(df):
         threshold_vals = list(df[df['investigative_outcome']==1][col]
                       .value_counts()
                       .reset_index(name="count")
-                      .query("count > 15")["index"])
+                      .query("count > 10")["index"])
 
         df[col] = df[col].apply(lambda x: x if x in threshold_vals and '[' not in x else 'other')
 
@@ -62,7 +76,7 @@ def encode_categoricals(df):
 
 def oversample(X, y):
     os = SMOTE(random_state=0)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
     columns = X_train.columns
 
     os_data_X, os_data_y = os.fit_sample(X_train, y_train)
@@ -72,11 +86,11 @@ def oversample(X, y):
     return os_data_X, os_data_y
 
 
-def main():
+def main(outcome='disciplinary'):
 
     with open('static/data/complaint_discipline_viz_data.json', 'r') as f:
         data = json.load(f)
-        df = build_dataframe(data)
+        df = build_dataframe(data, outcome)
 
     df = encode_categoricals(df)
 
@@ -84,16 +98,11 @@ def main():
     X = df.loc[:, df.columns != 'investigative_outcome']
     y = df.loc[:, df.columns == 'investigative_outcome']
 
-    print(X.loc[[323]])
-    min_max_scaler = sklearn.preprocessing.MinMaxScaler()
-    X = pd.DataFrame(min_max_scaler.fit_transform(X), columns=X.columns, index=X.index)
-    print(X.loc[[323]])
-
     # Rebalance dataset
     os_data_X, os_data_y = oversample(X, y)
     print(len(os_data_X), len(os_data_y))
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(os_data_X, os_data_y, test_size=0.3, random_state=0)
 
     # Recursive Feature Elimination
     # logreg = LogisticRegression()
@@ -105,14 +114,30 @@ def main():
     # print(os_data_X.columns)
 
     # Run logistic regression with raw set, as well as the re-balanced set
-    import statsmodels.api as sm
-    logit_model = sm.Logit(y.astype(float), X.astype(float))
-    result = logit_model.fit()
-    print(result.summary2())
+    # logit_model = sm.Logit(y.astype(float), X.astype(float))
+    # result = logit_model.fit()
+    # print(result.summary2())
 
     logit_model = sm.Logit(os_data_y.astype(float), os_data_X.astype(float))
     result = logit_model.fit()
     print(result.summary2())
 
+    clf = RandomForestClassifier(max_depth=2, random_state=0)
+    clf.fit(os_data_X.astype(float), os_data_y.values.ravel())
+
+    feature_importances = sorted(list(zip(X.columns, clf.feature_importances_)), key=lambda x: x[1], reverse=True)
+    for x in feature_importances:
+        print(x[0], x[1])
+
+    # print(clf.score(X_test, y_test))
+
+    scores = cross_val_score(clf, os_data_X, os_data_y.values.ravel(), cv=5)
+    print()
+    print("Accuracy: %0.2f (+/- %0.2f)" % (scores.mean(), scores.std() * 2))
+
+
+    # print(clf.feature_importances_, X.columns)
+
 if __name__ == "__main__":
-    main()
+    main(outcome='investigative')
+    main(outcome='disciplinary')
