@@ -13,37 +13,41 @@ body {
 	height: 50px;
 }
 
+strong {
+	font-weight: 3000;
+}
+
 /* Graph Scroll */
 
-#container{
-  position: relative;
-}
+/*#container{*/
+  /*position: relative;*/
+/*}*/
 
-#sections{
-  width: 340px;
-}
+/*#sections{*/
+  /*width: 340px;*/
+/*}*/
 
-#graph{
-  margin-left: 40px;
-  width: 500px;
-  position: sticky;
-  top: 0px;
-  float: right;
-}
+/*#graph{*/
+  /*margin-left: 40px;*/
+  /*width: 500px;*/
+  /*position: sticky;*/
+  /*top: 0px;*/
+  /*float: right;*/
+/*}*/
 
-@media (max-width: 925px)  {
-  #graph{
-    width: 100%;
-    margin-left: 0px;
-    float: none;
-  }
+/*@media (max-width: 925px)  {*/
+  /*#graph{*/
+    /*width: 100%;*/
+    /*margin-left: 0px;*/
+    /*float: none;*/
+  /*}*/
 
-  #sections{
-    position: relative;
-    margin: 0px auto;
-    padding-top: 400px;
-  }
-}
+  /*#sections{*/
+    /*position: relative;*/
+    /*margin: 0px auto;*/
+    /*padding-top: 400px;*/
+  /*}*/
+/*}*/
 
 
 /**/
@@ -78,13 +82,13 @@ body {
 }
 
 .step {
-	margin-bottom: 200px;
+	margin-bottom: 400px;
 }
 
 .container {
 	margin-left: 15%;
 	margin-right: 15%;
-	position: absolute;
+	/*position: absolute;*/
 	/*display: inline-block;*/
 	/*position: inline;*/
 	/*top: 60px;*/
@@ -161,3 +165,11 @@ body {
 #flowchart-tile.group-label {
 	z-index: 20;
 }
+
+/*#total-complaints {*/
+	/**/
+/*}*/
+
+/*#total-investigations {*/
+	/**/
+/*}*/

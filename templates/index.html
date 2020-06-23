@@ -42,15 +42,34 @@
             <div class="title">Sample Tile 3</div>
             <div class="body">Sample text 3</div>
         </section>
+        <section class="step">
+            <div class="title">Sample Tile 4</div>
+            <div class="body">Sample text 4</div>
+        </section>
+        <section class="step">
+            <div class="title">Sample Tile 5</div>
+            <div class="body">Sample text 5</div>
+        </section>
 
     </div>
 
     <!-- Bootstrap grid setup -->
+    <div class="container viz-tile" id="intro-tile">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10" id="intro-area" style="text-align:center;">
+                <h2><strong>Since 2013, <span class="detail-title" id="total-complaints">0</span> complaints have been filed<br> against Philadelphia police officers,
+                    resulting in <span class="detail-title" id="total-investigations">0</span> disciplinary investigations</strong></h2>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+
     <div class="container viz-tile" id="map-tile">
         <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8" id="map-area"></div>
-            <div class="col-md-2"></div>
+            <div class="col-md-2 col-sm-2"></div>
+            <div class="col-md-8 col-sm-8" id="map-area"></div>
+            <div class="col-md-2 col-sm-2"></div>
         </div>
     </div>
 
@@ -71,12 +90,12 @@
             </div>
         </div>
         <div class="row">
-            <div id="chart-area"></div>
+            <div class="col-md-12 col-sm-12" id="chart-area"></div>
         </div>
     </div>
 
 
-<!-- External JS Libraries -->
+    <!-- External JS Libraries -->
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="/static/bower_components/chosen/chosen.jquery.min.js"></script>
@@ -86,11 +105,13 @@
     <script src="/static/js/d3-geo-projection.v2.min.js"></script>
     <script src="/static/js/topojson.min.js"></script>
     <script src="/static/js/scroller.js"></script>
+
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
 
-<!-- Custom JS -->
+    <!-- Custom JS -->
     <script src="/static/js/utils.js"></script>
     <script src="/static/js/timeline.js"></script>
+    <script src="/static/js/intro-tile.js"></script>
     <script src="/static/js/flowchart.js"></script>
     <script src="/static/js/map.js"></script>
 

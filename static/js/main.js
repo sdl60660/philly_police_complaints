@@ -11,6 +11,7 @@ var endRange = addMonths(startDate, 1);
 
 var flowChart;
 var districtMap;
+var introText;
 var timeline;
 var interval;
 
@@ -56,7 +57,7 @@ $("#play-button")
 
         if (button.text() == "▶") {
             button.text("❙❙");
-            interval = setInterval(step, 1300);
+            interval = setInterval(step, 500);
         }
         else {
             button.text("▶");
@@ -100,6 +101,75 @@ function updateCharts() {
 }
 
 
+function displayIntroText() {
+
+    $("#flowchart-tile")
+        .hide()
+
+    $("#intro-tile")
+        .show()
+
+    var format = d3.format(",.0f")
+
+    d3.select("#total-complaints")
+        .datum("5099")
+        .transition()
+        .delay(300)
+        .duration(1500)
+        .textTween(function(d) {
+            console.log(this._current, d);
+            const i = d3.interpolate(0, d);
+            return function(t) { return format(this._current = i(t)); };
+        })
+        .end();
+
+    d3.select("#total-investigations")
+        .datum("12930")
+        .transition()
+        .delay(400)
+        .duration(1200)
+        .textTween(function(d) {
+            console.log(this._current, d);
+            const i = d3.interpolate(0, d);
+            return function(t) { return format(this._current = i(t)); };
+        })
+        .end();
+}
+
+
+function flowchartEntrance() {
+    $("#intro-tile")
+            .hide()
+
+    $("#flowchart-tile")
+        .show()
+
+    flowChart.representedAttribute = 'no_group';
+
+    // initFlowChart = true;
+    flowChart.visEntrance();
+    timeline = new Timeline("#slider-div");
+}
+
+function showFlowchartByRace() {
+    flowChart.representedAttribute = 'complainant_race';
+    flowChart.wrangleData();
+}
+
+
+var activeIndex;
+var lastIndex;
+function activate(index) {
+    activeIndex = index;
+    var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
+    var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
+    scrolledSections.forEach(function(i) {
+        activateFunctions[i]();
+    });
+    lastIndex = activeIndex;
+};
+
+
 var scroll = scroller()
     .container(d3.select('body'));
 
@@ -108,15 +178,7 @@ scroll(d3.selectAll('.step'));
 scroll.on('active', function(index){
     console.log(index);
 
-    // plot.activate(index);
-    if (index == 2) {
-        $("#flowchart-tile")
-            .show()
-
-        // initFlowChart = true;
-        flowChart.visEntrance();
-        timeline = new Timeline("#slider-div");
-    }
+    activate(index);
 })
 
 scroll.on('progress', function(index, progress) {
@@ -127,6 +189,12 @@ scroll.on('progress', function(index, progress) {
 
     console.log(index, progress);
 })
+
+
+var activateFunctions = ['filler'];
+activateFunctions[1] = displayIntroText;
+activateFunctions[2] = flowchartEntrance;
+activateFunctions[3] = showFlowchartByRace;
 
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
