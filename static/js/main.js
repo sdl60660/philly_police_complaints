@@ -189,32 +189,37 @@ function artificialHover(outcomeName) {
     sunburst.mouseover(guiltyValue, guiltyFindingElement);
 }
 
-function setSelectOption(selectID, optionVal) {
-    $(`select#${selectID}`).val(optionVal);
+function setSelectOptions(optionPairs) {
+    optionPairs.forEach(function(pair) {
+        var selectID = pair[0];
+        var optionVal = pair[1];
+
+        $(`select#${selectID}`).val(optionVal);
+    })
+
+    sunburst.wrangleData();
 }
 
 
 function highlightGuilty() {
+    setSelectOptions([["sunburst-complainant-race", "all"], ["sunburst-po-race", "all"]]);
     artificialHover("Guilty Finding");
 }
 
 
 function guiltyWhiteComplainant() {
-    setSelectOption("sunburst-complainant-race", "white");
-    sunburst.wrangleData();
+    setSelectOptions([["sunburst-complainant-race", "white"], ["sunburst-po-race", "all"]]);
     artificialHover("Guilty Finding");
 }
 
 
 function guiltyBlackComplainant() {
-    setSelectOption("sunburst-complainant-race", "black");
-    sunburst.wrangleData();
+    setSelectOptions([["sunburst-complainant-race", "black"], ["sunburst-po-race", "all"]]);
     artificialHover("Guilty Finding");
 }
 
 function guiltyBlackComplainantWhiteOfficer() {
-    setSelectOption("sunburst-po-race", "white");
-    sunburst.wrangleData();
+    setSelectOptions([["sunburst-complainant-race", "black"], ["sunburst-po-race", "white"]]);
     artificialHover("Guilty Finding");
 }
 
@@ -226,9 +231,7 @@ function guiltyWhiteComplainantBlackOfficer() {
     $("#sunburst-tile")
         .show();
 
-    setSelectOption("sunburst-complainant-race", "white");
-    setSelectOption("sunburst-po-race", "black");
-    sunburst.wrangleData();
+    setSelectOptions([["sunburst-complainant-race", "white"], ["sunburst-po-race", "black"]]);
     artificialHover("Guilty Finding");
 }
 
@@ -270,7 +273,7 @@ var lastIndex;
 function activate(index) {
 
     $("section.step")
-        .css("opacity", 0.3);
+        .css("opacity", 0.2);
 
     $("section.step").eq(index-1)
         .css("opacity", 1.0);
