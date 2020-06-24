@@ -191,7 +191,6 @@ function artificialHover(outcomeName) {
 
 function setSelectOption(selectID, optionVal) {
     $(`select#${selectID}`).val(optionVal);
-    sunburst.wrangleData();
 }
 
 
@@ -202,17 +201,20 @@ function highlightGuilty() {
 
 function guiltyWhiteComplainant() {
     setSelectOption("sunburst-complainant-race", "white");
+    sunburst.wrangleData();
     artificialHover("Guilty Finding");
 }
 
 
 function guiltyBlackComplainant() {
     setSelectOption("sunburst-complainant-race", "black");
+    sunburst.wrangleData();
     artificialHover("Guilty Finding");
 }
 
 function guiltyBlackComplainantWhiteOfficer() {
     setSelectOption("sunburst-po-race", "white");
+    sunburst.wrangleData();
     artificialHover("Guilty Finding");
 }
 
@@ -226,6 +228,7 @@ function guiltyWhiteComplainantBlackOfficer() {
 
     setSelectOption("sunburst-complainant-race", "white");
     setSelectOption("sunburst-po-race", "black");
+    sunburst.wrangleData();
     artificialHover("Guilty Finding");
 }
 

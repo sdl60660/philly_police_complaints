@@ -126,6 +126,20 @@ strong {
 	padding-right: 3px;
 }
 
+span.category-text {
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+span.white {
+	background-color: rgba(255,25,25,0.5);
+}
+
+span.black {
+	background-color: rgba(50,50,255,0.5);
+}
+
 #map-tile {
 	position: fixed;
 }

@@ -60,7 +60,7 @@ FlowChart.prototype.initVis = function() {
         'district_income': ['high', 'middle', 'low']
     };
     vis.color = d3.scaleOrdinal()
-        .range(["blue", "red", "orange"])
+        .range(["#3232FF", "#FF1919", "orange"])
         .unknown("gray")
 
     vis.startDateText = d3.select("#start-date-display").append("text")
