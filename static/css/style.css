@@ -95,6 +95,10 @@ strong {
 	z-index: 2;
 }
 
+.complaint-box {
+	cursor: pointer;
+}
+
 .sunburst-select {
 	background-color: #fff;
 	border: 1px solid #cdcdcd;

@@ -194,7 +194,7 @@ Sunburst.prototype.updateVis = function() {
         .transition()
             .delay(0)
             .duration(1000)
-            .ease(d3.easeElastic)
+            .ease(d3.easePoly)
             .attrTween("d", arcTweenPath);
 
     vis.labels.selectAll("text")

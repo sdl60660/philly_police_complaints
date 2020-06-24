@@ -257,8 +257,20 @@ FlowChart.prototype.visEntrance = function() {
                 .attr("fill", function(d) {
                     return vis.color(d[vis.representedAttribute]);
                 })
-                .on("mouseover", vis.tip.show)
-                .on("mouseout", vis.tip.hide)
+                .on("click", function(d) {
+                    if (d.summary) {
+                        $(".details#complaint-summary").text(d.summary);
+                    }
+                    else if (d.shortened_summary) {
+                        $(".details#complaint-summary").text(d.shortened_summary);
+                    }
+                })
+                .on("mouseenter", vis.tip.show)
+                .on("mouseleave", function() {
+
+
+                    vis.tip.hide();
+                })
                 .transition()
                     // .duration(200)
                     .delay(function(d,i) {
@@ -311,19 +323,27 @@ FlowChart.prototype.updateVis = function() {
                 .attr("fill", function(d) {
                     return vis.color(d[vis.representedAttribute]);
                 })
+                .on("click", function(d) {
+                    if (d.summary) {
+                        $(".details#complaint-summary").text(d.summary);
+                    }
+                    else if (d.shortened_summary) {
+                        $(".details#complaint-summary").text(d.shortened_summary);
+                    }
+                })
                 .on("mouseover", vis.tip.show)
                 .on("mouseout", vis.tip.hide)
-                    .transition()
-                        .duration(400)
-                        .delay(100)
-                        .attr("x",  function(d,i) {
-                            return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
-                        })
-                        .attr("y", function(d,i) {
-                            return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
-                        })
-                        // .style("opacity", 0.8)
-                    
+                .transition()
+                    .duration(400)
+                    .delay(100)
+                    .attr("x",  function(d,i) {
+                        return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
+                    })
+                    .attr("y", function(d,i) {
+                        return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
+                    })
+                    // .style("opacity", 0.8)
+
     vis.flowchart
         .transition()
             .duration(400)
@@ -355,36 +375,6 @@ FlowChart.prototype.updateVis = function() {
 
 }
 
-FlowChart.prototype.setPathArrows = function() {
-    var vis = this;
-
-
-    var svgCoordinates = vis.svg.node().getBBox();
-    var start = vis.svg.select('.outcome-counts.Sustained-Finding').node().getBBox();
-
-    var disciplinaryOutcomes = ["Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"]
-    disciplinaryOutcomes.forEach(function(outcome) {
-        var end = vis.svg.select('.group-label.' + formatSpacedStrings(outcome)).node().getBBox();
-
-        var curve = d3.line().curve(d3.curveNatural);
-        var points = [[start.x + 2*(start.width), (svgCoordinates.y + (start.y + start.height)/2)], [end.x , (svgCoordinates.y + (end.y + end.height))]]
-
-        // console.log(vis.svg.attr("x"), vis.svg.attr("y"))
-        // console.log(vis.svg.select('.outcome-counts.Sustained-Finding').attr("x"), vis.svg.select('.outcome-counts.Sustained-Finding').attr("y"))
-        // console.log(start, end);
-        // console.log(points);
-        vis.svg
-            .append('path')
-            .attr('d', curve(points))
-            .attr('stroke', 'black')
-            // with multiple points defined, if you leave out fill:none,
-            // the overlapping space defined by the points is filled with
-            // the default value of 'black'
-            .attr('fill', 'none');
-    })
-
-
-}
 
 FlowChart.prototype.updateCounts = function() {
     var vis = this;
@@ -491,11 +481,17 @@ FlowChart.prototype.setToolTips = function() {
             tipText += "<span class='detail-title'>Complaint Type</span>: <span class='details'>" + d.general_cap_classification + "<br></span>";
 
             if (d.summary) {
-                tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details'>" + d.summary + "<br></span>";
+                var summaryText = d.summary;
             }
             else if (d.shortened_summary) {
-                tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details'>" + d.shortened_summary + "<br></span>";
+                var summaryText = d.shortened_summary;
             }
+
+            if(summaryText.length > 500) {
+                summaryText = summaryText.slice(0, summaryText.slice(0, 500).lastIndexOf(" ")) + "... (click for more)";
+            }
+            tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
+
 
             tipText += "</div>";
 

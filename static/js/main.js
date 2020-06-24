@@ -77,7 +77,9 @@ $("#play-button")
 // Resize timeline on window size/jquery ui slider size change
 $(window)
     .resize(function() {
-        timeline.updateDimensions();
+        if (timeline) {
+            timeline.updateDimensions();
+        }
     })
 
 
@@ -142,9 +144,21 @@ function displayIntroText() {
 }
 
 
-function flowchartEntrance() {
+function showSunburst() {
     $("#intro-tile")
         .hide()
+
+    $("#flowchart-tile")
+        .hide()
+
+    $("#sunburst-tile")
+        .show();
+}
+
+
+function flowchartEntrance() {
+    $("#sunburst-tile")
+        .hide();
 
     $("#flowchart-tile")
         .show()
@@ -162,19 +176,8 @@ function showFlowchartByRace() {
 
     $("#flowchart-tile")
         .show()
-
-    $("#sunburst-tile")
-        .hide();
 }
 
-
-function showSunburst() {
-    $("#flowchart-tile")
-        .hide();
-
-    $("#sunburst-tile")
-        .show();
-}
 
 
 var activeIndex;
@@ -184,7 +187,6 @@ function activate(index) {
     var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(function(i) {
-        console.log(activateFunctions[i])
         activateFunctions[i]();
     });
     lastIndex = activeIndex;
@@ -214,9 +216,10 @@ scroll.on('progress', function(index, progress) {
 
 var activateFunctions = ['filler'];         // fix this later
 activateFunctions[1] = displayIntroText;
-activateFunctions[2] = flowchartEntrance;
-activateFunctions[3] = showFlowchartByRace;
-activateFunctions[4] = showSunburst;
+activateFunctions[2] = showSunburst;
+activateFunctions[3] = flowchartEntrance;
+activateFunctions[4] = showFlowchartByRace;
+
 
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
