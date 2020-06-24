@@ -255,7 +255,12 @@ FlowChart.prototype.visEntrance = function() {
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
                 .attr("fill", function(d) {
-                    return vis.color(d[vis.representedAttribute]);
+                    if (d.investigative_findings == 'Sustained Finding') {
+                        return outcomeColors(d.disciplinary_findings);
+                    }
+                    else {
+                        return outcomeColors(d.investigative_findings);
+                    }
                 })
                 .on("click", function(d) {
                     if (d.summary) {
@@ -267,8 +272,6 @@ FlowChart.prototype.visEntrance = function() {
                 })
                 .on("mouseenter", vis.tip.show)
                 .on("mouseleave", function() {
-
-
                     vis.tip.hide();
                 })
                 .transition()
