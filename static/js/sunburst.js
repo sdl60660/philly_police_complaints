@@ -105,14 +105,14 @@ Sunburst.prototype.wrangleData = function() {
     var investigative_result_counts = [];
     ["Sustained Finding", "No Sustained Findings", "Investigation Pending"].forEach(function(i_key) {
 
-        if (i_key == "Sustained Finding") {
+        if (i_key === "Sustained Finding" && nest.get("Sustained Finding") !== undefined) {
             var subnest = d3.nest()
                 .key(function(d) {return d.disciplinary_findings})
                 .map(nest.get(i_key))
 
             var disciplinary_result_counts = [];
             ["Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"].forEach(function(d_key) {
-                if (subnest.get(d_key) != undefined) {
+                if (subnest.get(d_key) !== undefined) {
                     disciplinary_result_counts.push({'name': d_key, 'value': subnest.get(d_key).length})
                 }
             })
@@ -120,14 +120,13 @@ Sunburst.prototype.wrangleData = function() {
             investigative_result_counts.push({'name': i_key, 'children': disciplinary_result_counts})
         }
         else {
-            if (nest.get(i_key) != undefined) {
+            if (nest.get(i_key) !== undefined) {
                 investigative_result_counts.push({'name': i_key, 'value': nest.get(i_key).length})
             }
         }
     })
 
     vis.data = {'name': 'investigative_results', 'children': investigative_result_counts}
-    // vis.data = {'name': 'investigative_results', 'children': [{'name': 'finding', 'children': [{'name': 'guilty', 'value': 1200}, {'name': 'not guilty', 'value': 300}]}, {'name': 'no_finding', 'value': 1200}]};
 
     vis.root = vis.partition(vis.data);
 
@@ -195,6 +194,7 @@ Sunburst.prototype.updateVis = function() {
         .transition()
             .delay(0)
             .duration(1000)
+            .ease(d3.easeElastic)
             .attrTween("d", arcTweenPath);
 
     vis.labels.selectAll("text")
