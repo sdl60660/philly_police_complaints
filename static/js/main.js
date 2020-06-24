@@ -21,9 +21,9 @@ var maxDateOffset;
 
 var initFlowChart = true;
 
-const investigativeOutcomeColor = d3.scaleOrdinal()
-        .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending"])
-        .range(['#658DC6', '#f28e2c', '#b8e827'])
+const outcomeColors = d3.scaleOrdinal()
+        .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
+        .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
 
 // Determine if the user is browsing on mobile
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -53,9 +53,6 @@ function initSlider(maxDate) {
 
 }
 
-// $(".ui-slider-handle")
-//     .hide();
-
 // Initialize timeline play button
 $("#play-button")
     .on("tap click", function() {
@@ -71,7 +68,6 @@ $("#play-button")
         }
         
     });
-
 
 
 // Resize timeline on window size/jquery ui slider size change
@@ -111,7 +107,7 @@ function updateCharts() {
 
 function displayIntroText() {
 
-    $("#flowchart-tile")
+    $("#sunburst-tile")
         .hide()
 
     $("#intro-tile")
@@ -153,6 +149,28 @@ function showSunburst() {
 
     $("#sunburst-tile")
         .show();
+
+    $("#sunburst-area path.child")
+        .css("fill-opacity", 0.3);
+
+    $("#sunburst-area path.parent")
+        .css("fill-opacity", 0.8);
+}
+
+
+function showDisciplinaryGroups() {
+    $("#sunburst-tile")
+        .show();
+
+    $("#flowchart-tile")
+        .hide()
+
+    $("#sunburst-area path.child")
+        .css("fill-opacity", 0.8);
+
+    $("#sunburst-area path.parent")
+        .css("fill-opacity", 0.3);
+
 }
 
 
@@ -170,6 +188,7 @@ function flowchartEntrance() {
     timeline = new Timeline("#slider-div");
 }
 
+
 function showFlowchartByRace() {
     flowChart.representedAttribute = 'complainant_race';
     flowChart.wrangleData();
@@ -183,11 +202,20 @@ function showFlowchartByRace() {
 var activeIndex;
 var lastIndex;
 function activate(index) {
+
+    $("section.step")
+        .css("opacity", 0.3);
+
+    $("section.step").eq(index-1)
+        .css("opacity", 1.0);
+
     activeIndex = index;
     var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(function(i) {
-        activateFunctions[i]();
+        if (i-1 >= 0) {
+            activateFunctions[i - 1]();
+        }
     });
     lastIndex = activeIndex;
 };
@@ -214,9 +242,13 @@ scroll.on('progress', function(index, progress) {
 })
 
 
-var activateFunctions = ['filler'];         // fix this later
-activateFunctions[1] = displayIntroText;
-activateFunctions[2] = showSunburst;
+// var activateFunctions = ['filler'];         // fix this later
+var activateFunctions = [];
+activateFunctions[0] = displayIntroText;
+
+activateFunctions[1] = showSunburst;
+activateFunctions[2] = showDisciplinaryGroups;
+
 activateFunctions[3] = flowchartEntrance;
 activateFunctions[4] = showFlowchartByRace;
 

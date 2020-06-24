@@ -454,6 +454,7 @@ FlowChart.prototype.setToolTips = function() {
         .html(function(d) {
 
             var tipText = "<div class='tip-text'>";
+
             tipText += "<span class='detail-title'>Complaint Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.date_received) + "<br></span>"
             if(d.incident_time) {
                 tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.incident_time) + "<br></span>"
@@ -487,10 +488,12 @@ FlowChart.prototype.setToolTips = function() {
                 var summaryText = d.shortened_summary;
             }
 
-            if(summaryText.length > 500) {
+            if (summaryText.length > 500 && phoneBrowsing === false) {
                 summaryText = summaryText.slice(0, summaryText.slice(0, 500).lastIndexOf(" ")) + "... (click for more)";
             }
+
             tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
+
 
 
             tipText += "</div>";

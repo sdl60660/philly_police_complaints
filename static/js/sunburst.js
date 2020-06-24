@@ -159,16 +159,16 @@ Sunburst.prototype.updateVis = function() {
         })
         .attr("class", function(d) {
             if(d.depth > 1) {
-                return "sunburst-segment";
+                return "sunburst-segment child";
             }
             else {
-                return "sunburst-segment " + d.data.name.replace(" ", "-");
+                return "sunburst-segment parent " + d.data.name.replace(" ", "-");
             }
         })
         .attr("fill", function(d) {
-            while (d.depth > 1)
-                d = d.parent;
-            return investigativeOutcomeColor(d.data.name);
+            // while (d.depth > 1)
+            //     d = d.parent;
+            return outcomeColors(d.data.name);
         })
         .attr("d", function(d) {
             var test = vis.arc(d)
@@ -176,6 +176,7 @@ Sunburst.prototype.updateVis = function() {
         })
         .attr("fill-opacity", 0.6)
         .on("mouseover", function(d,i,n) {
+            $("#sunburst-area path").removeAttr('style');
             vis.mouseover(d,i,n);
         })
         .on("mouseout", function() {

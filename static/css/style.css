@@ -69,6 +69,11 @@ strong {
 	z-index: 100;
 }
 
+@media (hover: none) .d3-tip {
+   overflow-y: auto;
+	max-height: 400px;
+}
+
 .tip-text {
 	font-size: 9pt;
 }
@@ -82,7 +87,20 @@ strong {
 }
 
 .step {
+	margin-top: 200px;
 	margin-bottom: 400px;
+}
+
+.step .title {
+	text-align: center;
+	font-weight: bolder;
+	background-color: rgba(28, 148, 196, 0.25);
+	border-radius: 3px;
+}
+
+.step .body {
+	margin-top: 10px;
+	font-size: 9pt;
 }
 
 .container {
