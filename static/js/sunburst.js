@@ -43,7 +43,7 @@ Sunburst.prototype.initVis = function() {
     vis.g = vis.svg.append("g")
         .attr("transform", "translate(" + vis.margin.left + ", " + vis.margin.top + ")");
 
-    vis.labels = vis.g.append("g")
+    vis.labelGroup = vis.g.append("g")
         .attr("pointer-events", "none")
         .attr("text-anchor", "middle")
         .attr("font-size", 11)
@@ -198,25 +198,40 @@ Sunburst.prototype.updateVis = function() {
             .ease(d3.easePoly)
             .attrTween("d", arcTweenPath);
 
-    vis.labels.selectAll("text")
+    vis.labels = vis.labelGroup.selectAll("text")
         .data(vis.root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10))
-            .join("text")
-            .attr("transform", function(d) {
-                const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
-                const y = (d.y0 + d.y1) / 2;
-                return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
-            })
-            .attr("dy", "0.35em")
-            // .style("fill", "black")
-            // .style("stroke", "black")
-            // .style("stroke-width", 1.5)
-            .text(d => d.data.name)
 
-    vis.labels.raise();
+    vis.labels
+        .enter()
+        .append("text")
+        .attr("transform", function(d) {
+            const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+            const y = (d.y0 + d.y1) / 2;
+            return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
+        })
+        .attr("dy", "0.35em")
+        // .style("fill", "black")
+        // .style("stroke", "black")
+        // .style("stroke-width", 1.5)
+        .text(d => d.data.name);
+
+    vis.labels
+        .transition()
+        .delay(0)
+        .duration(1000)
+        .ease(d3.easePoly)
+        .attr("transform", function(d) {
+            console.log(d);
+            const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+            const y = (d.y0 + d.y1) / 2;
+            return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
+        })
+
+    vis.labelGroup.raise();
 
     function arcTweenPath(a, i) {
 
-        var oi = d3.interpolate({ x0: vis.previousAngles[a.data.name].x0, x1: vis.previousAngles[a.data.name].x1 }, a);
+        var oi = d3.interpolate({ x0: vis.previousAngles[a.data.name].x0, x1: vis.previousAngles[a.data.name].x1}, a);
 
         function tween(t) {
             var b = oi(t);
