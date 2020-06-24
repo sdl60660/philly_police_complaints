@@ -68,6 +68,7 @@ Sunburst.prototype.initVis = function() {
         .text("")
 
     $('.sunburst-select').on('change', function(e) {
+        $(this).attr("class", `sunburst-select ${$(this).val()}`)
         vis.wrangleData();
     })
 

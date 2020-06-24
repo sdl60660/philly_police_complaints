@@ -194,7 +194,9 @@ function setSelectOptions(optionPairs) {
         var selectID = pair[0];
         var optionVal = pair[1];
 
-        $(`select#${selectID}`).val(optionVal);
+        $(`select#${selectID}`)
+            .val(optionVal)
+            .attr("class", `sunburst-select ${$(`select#${selectID}`).val()}`);
     })
 
     sunburst.wrangleData();
