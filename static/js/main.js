@@ -21,6 +21,7 @@ var maxDateOffset;
 
 var initFlowChart = true;
 var flowChartEntered = false;
+var sunburstEntered = false;
 
 const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
@@ -150,6 +151,11 @@ function showSunburst() {
 
     $("#sunburst-tile")
         .show();
+
+    if (sunburstEntered === false) {
+        sunburst = new Sunburst("#sunburst-area");
+        sunburstEntered = true;
+    }
 
     $("#sunburst-area path.child")
         .css("fill-opacity", 0.3);
@@ -325,9 +331,6 @@ Promise.all(promises).then(function(allData) {
     });
 
     districtMap = new DistrictMap("#map-area");
-
-    sunburst = new Sunburst("#sunburst-area");
-
 
 });
 

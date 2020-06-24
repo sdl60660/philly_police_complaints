@@ -71,6 +71,8 @@ Sunburst.prototype.initVis = function() {
         vis.wrangleData();
     })
 
+    vis.previouslyAddedLabels = [];
+
     vis.wrangleData();
 }
 
@@ -147,6 +149,10 @@ Sunburst.prototype.updateVis = function() {
             })
 
     vis.plotAreas
+        .exit()
+        .remove();
+
+    vis.plotAreas
         .enter()
         .append("path")
         .attr("parent", function(d) {
@@ -170,11 +176,9 @@ Sunburst.prototype.updateVis = function() {
             //     d = d.parent;
             return outcomeColors(d.data.name);
         })
-        .attr("d", function(d) {
-            var test = vis.arc(d)
-            return test;
-        })
+        .attr("d", vis.arc)
         .attr("fill-opacity", 0.6)
+        .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
         .on("mouseover", function(d,i,n) {
             $("#sunburst-area path").removeAttr('style');
             vis.mouseover(d,i,n);
@@ -182,38 +186,56 @@ Sunburst.prototype.updateVis = function() {
         .on("mouseout", function() {
             vis.mouseout();
         })
-        .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
+        .transition()
+            .duration(1000)
+            .ease(d3.easePoly)
+            .attrTween("d", arcTweenPath)
         .each(function(d) {
-            vis.previousAngles[d.data.name]  = {'x0': d.x0, 'x1': d.x1};
+            vis.previousAngles[d.data.name] = vis.previousAngles[d.data.name] ?
+                {'x0': d.x0, 'x1': d.x0, 'y0': vis.previousAngles[d.data.name].y0, 'y1': vis.previousAngles[d.data.name].y1 }
+                : {'x0': d.x0, 'x1': d.x1, 'y0': 0, 'y1': 0}
         })
 
     vis.plotAreas
-        .exit()
-        .remove();
-
-    vis.plotAreas
         .transition()
-            .delay(0)
             .duration(1000)
             .ease(d3.easePoly)
             .attrTween("d", arcTweenPath);
 
     vis.labels = vis.labelGroup.selectAll("text")
-        .data(vis.root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10))
+        .data(vis.root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10)
+            , function(d) {
+                return d.data.name;
+            })
+
+    vis.labels
+        .exit()
+        .remove();
 
     vis.labels
         .enter()
         .append("text")
         .attr("transform", function(d) {
-            const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
-            const y = (d.y0 + d.y1) / 2;
-            return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
+            if (vis.previouslyAddedLabels.includes(d.data.name)) {
+                const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+                const y = (d.y0 + d.y1) / 2;
+                return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
+            }
+            else {
+                vis.previouslyAddedLabels.push(d.data.name);
+                return `translate(${vis.radius}, ${vis.radius})`;
+            }
         })
         .attr("dy", "0.35em")
-        // .style("fill", "black")
-        // .style("stroke", "black")
-        // .style("stroke-width", 1.5)
-        .text(d => d.data.name);
+        .text(d => d.data.name)
+        .transition()
+            .duration(1000)
+            .ease(d3.easePoly)
+            .attr("transform", function(d) {
+                const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
+                const y = (d.y0 + d.y1) / 2;
+                return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
+            });
 
     vis.labels
         .transition()
@@ -221,7 +243,6 @@ Sunburst.prototype.updateVis = function() {
         .duration(1000)
         .ease(d3.easePoly)
         .attr("transform", function(d) {
-            console.log(d);
             const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
             const y = (d.y0 + d.y1) / 2;
             return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
@@ -231,7 +252,12 @@ Sunburst.prototype.updateVis = function() {
 
     function arcTweenPath(a, i) {
 
-        var oi = d3.interpolate({ x0: vis.previousAngles[a.data.name].x0, x1: vis.previousAngles[a.data.name].x1}, a);
+        var oi = d3.interpolate({
+            x0: vis.previousAngles[a.data.name].x0,
+            x1: vis.previousAngles[a.data.name].x1,
+            y0: vis.previousAngles[a.data.name].y0,
+            y1: vis.previousAngles[a.data.name].y1
+        }, a);
 
         function tween(t) {
             var b = oi(t);
@@ -242,10 +268,11 @@ Sunburst.prototype.updateVis = function() {
 
         vis.previousAngles[a.data.name].x0 = a.x0;
         vis.previousAngles[a.data.name].x1 = a.x1;
+        vis.previousAngles[a.data.name].y0 = a.y0;
+        vis.previousAngles[a.data.name].y1 = a.y1;
 
         return tween;
     }
-
 }
 
 // Restore normal opacity levels and clear center text
