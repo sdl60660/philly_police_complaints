@@ -218,9 +218,6 @@ activateFunctions[2] = flowchartEntrance;
 activateFunctions[3] = showFlowchartByRace;
 activateFunctions[4] = showSunburst;
 
-console.log(activateFunctions);
-
-
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
     d3.json("static/data/district_demos.geojson")

@@ -81,7 +81,7 @@ Sunburst.prototype.wrangleData = function() {
 
     ['po', 'complainant'].forEach(function(category) {
         let itemSelect = $(`#sunburst-${category}-race`).val();
-        console.log(itemSelect);
+
         if (itemSelect === 'other') {
             vis.chartData = vis.chartData
                 .filter(function(d) {
@@ -95,10 +95,6 @@ Sunburst.prototype.wrangleData = function() {
                 })
         }
     });
-
-        // .filter(function(d) {
-        //     return   && d.po_race == $("#sunburst-po-race").val();
-        // })
 
     vis.totalSize = vis.chartData.length;
 

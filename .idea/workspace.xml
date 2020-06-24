@@ -4,7 +4,6 @@
     <list default="true" id="67322dfc-aeaa-4cc0-87b3-8109b9ca8492" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/static/js/main.js" afterPath="$PROJECT_DIR$/static/js/main.js" />
       <change beforePath="$PROJECT_DIR$/static/js/sunburst.js" afterPath="$PROJECT_DIR$/static/js/sunburst.js" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,24 +28,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="220" column="31" lean-forward="false" selection-start-line="220" selection-start-column="31" selection-end-line="220" selection-end-column="31" />
+            <state relative-caret-position="505">
+              <caret line="218" column="36" lean-forward="false" selection-start-line="218" selection-start-column="36" selection-end-line="218" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sunburst.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sunburst.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/sunburst.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="91" column="28" lean-forward="false" selection-start-line="91" selection-start-column="28" selection-end-line="91" selection-end-column="28" />
+            <state relative-caret-position="349">
+              <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
               <folding>
                 <element signature="e#144#2203#0" expanded="false" />
-                <marker date="1593009668726" expanded="false" signature="7107:7510" ph="{...}" />
+                <marker date="1593009812589" expanded="false" signature="6957:7360" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -256,9 +255,9 @@
         <option value="$PROJECT_DIR$/static/js/old_sunburst.hs.js" />
         <option value="$PROJECT_DIR$/static/js/old_sunburst.js" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
-        <option value="$PROJECT_DIR$/static/js/main.js" />
         <option value="$PROJECT_DIR$/templates/index.html" />
         <option value="$PROJECT_DIR$/static/js/sunburst.js" />
+        <option value="$PROJECT_DIR$/static/js/main.js" />
       </list>
     </option>
   </component>
@@ -927,14 +926,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="220" column="31" lean-forward="false" selection-start-line="220" selection-start-column="31" selection-end-line="220" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="619">
@@ -951,12 +942,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/sunburst.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="91" column="28" lean-forward="false" selection-start-line="91" selection-start-column="28" selection-end-line="91" selection-end-column="28" />
+        <state relative-caret-position="349">
+          <caret line="92" column="37" lean-forward="true" selection-start-line="92" selection-start-column="37" selection-end-line="92" selection-end-column="37" />
           <folding>
             <element signature="e#144#2203#0" expanded="false" />
-            <marker date="1593009668726" expanded="false" signature="7107:7510" ph="{...}" />
+            <marker date="1593009812589" expanded="false" signature="6957:7360" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="505">
+          <caret line="218" column="36" lean-forward="false" selection-start-line="218" selection-start-column="36" selection-end-line="218" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
