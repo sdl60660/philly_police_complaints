@@ -95,6 +95,14 @@ strong {
 	z-index: 2;
 }
 
+.sunburst-select {
+	background-color: #fff;
+	border: 1px solid #cdcdcd;
+
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
 #map-tile {
 	position: fixed;
 }

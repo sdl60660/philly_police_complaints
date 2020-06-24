@@ -73,6 +73,34 @@
         </div>
     </div>
 
+    <div class="container viz-tile" id="sunburst-tile">
+        <div class="row">
+            <div class="col-md-2 col-sm-2"></div>
+            <div class="col-md-8 col-sm-8" id="sunburst-area">
+                What happens when
+                <select class="sunburst-select" id="sunburst-po-race" value="po_race">
+                    <option value="white">white</option>
+                    <option value="black">black</option>
+                    <option value="latino">latino</option>
+                    <option value="other">other</option>
+                </select>
+{#                <span id="sunburst-po-race" value="po_race">[white]</span>#}
+                officers receive complaints from
+                <select class="sunburst-select" id="sunburst-complainant-race" value="complainant_race">
+                    <option value="white">white</option>
+                    <option value="black">black</option>
+                    <option value="latino">latino</option>
+                    <option value="other">other</option>
+                </select>
+{#                <span id="sunburst-complainant-race" value="complainant_race">[black]</span>#}
+                complainants, about incidents in
+                <span id="sunburst-district-income" value="district_income">[all]</span>
+                districts.
+            </div>
+            <div class="col-md-2 col-sm-2"></div>
+        </div>
+    </div>
+
     <div class="container viz-tile" id="flowchart-tile">
         <div class="row">
             <div style="text-align: right;" class="date-display-container col-md-3 col-sm-3">
@@ -111,7 +139,7 @@
     <!-- Custom JS -->
     <script src="/static/js/utils.js"></script>
     <script src="/static/js/timeline.js"></script>
-    <script src="/static/js/intro-tile.js"></script>
+    <script src="/static/js/sunburst.js"></script>
     <script src="/static/js/flowchart.js"></script>
     <script src="/static/js/map.js"></script>
 

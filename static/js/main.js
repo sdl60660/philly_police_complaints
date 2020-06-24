@@ -4,6 +4,7 @@ var officerDisciplineResults;
 var phoneBrowsing = false;
 
 var districtGeoJSON;
+var sunburstTest;
 
 var startDate = new Date("01/01/2013");
 var startRange = addMonths(startDate, 0);
@@ -11,6 +12,7 @@ var endRange = addMonths(startDate, 1);
 
 var flowChart;
 var districtMap;
+var sunburst;
 var introText;
 var timeline;
 var interval;
@@ -18,6 +20,10 @@ var interval;
 var maxDateOffset;
 
 var initFlowChart = true;
+
+const investigativeOutcomeColor = d3.scaleOrdinal()
+        .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending"])
+        .range(['#658DC6', '#f28e2c', '#b8e827'])
 
 // Determine if the user is browsing on mobile
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -117,7 +123,6 @@ function displayIntroText() {
         .delay(300)
         .duration(1500)
         .textTween(function(d) {
-            console.log(this._current, d);
             const i = d3.interpolate(0, d);
             return function(t) { return format(this._current = i(t)); };
         })
@@ -129,7 +134,6 @@ function displayIntroText() {
         .delay(400)
         .duration(1200)
         .textTween(function(d) {
-            console.log(this._current, d);
             const i = d3.interpolate(0, d);
             return function(t) { return format(this._current = i(t)); };
         })
@@ -139,7 +143,7 @@ function displayIntroText() {
 
 function flowchartEntrance() {
     $("#intro-tile")
-            .hide()
+        .hide()
 
     $("#flowchart-tile")
         .show()
@@ -154,6 +158,15 @@ function flowchartEntrance() {
 function showFlowchartByRace() {
     flowChart.representedAttribute = 'complainant_race';
     flowChart.wrangleData();
+}
+
+
+function showSunburst() {
+    $("#flowchart-tile")
+        .hide()
+
+    $("#sunburst-tile")
+        .show();
 }
 
 
@@ -187,18 +200,21 @@ scroll.on('progress', function(index, progress) {
         // updateCharts();
     }
 
-    console.log(index, progress);
+    // console.log(index, progress);
 })
 
 
-var activateFunctions = ['filler'];
+var activateFunctions = ['filler'];         // fix this later
 activateFunctions[1] = displayIntroText;
 activateFunctions[2] = flowchartEntrance;
 activateFunctions[3] = showFlowchartByRace;
+activateFunctions[4] = showSunburst;
+
 
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
     d3.json("static/data/district_demos.geojson")
+    // d3.csv("static/data/test.csv")
 ];
 
 Promise.all(promises).then(function(allData) {
@@ -206,11 +222,10 @@ Promise.all(promises).then(function(allData) {
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
 
+
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
     });
-
-    console.log(datasetDateRange)
 
     // var maxDateOffset = (datasetDateRange[1].getTime() - datasetDateRange[0].getTime()) / (1000 * 3600 * 24);
     maxDateOffset = monthDiff(datasetDateRange[0], datasetDateRange[1]);
@@ -259,7 +274,9 @@ Promise.all(promises).then(function(allData) {
         flowChart.wrangleData();
     });
 
-    districtMap = new DistrictMap("#map-area")
+    districtMap = new DistrictMap("#map-area");
+
+    sunburst = new Sunburst("#sunburst-area");
 
 
 });
