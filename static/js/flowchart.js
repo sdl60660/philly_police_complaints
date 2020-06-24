@@ -234,6 +234,9 @@ FlowChart.prototype.visEntrance = function() {
     $("#slider-div")
         .slider("values", 1, sliderValue);
 
+    d3.selectAll("complaint-box")
+        .remove()
+
     // JOIN data with any existing elements
     vis.flowchart = vis.g
         .selectAll("rect")
@@ -324,7 +327,12 @@ FlowChart.prototype.updateVis = function() {
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
                 .attr("fill", function(d) {
-                    return vis.color(d[vis.representedAttribute]);
+                    if (vis.representedAttribute === 'no_group') {
+                        return outcomeColors(d.end_state);
+                    }
+                    else {
+                        return vis.color(d[vis.representedAttribute]);
+                    }
                 })
                 .on("click", function(d) {
                     if (d.summary) {
@@ -334,8 +342,8 @@ FlowChart.prototype.updateVis = function() {
                         $(".details#complaint-summary").text(d.shortened_summary);
                     }
                 })
-                .on("mouseover", vis.tip.show)
-                .on("mouseout", vis.tip.hide)
+                .on("mouseenter", vis.tip.show)
+                .on("mouseleave", vis.tip.hide)
                 .transition()
                     .duration(400)
                     .delay(100)
@@ -352,7 +360,7 @@ FlowChart.prototype.updateVis = function() {
             .duration(400)
             .delay(function(d) {
 
-                if (d.investigative_findings == "Sustained Finding") {
+                if (d.investigative_findings === "Sustained Finding") {
                     return 100;
                 }
                 else {
@@ -366,7 +374,12 @@ FlowChart.prototype.updateVis = function() {
                     return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * Math.floor(1.0*(d.final_state_index)/vis.colWidths[d.end_state]);
                 })
                 .attr("fill", function(d) {
-                    return vis.color(d[vis.representedAttribute]);
+                    if (vis.representedAttribute === 'no_group') {
+                        return outcomeColors(d.end_state);
+                    }
+                    else {
+                        return vis.color(d[vis.representedAttribute]);
+                    }
                 })
                 .style("opacity", 0.8)
 

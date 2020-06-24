@@ -20,6 +20,7 @@ var interval;
 var maxDateOffset;
 
 var initFlowChart = true;
+var flowChartEntered = false;
 
 const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
@@ -175,6 +176,7 @@ function showDisciplinaryGroups() {
 
 
 function flowchartEntrance() {
+
     $("#sunburst-tile")
         .hide();
 
@@ -184,8 +186,14 @@ function flowchartEntrance() {
     flowChart.representedAttribute = 'no_group';
 
     // initFlowChart = true;
-    flowChart.visEntrance();
-    timeline = new Timeline("#slider-div");
+    if (flowChartEntered === false) {
+        flowChart.visEntrance();
+        timeline = new Timeline("#slider-div");
+        flowChartEntered = true;
+    }
+    else {
+        flowChart.wrangleData();
+    }
 }
 
 

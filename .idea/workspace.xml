@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67322dfc-aeaa-4cc0-87b3-8109b9ca8492" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/static/js/flowchart.js" afterPath="$PROJECT_DIR$/static/js/flowchart.js" />
       <change beforePath="$PROJECT_DIR$/static/js/main.js" afterPath="$PROJECT_DIR$/static/js/main.js" />
     </list>
@@ -28,11 +29,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="19" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="19" />
+            <state relative-caret-position="582">
+              <caret line="191" column="32" lean-forward="false" selection-start-line="191" selection-start-column="32" selection-end-line="191" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -65,7 +66,7 @@
       <file leaf-file-name="sunburst.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/sunburst.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
+            <state relative-caret-position="1296">
               <caret line="175" column="10" lean-forward="true" selection-start-line="175" selection-start-column="10" selection-end-line="175" selection-end-column="10" />
               <folding>
                 <element signature="e#144#2203#0" expanded="false" />
@@ -75,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="flowchart.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="flowchart.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="258" column="68" lean-forward="false" selection-start-line="258" selection-start-column="68" selection-end-line="258" selection-end-column="68" />
+            <state relative-caret-position="1379">
+              <caret line="344" column="31" lean-forward="false" selection-start-line="344" selection-start-column="31" selection-end-line="344" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -171,9 +172,9 @@
       <find>weight</find>
       <find>ease</find>
       <find>background-color</find>
-      <find>color</find>
-      <find>chosen</find>
       <find>console.log</find>
+      <find>chosen</find>
+      <find>color</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -194,8 +195,8 @@
         <option value="$PROJECT_DIR$/static/js/sunburst.js" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
         <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/static/js/main.js" />
         <option value="$PROJECT_DIR$/static/js/flowchart.js" />
+        <option value="$PROJECT_DIR$/static/js/main.js" />
       </list>
     </option>
   </component>
@@ -724,6 +725,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1379">
+          <caret line="344" column="31" lean-forward="false" selection-start-line="344" selection-start-column="31" selection-end-line="344" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/sunburst.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1296">
+          <caret line="175" column="10" lean-forward="true" selection-start-line="175" selection-start-column="10" selection-end-line="175" selection-end-column="10" />
+          <folding>
+            <element signature="e#144#2203#0" expanded="false" />
+            <marker date="1593018941719" expanded="false" signature="6889:7292" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
@@ -746,29 +766,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/sunburst.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="175" column="10" lean-forward="true" selection-start-line="175" selection-start-column="10" selection-end-line="175" selection-end-column="10" />
-          <folding>
-            <element signature="e#144#2203#0" expanded="false" />
-            <marker date="1593018941719" expanded="false" signature="6889:7292" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="19" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="258" column="68" lean-forward="false" selection-start-line="258" selection-start-column="68" selection-end-line="258" selection-end-column="68" />
+        <state relative-caret-position="582">
+          <caret line="191" column="32" lean-forward="false" selection-start-line="191" selection-start-column="32" selection-end-line="191" selection-end-column="32" />
           <folding />
         </state>
       </provider>
