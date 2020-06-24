@@ -122,6 +122,7 @@ function displayIntroText() {
         .transition()
         .delay(300)
         .duration(1500)
+        .ease(d3.easeExpInOut)
         .textTween(function(d) {
             const i = d3.interpolate(0, d);
             return function(t) { return format(this._current = i(t)); };
@@ -158,12 +159,18 @@ function flowchartEntrance() {
 function showFlowchartByRace() {
     flowChart.representedAttribute = 'complainant_race';
     flowChart.wrangleData();
+
+    $("#flowchart-tile")
+        .show()
+
+    $("#sunburst-tile")
+        .hide();
 }
 
 
 function showSunburst() {
     $("#flowchart-tile")
-        .hide()
+        .hide();
 
     $("#sunburst-tile")
         .show();
@@ -177,6 +184,7 @@ function activate(index) {
     var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(function(i) {
+        console.log(activateFunctions[i])
         activateFunctions[i]();
     });
     lastIndex = activeIndex;
@@ -209,6 +217,8 @@ activateFunctions[1] = displayIntroText;
 activateFunctions[2] = flowchartEntrance;
 activateFunctions[3] = showFlowchartByRace;
 activateFunctions[4] = showSunburst;
+
+console.log(activateFunctions);
 
 
 var promises = [

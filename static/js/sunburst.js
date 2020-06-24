@@ -75,12 +75,30 @@ Sunburst.prototype.initVis = function() {
 }
 
 Sunburst.prototype.wrangleData = function() {
-    var vis = this;
+    let vis = this;
 
-    vis.chartData = officerDisciplineResults
-        .filter(function(d) {
-            return d.complainant_race == $("#sunburst-complainant-race").val() && d.po_race == $("#sunburst-po-race").val();
-        })
+    vis.chartData = officerDisciplineResults;
+
+    ['po', 'complainant'].forEach(function(category) {
+        let itemSelect = $(`#sunburst-${category}-race`).val();
+        console.log(itemSelect);
+        if (itemSelect === 'other') {
+            vis.chartData = vis.chartData
+                .filter(function(d) {
+                    return d[`${category}_race`] !== 'white' && d[`${category}_race`]  !== 'latino' && d[`${category}_race`]  !== 'black';
+                })
+        }
+        else if (itemSelect !== 'all') {
+            vis.chartData = vis.chartData
+                .filter(function(d) {
+                    return d[`${category}_race`] === itemSelect;
+                })
+        }
+    });
+
+        // .filter(function(d) {
+        //     return   && d.po_race == $("#sunburst-po-race").val();
+        // })
 
     vis.totalSize = vis.chartData.length;
 
