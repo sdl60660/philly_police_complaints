@@ -121,7 +121,7 @@ function displayIntroText() {
         .datum("5099")
         .transition()
         .delay(300)
-        .duration(1500)
+        .duration(1200)
         .ease(d3.easeExpInOut)
         .textTween(function(d) {
             const i = d3.interpolate(0, d);
@@ -133,7 +133,7 @@ function displayIntroText() {
         .datum("12930")
         .transition()
         .delay(400)
-        .duration(1200)
+        .duration(1300)
         .textTween(function(d) {
             const i = d3.interpolate(0, d);
             return function(t) { return format(this._current = i(t)); };
@@ -178,6 +178,55 @@ function showDisciplinaryGroups() {
     $("#sunburst-area path.parent")
         .css("fill-opacity", 0.3);
 
+}
+
+
+function artificialHover(outcomeName) {
+    $("#sunburst-area path").removeAttr('style');
+
+    const guiltyFindingElement = $(`path#${outcomeName.replace(" ", "-")}`)[0];
+    const guiltyValue = guiltyFindingElement.getAttribute("value");
+    sunburst.mouseover(guiltyValue, guiltyFindingElement);
+}
+
+function setSelectOption(selectID, optionVal) {
+    $(`select#${selectID}`).val(optionVal);
+    sunburst.wrangleData();
+}
+
+
+function highlightGuilty() {
+    artificialHover("Guilty Finding");
+}
+
+
+function guiltyWhiteComplainant() {
+    setSelectOption("sunburst-complainant-race", "white");
+    artificialHover("Guilty Finding");
+}
+
+
+function guiltyBlackComplainant() {
+    setSelectOption("sunburst-complainant-race", "black");
+    artificialHover("Guilty Finding");
+}
+
+function guiltyBlackComplainantWhiteOfficer() {
+    setSelectOption("sunburst-po-race", "white");
+    artificialHover("Guilty Finding");
+}
+
+
+function guiltyWhiteComplainantBlackOfficer() {
+    $("#flowchart-tile")
+        .hide()
+
+    $("#sunburst-tile")
+        .show();
+
+    setSelectOption("sunburst-complainant-race", "white");
+    setSelectOption("sunburst-po-race", "black");
+    artificialHover("Guilty Finding");
 }
 
 
@@ -262,9 +311,14 @@ activateFunctions[0] = displayIntroText;
 
 activateFunctions[1] = showSunburst;
 activateFunctions[2] = showDisciplinaryGroups;
+activateFunctions[3] = highlightGuilty;
+activateFunctions[4] = guiltyWhiteComplainant;
+activateFunctions[5] = guiltyBlackComplainant;
+activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
+activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
 
-activateFunctions[3] = flowchartEntrance;
-activateFunctions[4] = showFlowchartByRace;
+activateFunctions[8] = flowchartEntrance;
+activateFunctions[9] = showFlowchartByRace;
 
 
 var promises = [

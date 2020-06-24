@@ -171,17 +171,23 @@ Sunburst.prototype.updateVis = function() {
                 return "sunburst-segment parent " + d.data.name.replace(" ", "-");
             }
         })
+        .attr("id", function(d) {
+            return d.data.name.replace(" ", "-");
+        })
         .attr("fill", function(d) {
             // while (d.depth > 1)
             //     d = d.parent;
             return outcomeColors(d.data.name);
+        })
+        .attr("value", function(d) {
+            return d.value;
         })
         .attr("d", vis.arc)
         .attr("fill-opacity", 0.6)
         .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
         .on("mouseover", function(d,i,n) {
             $("#sunburst-area path").removeAttr('style');
-            vis.mouseover(d,i,n);
+            vis.mouseover(d.value, n[i]);
         })
         .on("mouseout", function() {
             vis.mouseout();
@@ -197,6 +203,9 @@ Sunburst.prototype.updateVis = function() {
         })
 
     vis.plotAreas
+        .attr("value", function(d) {
+            return d.value;
+        })
         .transition()
             .duration(1000)
             .ease(d3.easePoly)
@@ -288,20 +297,19 @@ Sunburst.prototype.mouseout = function() {
 }
 
 // Fade all but the current sequence, and display center text
-Sunburst.prototype.mouseover = function(d, i, n) {
+Sunburst.prototype.mouseover = function(value, element) {
     var vis = this;
 
     $(".sunburst-segment").attr("fill-opacity", 0.2);
 
     vis.selectedValPct
-        .text(d3.format(".1%")(d.value/vis.totalSize));
+        .text(d3.format(".1%")(value/vis.totalSize));
 
     vis.selectedValTotals
-        .text(`(${d.value} of ${vis.totalSize} investigations)`)
+        .text(`(${value} of ${vis.totalSize} investigations)`)
 
-    var parentName = $(n[i]).attr("parent");
+    var parentName = $(element).attr("parent");
 
-    $(n[i]).attr("fill-opacity", 0.8);
+    $(element).attr("fill-opacity", 0.8);
     $("." + parentName).attr("fill-opacity", 0.8);
-
 }
