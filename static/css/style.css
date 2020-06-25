@@ -70,7 +70,7 @@ strong {
 }
 
 @media (hover: none) .d3-tip {
-   overflow-y: auto;
+	overflow-y: auto;
 	max-height: 400px;
 }
 
@@ -90,18 +90,36 @@ strong {
 	margin-top: 300px;
 	margin-bottom: 400px;
 	margin-left: 10px;
+
+	min-height: 350px;
+	border-radius: 15px;
+
+	overflow: hidden;
 }
 
-.step .title {
+.step:not(:first-child) {
+	background-color: white;
+}
+
+.step:first-child {
+	background-color: #f9f9f9 !important;
+}
+
+.step:not(:first-child) .title {
 	text-align: center;
 	font-weight: bolder;
 	background-color: rgba(28, 148, 196, 0.25);
-	border-radius: 3px;
+	/*border-radius: 3px;*/
+
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 
 .step .body {
 	margin-top: 10px;
 	font-size: 9pt;
+
+	padding-left: 10px;
 }
 
 .container {
