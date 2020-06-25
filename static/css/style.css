@@ -1,3 +1,4 @@
+
 .row {
 	width: 100%;
 }
@@ -53,6 +54,8 @@ strong {
 
 .tile-wrapper {
     height: 780px;
+    /*position: absolute;*/
+    left: 30%;
     /*opacity: 0.2;*/
 }
 

@@ -322,7 +322,7 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
-const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().top - $(".step")[1].getBoundingClientRect().top;
+const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().bottom - $(".step")[1].getBoundingClientRect().top;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight)
 
