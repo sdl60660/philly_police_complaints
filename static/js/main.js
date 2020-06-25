@@ -109,11 +109,11 @@ function updateCharts() {
 
 function displayIntroText() {
 
-    $("#sunburst-tile")
-        .hide()
-
     $("#intro-tile")
-        .show()
+        .css("opacity", 1.0)
+
+    $("#sunburst-tile")
+        .css("opacity", 0.2);
 
     var format = d3.format(",.0f")
 
@@ -144,13 +144,10 @@ function displayIntroText() {
 
 function showSunburst() {
     $("#intro-tile")
-        .hide()
-
-    $("#flowchart-tile")
-        .hide()
+        .css("opacity", 0.2)
 
     $("#sunburst-tile")
-        .show();
+        .css("opacity", 1.0);
 
     if (sunburstEntered === false) {
         sunburst = new Sunburst("#sunburst-area");
@@ -166,11 +163,11 @@ function showSunburst() {
 
 
 function showDisciplinaryGroups() {
-    $("#sunburst-tile")
-        .show();
-
-    $("#flowchart-tile")
-        .hide()
+    // $("#sunburst-tile")
+    //     .show();
+    //
+    // $("#flowchart-tile")
+    //     .hide()
 
     $("#sunburst-area path.child")
         .css("fill-opacity", 0.8);
@@ -227,11 +224,11 @@ function guiltyBlackComplainantWhiteOfficer() {
 
 
 function guiltyWhiteComplainantBlackOfficer() {
-    $("#flowchart-tile")
-        .hide()
-
     $("#sunburst-tile")
-        .show();
+        .css("opacity", 1.0)
+
+    $("#flowchart-tile")
+        .css("opacity", 0.2)
 
     setSelectOptions([["sunburst-complainant-race", "white"], ["sunburst-po-race", "black"]]);
     artificialHover("Guilty Finding");
@@ -241,22 +238,23 @@ function guiltyWhiteComplainantBlackOfficer() {
 function flowchartEntrance() {
 
     $("#sunburst-tile")
-        .hide();
+        .css("opacity", 0.2)
 
     $("#flowchart-tile")
-        .show()
+        .css("opacity", 1.0)
 
-    flowChart.representedAttribute = 'no_group';
+    // flowChart.representedAttribute = 'no_group';
+    // flowChart.wrangleData();
 
     // initFlowChart = true;
-    if (flowChartEntered === false) {
-        flowChart.visEntrance();
-        timeline = new Timeline("#slider-div");
-        flowChartEntered = true;
-    }
-    else {
-        flowChart.wrangleData();
-    }
+    // if (flowChartEntered === false) {
+    //     flowChart.visEntrance();
+    //     timeline = new Timeline("#slider-div");
+    //     flowChartEntered = true;
+    // }
+    // else {
+    //     flowChart.wrangleData();
+    // }
 }
 
 
@@ -264,8 +262,8 @@ function showFlowchartByRace() {
     flowChart.representedAttribute = 'complainant_race';
     flowChart.wrangleData();
 
-    $("#flowchart-tile")
-        .show()
+    // $("#flowchart-tile")
+    //     .show()
 }
 
 
@@ -324,9 +322,18 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
+const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().top - $(".step")[1].getBoundingClientRect().top;
+$("#sunburst-wrapper")
+    .css("height", sunburstWrapperHeight)
+
 
 activateFunctions[8] = flowchartEntrance;
 activateFunctions[9] = showFlowchartByRace;
+const flowChartWrapperHeight = $(".step")[11].getBoundingClientRect().top - $(".step")[8].getBoundingClientRect().top;
+console.log(flowChartWrapperHeight);
+$("#flowchart-wrapper")
+    .css("height", flowChartWrapperHeight)
+
 
 
 var promises = [
@@ -387,12 +394,16 @@ Promise.all(promises).then(function(allData) {
     })
 
     flowChart = new FlowChart("#chart-area");
+    timeline = new Timeline("#slider-div");
 
     $('.chosen-select').on('change', function(event){
         flowChart.wrangleData();
     });
 
     districtMap = new DistrictMap("#map-area");
+
+    $("#sunburst-tile")
+        .css("opacity", 0.2);
 
 });
 

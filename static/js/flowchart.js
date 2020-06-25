@@ -156,6 +156,9 @@ FlowChart.prototype.initVis = function() {
         .attr("ry", 10)
         .lower()
 
+    // vis.g.append("circle")
+    //     .attr("id", "tipfollowscursor")
+
     vis.wrangleData();
 }
 
@@ -212,83 +215,25 @@ FlowChart.prototype.wrangleData = function() {
 
     vis.setToolTips();
 
+
     if (initFlowChart == true) {
         initFlowChart = false;
 
-        vis.chartData.sort(function (a, b) { return 0.5 - Math.random() });
+        endRange = addMonths(startRange, maxDateOffset);
+        $("#end-date-display")
+            .text(d3.timeFormat("%B %Y")(endRange));
+
+        var sliderValue = monthDiff(startDate, endRange);
+        $("#slider-div")
+            .slider("values", 1, sliderValue);
     }
-    else {
-        vis.updateVis();
-    }
-}
-
-
-FlowChart.prototype.visEntrance = function() {
-    var vis = this;
-
-    endRange = addMonths(startRange, maxDateOffset);
-    $("#end-date-display")
-        .text( d3.timeFormat("%B %Y")(endRange));
-
-    var sliderValue = monthDiff(startDate, endRange);
-    $("#slider-div")
-        .slider("values", 1, sliderValue);
-
-    d3.selectAll("complaint-box")
-        .remove()
-
-    // JOIN data with any existing elements
-    vis.flowchart = vis.g
-        .selectAll("rect")
-        .data(vis.chartData , function(d) {
-            return d.discipline_id;
-        })
-
-    // ENTER new elements present in the data...
-    vis.flowchart
-        .enter()
-            .append("rect")
-                .attr("class", "complaint-box")
-                .style("opacity", 0.0)
-                .attr("y", -100)
-                // .attr("x", vis.width/2)
-                .attr("x",  function(d) {
-                    return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
-                })
-                .attr("height", vis.blockSize)
-                .attr("width", vis.blockSize)
-                .attr("fill", function(d) {
-                    if (d.investigative_findings == 'Sustained Finding') {
-                        return outcomeColors(d.disciplinary_findings);
-                    }
-                    else {
-                        return outcomeColors(d.investigative_findings);
-                    }
-                })
-                .on("click", function(d) {
-                    if (d.summary) {
-                        $(".details#complaint-summary").text(d.summary);
-                    }
-                    else if (d.shortened_summary) {
-                        $(".details#complaint-summary").text(d.shortened_summary);
-                    }
-                })
-                .on("mouseenter", vis.tip.show)
-                .on("mouseleave", function() {
-                    vis.tip.hide();
-                })
-                .transition()
-                    // .duration(200)
-                    .delay(function(d,i) {
-                        return i * 0.13;
-                    })
-                    .style("opacity", 0.8)
-                    .attr("y", function(d,i) {
-                        return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
-                    })
-
+    //     vis.chartData.sort(function (a, b) { return 0.5 - Math.random() });
+    // }
+    // else {
+    //     vis.updateVis();
+    // }
     vis.setComplaintTypes();
-
+    vis.updateVis();
 }
 
 
@@ -466,7 +411,12 @@ FlowChart.prototype.setToolTips = function() {
 
     vis.tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset([-vis.blockSize, 0])
+        .offset(function() {
+            var tileOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
+            // var tileTopMargin = parseInt($(".viz-tile").css("margin-top"));
+            return [40-tileOffset, vis.blockSize];
+        })
+        .direction("e")
         .html(function(d) {
 
             var tipText = "<div class='tip-text'>";
@@ -520,3 +470,71 @@ FlowChart.prototype.setToolTips = function() {
 
 }
 
+
+FlowChart.prototype.visEntrance = function() {
+    var vis = this;
+
+    endRange = addMonths(startRange, maxDateOffset);
+    $("#end-date-display")
+        .text( d3.timeFormat("%B %Y")(endRange));
+
+    var sliderValue = monthDiff(startDate, endRange);
+    $("#slider-div")
+        .slider("values", 1, sliderValue);
+
+    d3.selectAll("complaint-box")
+        .remove()
+
+    // JOIN data with any existing elements
+    vis.flowchart = vis.g
+        .selectAll("rect")
+        .data(vis.chartData , function(d) {
+            return d.discipline_id;
+        })
+
+    // ENTER new elements present in the data...
+    vis.flowchart
+        .enter()
+            .append("rect")
+                .attr("class", "complaint-box")
+                .style("opacity", 0.0)
+                .attr("y", -100)
+                // .attr("x", vis.width/2)
+                .attr("x",  function(d) {
+                    return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
+                })
+                .attr("height", vis.blockSize)
+                .attr("width", vis.blockSize)
+                .attr("fill", function(d) {
+                    if (d.investigative_findings == 'Sustained Finding') {
+                        return outcomeColors(d.disciplinary_findings);
+                    }
+                    else {
+                        return outcomeColors(d.investigative_findings);
+                    }
+                })
+                .on("click", function(d) {
+                    if (d.summary) {
+                        $(".details#complaint-summary").text(d.summary);
+                    }
+                    else if (d.shortened_summary) {
+                        $(".details#complaint-summary").text(d.shortened_summary);
+                    }
+                })
+                .on("mouseenter", vis.tip.show)
+                .on("mouseleave", function() {
+                    vis.tip.hide();
+                })
+                .transition()
+                    // .duration(200)
+                    .delay(function(d,i) {
+                        return i * 0.13;
+                    })
+                    .style("opacity", 0.8)
+                    .attr("y", function(d,i) {
+                        return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
+                    })
+
+    vis.setComplaintTypes();
+
+}

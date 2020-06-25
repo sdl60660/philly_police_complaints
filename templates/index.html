@@ -55,7 +55,7 @@
             <div class="body" style="height: 350px;"></div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">Investigative Outcomes</div>
             <div class="body">
                 Complaint investigation data from the Philadelphia Police Department classifies
                 investigations into three different groups: <span style="padding: 1px; background-color: rgba(101,141,198,0.6)">Sustained Finding</span>,
@@ -64,19 +64,22 @@
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">Disciplinary Outcomes</div>
             <div class="body">
                 Among cases where the department's investigation yields a
                 <span style="padding: 1px; background-color: rgba(101,141,198,0.6)">Sustained Finding</span>,
                 [something happens, talk very briefly about review process and] the department classifies the disciplinary outcomes into four groups:
-                <span style="padding: 1px; background-color: rgba(115,152,203,0.6)">Guilty Finding</span>,
-                <span style="padding: 1px; background-color: rgba(147,175,215,0.6)">Training/Counseling</span>,
-                <span style="padding: 1px; background-color: rgba(178,198,226,0.6)">No Guilty Findings</span>, and
-                <span style="padding: 1px; background-color: rgba(162,162,162,0.6)">Discipline Pending</span>.
+                <br><br>
+                <ul>
+                    <li class="annotation-li"><span style="padding: 1px; background-color: rgba(115,152,203,0.6)">Guilty Finding</span></li>
+                    <li class="annotation-li"><span style="padding: 1px; background-color: rgba(147,175,215,0.6)">Training/Counseling</span></li>
+                    <li class="annotation-li"><span style="padding: 1px; background-color: rgba(178,198,226,0.6)">No Guilty Findings</span></li>
+                    <li class="annotation-li"><span style="padding: 1px; background-color: rgba(162,162,162,0.6)">Discipline Pending</span></li>
+                </ul>
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">Guilty Findings</div>
             <div class="body">
                 <span style="padding: 1px; background-color: rgba(115,152,203,0.6)">Guilty Findings</span>,
                 which can result in an officer being fired, charged with a crime [add more exact details here], account for just
@@ -86,20 +89,20 @@
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">White Complainants</div>
             <div class="body">
                 Complaints filed by <span class="category-text white">White</span> complainants result in a guilty finding in 3.2% of investigations.
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">Black Complainants</div>
             <div class="body">
                 Meanwhile, for <span class="category-text black">Black</span> complainants, just 1.2% of investigations
                 result in a guilty finding (40% the rate of their <span class="category-text white">White</span> counterparts).
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">Black Complainant/White Officer</div>
             <div class="body">
                 This number shrinks even further for complaints filed specifically against <span class="category-text white">White</span> officers.
                 <br><br>
@@ -108,7 +111,7 @@
             </div>
         </section>
         <section class="step">
-            <div class="title">Complaint Outcomes</div>
+            <div class="title">White Complainant/Black Officer</div>
             <div class="body">
                 Conversely, investigations against <span class="category-text black">Black</span> officers
                 filed by <span class="category-text white">White</span> complainants are <strong>6.5 times
@@ -136,6 +139,7 @@
     </div>
 
     <!-- Bootstrap grid setup -->
+    <div class="tile-wrapper" id="intro-wrapper">
     <div class="container viz-tile" id="intro-tile">
         <div class="row">
             <div class="col-md-1"></div>
@@ -146,19 +150,23 @@
             <div class="col-md-1"></div>
         </div>
     </div>
-
-    <div class="container viz-tile" id="map-tile">
-        <div class="row">
-            <div class="col-md-2 col-sm-2"></div>
-            <div class="col-md-8 col-sm-8" id="map-area"></div>
-            <div class="col-md-2 col-sm-2"></div>
-        </div>
     </div>
 
+{#    <div class="tile-wrapper" id="map-wrapper">#}
+{#    <div class="container viz-tile" id="map-tile">#}
+{#        <div class="row">#}
+{#            <div class="col-md-2 col-sm-2"></div>#}
+{#            <div class="col-md-8 col-sm-8 viz-area" id="map-area"></div>#}
+{#            <div class="col-md-2 col-sm-2"></div>#}
+{#        </div>#}
+{#    </div>#}
+{#    </div>#}
+
+    <div class="tile-wrapper" id="sunburst-wrapper">
     <div class="container viz-tile" id="sunburst-tile">
         <div class="row">
             <div class="col-md-2 col-sm-2"></div>
-            <div class="col-md-8 col-sm-8" id="sunburst-area">
+            <div class="col-md-8 col-sm-8 viz-area" id="sunburst-area">
                 What happens when
                 <select class="sunburst-select" id="sunburst-po-race" value="po_race">
                     <option value="all">all</option>
@@ -184,9 +192,11 @@
             <div class="col-md-2 col-sm-2"></div>
         </div>
     </div>
+    </div>
 
+    <div class="tile-wrapper" id="flowchart-wrapper">
     <div class="container viz-tile" id="flowchart-tile">
-        <div class="row">
+        <div class="row viz-area">
             <div style="text-align: right;" class="date-display-container col-md-3 col-sm-3">
                 <span style="text-align:right;" class="date-display" id="start-date-display"></span> - <span style="text-align:left;" class="date-display" id="end-date-display"></span>
             </div>
@@ -201,9 +211,10 @@
                 </select>
             </div>
         </div>
-        <div class="row">
+        <div class="row viz-area">
             <div class="col-md-12 col-sm-12" id="chart-area"></div>
         </div>
+    </div>
     </div>
 
 

@@ -9,7 +9,7 @@ Sunburst.prototype.initVis = function() {
     var vis = this;
 
     // Dimensions of sunburst.
-    vis.margin = {'top': 50, 'bottom': 10, 'left': 10, 'right': 10}
+    vis.margin = {'top': 15, 'bottom': 10, 'left': 5, 'right': 10}
     vis.width = 800 - vis.margin.left - vis.margin.right;
     vis.height = 800 - vis.margin.top - vis.margin.bottom;
     vis.radius = Math.min(vis.width, vis.height) / 2;
@@ -313,4 +313,30 @@ Sunburst.prototype.mouseover = function(value, element) {
 
     $(element).attr("fill-opacity", 0.8);
     $("." + parentName).attr("fill-opacity", 0.8);
+}
+
+Sunburst.prototype.createOutlineSections = function(sectionNames) {
+    var vis = this;
+
+    sectionNames.forEach(function(sectionName) {
+        var idName = sectionName.replace(" ", "-");
+        var originalElement = vis.g.select(`path#${idName}`);
+
+        vis.svg.append("path")
+            .attr("class", "chart-section-outline")
+            .attr("d", originalElement.attr("d"))
+            .attr("transform", originalElement.attr("transform") + " translate(" + vis.margin.left + "," + vis.margin.top + ")")
+            .attr("stroke-dasharray", ("5, 3"))
+            .attr("stroke", "black")
+            .attr("stroke-width", "1px")
+            .attr("fill-opacity", 0.0);
+    })
+}
+
+
+Sunburst.prototype.removeOutlineSections = function() {
+    var vis = this;
+
+    vis.svg.selectAll(".chart-section-outline").remove();
+
 }
