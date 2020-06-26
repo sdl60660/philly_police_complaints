@@ -159,7 +159,6 @@ FlowChart.prototype.initVis = function() {
     // vis.g.append("circle")
     //     .attr("id", "tipfollowscursor")
     vis.setComplaintTypes();
-
     vis.wrangleData();
 }
 
@@ -168,23 +167,38 @@ FlowChart.prototype.initVis = function() {
 FlowChart.prototype.wrangleData = function() {
     var vis = this;
 
-    if (initFlowChart === false) {
-        vis.updateComplaintTypes();
+    if (initFlowChart === true) {
+        initFlowChart = false;
 
-        vis.chartData = officerDisciplineResults
-            .filter(function (d) {
-                return d.date_received >= startRange && d.date_received <= endRange;
-            })
-            .filter(function(d) {
-                // Revisit this later
-                return vis.selectedComplaintTypes.includes(d.general_cap_classification);
-            })
-            .sort((a, b) => a.date_received - b.date_received)
+        endRange = addMonths(startRange, maxDateOffset);
+        $("#end-date-display")
+            .text(d3.timeFormat("%B %Y")(endRange));
+
+        var sliderValue = monthDiff(startDate, endRange);
+        $("#slider-div")
+            .slider("values", 1, sliderValue);
     }
 
-    else {
-        vis.chartData = officerDisciplineResults;
-    }
+    // if (initFlowChart === false) {
+
+    // }
+
+    vis.chartData = officerDisciplineResults
+        .filter(function (d) {
+            return d.date_received >= startRange && d.date_received <= endRange;
+        })
+        .filter(function(d) {
+            // Revisit this later
+            return vis.selectedComplaintTypes.includes(d.general_cap_classification);
+        })
+        .sort((a, b) => a.date_received - b.date_received)
+
+    vis.updateComplaintTypes();
+    // }
+
+    // else {
+    //     vis.chartData = officerDisciplineResults;
+    // }
 
     vis.reverseSortOrder = vis.representedVals[vis.representedAttribute].slice().reverse();
 
@@ -215,24 +229,6 @@ FlowChart.prototype.wrangleData = function() {
         .domain(vis.representedVals[vis.representedAttribute])
 
     vis.setToolTips();
-
-
-    if (initFlowChart === true) {
-        initFlowChart = false;
-
-        endRange = addMonths(startRange, maxDateOffset);
-        $("#end-date-display")
-            .text(d3.timeFormat("%B %Y")(endRange));
-
-        var sliderValue = monthDiff(startDate, endRange);
-        $("#slider-div")
-            .slider("values", 1, sliderValue);
-    }
-    //     vis.chartData.sort(function (a, b) { return 0.5 - Math.random() });
-    // }
-    // else {
-    //     vis.updateVis();
-    // }
     vis.updateVis();
 }
 
@@ -396,10 +392,6 @@ FlowChart.prototype.returnTile = function() {
 FlowChart.prototype.repositionTooltip = function() {
     const vis = this;
 
-    // d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-    //     d.remove();
-    // });
-
     vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
 }
 
@@ -416,6 +408,10 @@ FlowChart.prototype.setComplaintTypes = function() {
 
     $(".chosen-select")
         .chosen()
+
+    vis.selectedComplaintTypes = Array.from(
+        $('#incident-type-select :selected').map((d,i) => $(i).val())
+    );
 
 }
 

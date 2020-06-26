@@ -306,7 +306,7 @@ function flowchartEntrance() {
         d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
             d.remove();
         });
-        
+
         flowChart.representedAttribute = 'no_group';
         flowChart.wrangleData();
     }
