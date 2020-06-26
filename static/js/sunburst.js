@@ -99,6 +99,15 @@ Sunburst.prototype.wrangleData = function() {
         }
     });
 
+    let itemSelect = $(`#sunburst-district-income-group`).val();
+
+    if (itemSelect !== 'all') {
+        vis.chartData = vis.chartData
+            .filter(function(d) {
+                return d['district_income_group'] === itemSelect;
+            })
+    }
+
     vis.totalSize = vis.chartData.length;
 
     var nest = d3.nest()
@@ -328,8 +337,12 @@ Sunburst.prototype.createOutlineSections = function(sectionNames) {
             .attr("transform", originalElement.attr("transform") + " translate(" + vis.margin.left + "," + vis.margin.top + ")")
             .attr("stroke-dasharray", ("5, 3"))
             .attr("stroke", "black")
-            .attr("stroke-width", "1px")
-            .attr("fill-opacity", 0.0);
+            .attr("stroke-width", "1.5px")
+            .attr("fill-opacity", 0.0)
+            .on("mouseover tap", function() {
+                vis.removeOutlineSections();
+            })
+            // .lower();
     })
 }
 

@@ -32,6 +32,55 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
     phoneBrowsing = true;
 }
 
+function preprocessDataset(dataset) {
+    dataset.forEach(function(d) {
+        d.date_received = new Date(d.date_received);
+
+        if (!d.complainant_race) {
+            d.complainant_race = 'unknown';
+        }
+        if (!d.complainant_sex) {
+            d.complainant_sex = 'unknown';
+        }
+
+        if (d.investigative_findings === "Pending") {
+            d.investigative_findings = "Investigation Pending";
+        }
+
+        if (d.disciplinary_findings === "Pending") {
+            d.disciplinary_findings = "Discipline Pending";
+        }
+
+        if (d.disciplinary_findings === "Not Applicable" || d.investigative_findings === "Investigation Pending") {
+            d.end_state = d.investigative_findings;
+        }
+        else {
+            d.end_state = d.disciplinary_findings;
+        }
+
+        if(d.incident_time) {
+            d.incident_time = d3.timeParse("%Y-%m-%d %H:%M:%S")(d.incident_time);
+        }
+
+        if (d.district_income < 35000) {
+            d.district_income_group = 'lower';
+        }
+        else if (d.district_income < 55000) {
+            d.district_income_group = 'middle';
+        }
+        else if (d.district_income >= 55000) {
+            d.district_income_group = 'upper';
+        }
+        else {
+            d.district_income_group = null;
+        }
+
+        d.no_group = 'default';
+    })
+
+    return dataset;
+}
+
 // Initialize timeline slider
 function initSlider(maxDate) {
 
@@ -218,6 +267,7 @@ function guiltyBlackComplainant() {
 }
 
 function guiltyBlackComplainantWhiteOfficer() {
+    sunburst.removeOutlineSections();
     setSelectOptions([["sunburst-complainant-race", "black"], ["sunburst-po-race", "white"]]);
     artificialHover("Guilty Finding");
 }
@@ -230,6 +280,8 @@ function guiltyWhiteComplainantBlackOfficer() {
     $("#flowchart-tile")
         .css("opacity", 0.2)
 
+    sunburst.removeOutlineSections();
+    sunburst.createOutlineSections(['Guilty Finding', 'Sustained Finding']);
     setSelectOptions([["sunburst-complainant-race", "white"], ["sunburst-po-race", "black"]]);
     artificialHover("Guilty Finding");
 }
@@ -243,8 +295,8 @@ function flowchartEntrance() {
     $("#flowchart-tile")
         .css("opacity", 1.0)
 
-    // flowChart.representedAttribute = 'no_group';
-    // flowChart.wrangleData();
+    flowChart.representedAttribute = 'no_group';
+    flowChart.wrangleData();
 
     // initFlowChart = true;
     // if (flowChartEntered === false) {
@@ -330,7 +382,8 @@ $("#sunburst-wrapper")
 activateFunctions[8] = flowchartEntrance;
 activateFunctions[9] = showFlowchartByRace;
 const flowChartWrapperHeight = $(".step")[11].getBoundingClientRect().top - $(".step")[8].getBoundingClientRect().top;
-console.log(flowChartWrapperHeight);
+// console.log(flowChartWrapperHeight);
+// contst flowChartWrapperHeight = 3000;
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight)
 
@@ -339,14 +392,12 @@ $("#flowchart-wrapper")
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
     d3.json("static/data/district_demos.geojson")
-    // d3.csv("static/data/test.csv")
 ];
 
 Promise.all(promises).then(function(allData) {
 
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
-
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
@@ -357,40 +408,9 @@ Promise.all(promises).then(function(allData) {
 
     initSlider(maxDateOffset);
 
-    officerDisciplineResults.forEach(function(d) {
-        d.date_received = new Date(d.date_received);
-
-        if (!d.complainant_race) {
-            d.complainant_race = 'unknown';
-        }
-        if (!d.complainant_sex) {
-            d.complainant_sex = 'unknown';
-        }
-
-        if(d.investigative_findings == "Pending") {
-            d.investigative_findings = "Investigation Pending";
-        }
-
-        if(d.disciplinary_findings == "Pending") {
-            d.disciplinary_findings = "Discipline Pending";
-        }
-
-        if(d.disciplinary_findings == "Not Applicable" || d.investigative_findings == "Investigation Pending") {
-            d.end_state = d.investigative_findings;
-        }
-        else {
-            d.end_state = d.disciplinary_findings;
-        }
-
-        if(d.incident_time) {
-            d.incident_time = d3.timeParse("%Y-%m-%d %H:%M:%S")(d.incident_time);
-        }
-
-        d.no_group = 'default';
-    })
-
+    officerDisciplineResults = preprocessDataset(officerDisciplineResults);
     officerDisciplineResults =officerDisciplineResults.filter(function(d) {
-         return d.investigative_findings != "Not Applicable" && !(d.investigative_findings == "Sustained Finding" && d.disciplinary_findings == "Not Applicable");
+         return d.investigative_findings !== "Not Applicable" && !(d.investigative_findings === "Sustained Finding" && d.disciplinary_findings === "Not Applicable");
     })
 
     flowChart = new FlowChart("#chart-area");
