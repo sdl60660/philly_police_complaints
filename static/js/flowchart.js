@@ -158,6 +158,7 @@ FlowChart.prototype.initVis = function() {
 
     // vis.g.append("circle")
     //     .attr("id", "tipfollowscursor")
+    vis.setComplaintTypes();
 
     vis.wrangleData();
 }
@@ -216,7 +217,7 @@ FlowChart.prototype.wrangleData = function() {
     vis.setToolTips();
 
 
-    if (initFlowChart == true) {
+    if (initFlowChart === true) {
         initFlowChart = false;
 
         endRange = addMonths(startRange, maxDateOffset);
@@ -232,7 +233,6 @@ FlowChart.prototype.wrangleData = function() {
     // else {
     //     vis.updateVis();
     // }
-    vis.setComplaintTypes();
     vis.updateVis();
 }
 
@@ -326,6 +326,10 @@ FlowChart.prototype.updateVis = function() {
                         return vis.color(d[vis.representedAttribute]);
                     }
                 })
+                .attr("height", vis.blockSize)
+                .attr("width", vis.blockSize)
+                .attr("stroke-width", 0)
+                .attr("stroke", "none")
                 .style("opacity", 0.8)
 
     // sleep(1100).then(() => {
@@ -337,40 +341,57 @@ FlowChart.prototype.updateVis = function() {
 }
 
 
-FlowChart.prototype.updateCounts = function() {
-    var vis = this;
+FlowChart.prototype.highlightTile = function(index) {
+    const vis = this;
 
-    Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
-        var outputString = '';
-        var labelX = vis.outcomeLabels[outcome].node().getBoundingClientRect().width + vis.outcomeCoordinates[outcome][0];
+    d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+        d.remove();
+    });
 
-        var stateVar = 'end_state'
-        if (outcome == 'Sustained Finding') {
-            stateVar = 'investigative_findings';
-        }
+    const scalar = 10;
+    const transitionDuration = 800;
+    const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
+    // const numRects = vis.flowchart.selectAll("rect")._groups.length;
 
-        vis.representedVals.forEach(function(group) {
-            var groupCount = vis.chartData.filter(function(d) {
-                return d[stateVar] == outcome && d[vis.representedAttribute] == group;
-            }).length
-            
-            var groupTotal = vis.chartData.filter(function(d) {
-                return d[vis.representedAttribute] == group;
-            }).length
-            // var groupTotal = vis.finalOutcomeIndices[outcome]
+    var tileIndex = index;
+    if (numRects-1 < index) {
+        tileIndex = Math.round(getRandomArbitrary(0, numRects-1));
+    }
 
-            if (groupTotal > 0) {
-                var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
-            }
-            else {
-                var percentageVal = '';
-            }
+    vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d,i) { return i === tileIndex});
 
-            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</tspan>';
-        })
-        vis.outcomeCounts[outcome]
-            .html(outputString);
+    vis.featuredTile
+        .raise()
+        .transition()
+        .duration(transitionDuration)
+            .attr("width", vis.trueBlockWidth*scalar - vis.blockSpacing)
+            .attr("height",vis.trueBlockWidth*scalar  - vis.blockSpacing)
+            .attr("stroke-width", 1)
+            .attr("stroke", "black")
+            .style("opacity", 0.9)
+
+    sleep(transitionDuration).then(() => {
+        vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
     })
+
+}
+
+
+FlowChart.prototype.returnTile = function() {
+    const vis = this;
+
+    d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+        d.remove();
+    });
+
+    vis.featuredTile
+        .transition("return-tile-size")
+        .duration(500)
+            .attr("width", vis.blockSize)
+            .attr("height", vis.blockSize)
+            .attr("stroke-width", 0)
+            .attr("stroke", "none")
+            .style("opacity", 0.8);
 }
 
 
@@ -469,6 +490,45 @@ FlowChart.prototype.setToolTips = function() {
     vis.svg.call(vis.tip);
 
 }
+
+
+
+FlowChart.prototype.updateCounts = function() {
+    var vis = this;
+
+    Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
+        var outputString = '';
+        var labelX = vis.outcomeLabels[outcome].node().getBoundingClientRect().width + vis.outcomeCoordinates[outcome][0];
+
+        var stateVar = 'end_state'
+        if (outcome == 'Sustained Finding') {
+            stateVar = 'investigative_findings';
+        }
+
+        vis.representedVals.forEach(function(group) {
+            var groupCount = vis.chartData.filter(function(d) {
+                return d[stateVar] == outcome && d[vis.representedAttribute] == group;
+            }).length
+
+            var groupTotal = vis.chartData.filter(function(d) {
+                return d[vis.representedAttribute] == group;
+            }).length
+            // var groupTotal = vis.finalOutcomeIndices[outcome]
+
+            if (groupTotal > 0) {
+                var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
+            }
+            else {
+                var percentageVal = '';
+            }
+
+            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</tspan>';
+        })
+        vis.outcomeCounts[outcome]
+            .html(outputString);
+    })
+}
+
 
 
 FlowChart.prototype.visEntrance = function() {

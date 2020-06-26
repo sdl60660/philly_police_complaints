@@ -19,4 +19,7 @@ function addMonths(date, months) {
 	return returnDate;
 }
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
 

@@ -20,8 +20,10 @@ var interval;
 var maxDateOffset;
 
 var initFlowChart = true;
-var flowChartEntered = false;
+// var flowChartEntered = false;
 var sunburstEntered = false;
+
+var scrollDirection = 'down';
 
 const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
@@ -69,7 +71,7 @@ function preprocessDataset(dataset) {
             d.district_income_group = 'middle';
         }
         else if (d.district_income >= 55000) {
-            d.district_income_group = 'upper';
+            d.district_income_group = 'higher';
         }
         else {
             d.district_income_group = null;
@@ -111,7 +113,7 @@ $("#play-button")
 
         if (button.text() == "▶") {
             button.text("❙❙");
-            interval = setInterval(step, 500);
+            interval = setInterval(step, 700);
         }
         else {
             button.text("▶");
@@ -217,6 +219,8 @@ function showDisciplinaryGroups() {
     //
     // $("#flowchart-tile")
     //     .hide()
+    setSelectOptions([["sunburst-complainant-race", "all"], ["sunburst-po-race", "all"]]);
+
 
     $("#sunburst-area path.child")
         .css("fill-opacity", 0.8);
@@ -281,7 +285,10 @@ function guiltyWhiteComplainantBlackOfficer() {
         .css("opacity", 0.2)
 
     sunburst.removeOutlineSections();
-    sunburst.createOutlineSections(['Guilty Finding', 'Sustained Finding']);
+
+    if (scrollDirection === 'down') {
+        sunburst.createOutlineSections(['Guilty Finding', 'Sustained Finding']);
+    }
     setSelectOptions([["sunburst-complainant-race", "white"], ["sunburst-po-race", "black"]]);
     artificialHover("Guilty Finding");
 }
@@ -290,13 +297,15 @@ function guiltyWhiteComplainantBlackOfficer() {
 function flowchartEntrance() {
 
     $("#sunburst-tile")
-        .css("opacity", 0.2)
+        .css("opacity", 0.2);
 
     $("#flowchart-tile")
-        .css("opacity", 1.0)
+        .css("opacity", 1.0);
 
-    flowChart.representedAttribute = 'no_group';
-    flowChart.wrangleData();
+    if (scrollDirection === 'up') {
+        flowChart.representedAttribute = 'no_group';
+        flowChart.wrangleData();
+    }
 
     // initFlowChart = true;
     // if (flowChartEntered === false) {
@@ -309,10 +318,25 @@ function flowchartEntrance() {
     // }
 }
 
+function highlightTile() {
+
+    flowChart.highlightTile(1212);
+
+}
+
 
 function showFlowchartByRace() {
-    flowChart.representedAttribute = 'complainant_race';
-    flowChart.wrangleData();
+
+    flowChart.returnTile()
+
+    sleep(600).then(() => {
+        flowChart.representedAttribute = 'complainant_race';
+        flowChart.wrangleData()
+    })
+
+
+    // flowChart.representedAttribute = 'complainant_race';
+    // flowChart.wrangleData();
 
     // $("#flowchart-tile")
     //     .show()
@@ -338,6 +362,14 @@ function activate(index) {
             activateFunctions[i - 1]();
         }
     });
+
+    if (lastIndex < activeIndex) {
+        scrollDirection = 'down'
+    }
+    else {
+        scrollDirection = 'up';
+    }
+    console.log(scrollDirection);
     lastIndex = activeIndex;
 };
 
@@ -374,14 +406,15 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
-const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().bottom - $(".step")[1].getBoundingClientRect().top;
+const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().bottom - $(".step")[1].getBoundingClientRect().top + 50 - 300;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight)
 
 
 activateFunctions[8] = flowchartEntrance;
-activateFunctions[9] = showFlowchartByRace;
-const flowChartWrapperHeight = $(".step")[11].getBoundingClientRect().top - $(".step")[8].getBoundingClientRect().top;
+activateFunctions[9] = highlightTile;
+activateFunctions[10] = showFlowchartByRace;
+const flowChartWrapperHeight = $(".step")[11].getBoundingClientRect().top - $(".step")[8].getBoundingClientRect().top + 400;
 // console.log(flowChartWrapperHeight);
 // contst flowChartWrapperHeight = 3000;
 $("#flowchart-wrapper")
@@ -398,6 +431,12 @@ Promise.all(promises).then(function(allData) {
 
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
+
+    $("#sunburst-tile")
+        .css("opacity", 0.2);
+
+    $("#flowchart-tile")
+        .css("opacity", 0.2);
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
@@ -421,9 +460,6 @@ Promise.all(promises).then(function(allData) {
     });
 
     districtMap = new DistrictMap("#map-area");
-
-    $("#sunburst-tile")
-        .css("opacity", 0.2);
 
 });
 
