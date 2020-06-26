@@ -409,8 +409,8 @@ FlowChart.prototype.setToolTips = function() {
             const tileOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
             vis.lastTooltipOffset = tileOffset;
 
-            const trueMarginSize = 40; // update this later to pull the margin between the flowchart wrapper div and tile div (minus a little offset)
-            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), vis.blockSize + 3];
+            const trueMarginSize = $("#flowchart-tile")[0].getBoundingClientRect().y;
+            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), vis.blockSize + 4];
         })
         .direction("e")
         .html(function(d) {

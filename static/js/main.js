@@ -279,10 +279,16 @@ function guiltyBlackComplainantWhiteOfficer() {
 
 function guiltyWhiteComplainantBlackOfficer() {
     $("#sunburst-tile")
-        .css("opacity", 1.0)
+        .css("opacity", 1.0);
 
     $("#flowchart-tile")
-        .css("opacity", 0.2)
+        .css("opacity", 0.2);
+
+    if (scrollDirection === 'up') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            d.remove();
+        });
+    }
 
     sunburst.removeOutlineSections();
 
@@ -311,7 +317,7 @@ function flowchartEntrance() {
         flowChart.wrangleData();
     }
 
-    $(".d3.tip").css("top", "");
+    // $(".d3.tip").css("top", "");
 
     // initFlowChart = true;
     // if (flowChartEntered === false) {
@@ -340,8 +346,7 @@ function highlightTile() {
 function showFlowchartByRace() {
 
     $(".d3.tip").css("top", "");
-
-    flowChart.returnTile()
+    flowChart.returnTile();
 
     sleep(600).then(() => {
         flowChart.representedAttribute = 'complainant_race';
@@ -402,7 +407,7 @@ scroll.on('active', function(index){
 scroll.on('progress', function(index, progress) {
     const existingTipElement = $(".d3-tip");
 
-    if (index === 10 && lastIndex === index && existingTipElement.css("opacity") && existingTipElement.css("opacity") !== "0") {
+    if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") && existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
         // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
         // updateCharts();
