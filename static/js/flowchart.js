@@ -51,6 +51,9 @@ FlowChart.prototype.initVis = function() {
     vis.blockGroupWidth = 40;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
+    vis.lastTooltipOffset;
+    // vis.lastTooltipPos;
+
     vis.representedAttribute = 'no_group';
 
     vis.representedVals = {
@@ -156,8 +159,6 @@ FlowChart.prototype.initVis = function() {
         .attr("ry", 10)
         .lower()
 
-    // vis.g.append("circle")
-    //     .attr("id", "tipfollowscursor")
     vis.setComplaintTypes();
     vis.wrangleData();
 }
@@ -179,10 +180,6 @@ FlowChart.prototype.wrangleData = function() {
             .slider("values", 1, sliderValue);
     }
 
-    // if (initFlowChart === false) {
-
-    // }
-
     vis.chartData = officerDisciplineResults
         .filter(function (d) {
             return d.date_received >= startRange && d.date_received <= endRange;
@@ -194,11 +191,6 @@ FlowChart.prototype.wrangleData = function() {
         .sort((a, b) => a.date_received - b.date_received)
 
     vis.updateComplaintTypes();
-    // }
-
-    // else {
-    //     vis.chartData = officerDisciplineResults;
-    // }
 
     vis.reverseSortOrder = vis.representedVals[vis.representedAttribute].slice().reverse();
 
@@ -283,7 +275,11 @@ FlowChart.prototype.updateVis = function() {
                         $(".details#complaint-summary").text(d.shortened_summary);
                     }
                 })
-                .on("mouseenter", vis.tip.show)
+                .on("mouseenter", function(d) {
+                    vis.tip.hide();
+
+                    vis.tip.show(d);
+                })
                 .on("mouseleave", vis.tip.hide)
                 .transition()
                     .duration(400)
@@ -361,7 +357,7 @@ FlowChart.prototype.highlightTile = function(index) {
             .attr("stroke-width", 2)
             .attr("stroke", "white")
             .style("opacity", 0.9)
-            .style("box-shadow", "10px 10px");
+            .attr("box-shadow", "10px 10px");
 
     sleep(transitionDuration).then(() => {
         vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
@@ -385,50 +381,22 @@ FlowChart.prototype.returnTile = function() {
             .attr("stroke-width", 0)
             .attr("stroke", "none")
             .style("opacity", 0.8)
-            .style("box-shadow", "none");
+            .attr("box-shadow", "none");
 }
 
 
 FlowChart.prototype.repositionTooltip = function() {
     const vis = this;
 
-    vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
-}
+    const d3Tip = $(".d3-tip");
 
+    const currentY = parseInt(d3Tip.css("top"));
+    const newOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
 
-FlowChart.prototype.setComplaintTypes = function() {
-    var vis = this;
+    const newY = currentY + (vis.lastTooltipOffset - newOffset);
+    vis.lastTooltipOffset = newOffset;
 
-    // vis.chartData.map(function(a) {return a.general_cap_classification})
-
-    vis.incidentTypes.forEach(function(complaintName) {
-        $("select#incident-type-select")
-            .append('<option selected id="' + formatSpacedStrings(complaintName) + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
-    })
-
-    $(".chosen-select")
-        .chosen()
-
-    vis.selectedComplaintTypes = Array.from(
-        $('#incident-type-select :selected').map((d,i) => $(i).val())
-    );
-
-}
-
-
-FlowChart.prototype.updateComplaintTypes = function() {
-    var vis = this;
-
-    vis.selectedComplaintTypes = Array.from(
-        $('#incident-type-select :selected').map((d,i) => $(i).val())
-    );
-
-    vis.selectedComplaintTypes.forEach(function(d) {
-        var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
-        $(("#incident-type-select option#" + formatSpacedStrings(d))).text((d + ' (' + numInstances + ')'));
-    })
-    $("#incident-type-select").trigger("chosen:updated");
-
+    d3Tip.css("top", newY);
 }
 
 
@@ -438,9 +406,11 @@ FlowChart.prototype.setToolTips = function() {
     vis.tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset(function() {
-            var tileOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
-            // var tileTopMargin = parseInt($(".viz-tile").css("margin-top"));
-            return [40-tileOffset, vis.blockSize];
+            const tileOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
+            vis.lastTooltipOffset = tileOffset;
+
+            const trueMarginSize = 40; // update this later to pull the margin between the flowchart wrapper div and tile div (minus a little offset)
+            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), vis.blockSize + 3];
         })
         .direction("e")
         .html(function(d) {
@@ -496,6 +466,42 @@ FlowChart.prototype.setToolTips = function() {
 
 }
 
+
+
+FlowChart.prototype.setComplaintTypes = function() {
+    var vis = this;
+
+    // vis.chartData.map(function(a) {return a.general_cap_classification})
+
+    vis.incidentTypes.forEach(function(complaintName) {
+        $("select#incident-type-select")
+            .append('<option selected id="' + formatSpacedStrings(complaintName) + '" name="' + complaintName + '" value="' + complaintName + '">' + complaintName + '</option><br>');
+    })
+
+    $(".chosen-select")
+        .chosen()
+
+    vis.selectedComplaintTypes = Array.from(
+        $('#incident-type-select :selected').map((d,i) => $(i).val())
+    );
+
+}
+
+
+FlowChart.prototype.updateComplaintTypes = function() {
+    var vis = this;
+
+    vis.selectedComplaintTypes = Array.from(
+        $('#incident-type-select :selected').map((d,i) => $(i).val())
+    );
+
+    vis.selectedComplaintTypes.forEach(function(d) {
+        var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
+        $(("#incident-type-select option#" + formatSpacedStrings(d))).text((d + ' (' + numInstances + ')'));
+    })
+    $("#incident-type-select").trigger("chosen:updated");
+
+}
 
 
 FlowChart.prototype.updateCounts = function() {
