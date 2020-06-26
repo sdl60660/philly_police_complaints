@@ -303,6 +303,10 @@ function flowchartEntrance() {
         .css("opacity", 1.0);
 
     if (scrollDirection === 'up') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+            d.remove();
+        });
+        
         flowChart.representedAttribute = 'no_group';
         flowChart.wrangleData();
     }
@@ -319,6 +323,12 @@ function flowchartEntrance() {
 }
 
 function highlightTile() {
+
+    if (scrollDirection === 'up') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+            d.remove();
+        });
+    }
 
     flowChart.highlightTile(1212);
 
@@ -386,7 +396,9 @@ scroll.on('active', function(index){
 })
 
 scroll.on('progress', function(index, progress) {
-    if (index == 2) {
+    if (index === 10 && lastIndex == 10 && flowChart.featuredTile) {
+        console.log('here');
+        flowChart.repositionTooltip();
         // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
         // updateCharts();
     }

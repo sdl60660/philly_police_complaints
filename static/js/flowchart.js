@@ -344,10 +344,6 @@ FlowChart.prototype.updateVis = function() {
 FlowChart.prototype.highlightTile = function(index) {
     const vis = this;
 
-    d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-        d.remove();
-    });
-
     const scalar = 10;
     const transitionDuration = 800;
     const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
@@ -366,9 +362,10 @@ FlowChart.prototype.highlightTile = function(index) {
         .duration(transitionDuration)
             .attr("width", vis.trueBlockWidth*scalar - vis.blockSpacing)
             .attr("height",vis.trueBlockWidth*scalar  - vis.blockSpacing)
-            .attr("stroke-width", 1)
-            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .attr("stroke", "white")
             .style("opacity", 0.9)
+            .style("box-shadow", "10px 10px");
 
     sleep(transitionDuration).then(() => {
         vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
@@ -391,7 +388,19 @@ FlowChart.prototype.returnTile = function() {
             .attr("height", vis.blockSize)
             .attr("stroke-width", 0)
             .attr("stroke", "none")
-            .style("opacity", 0.8);
+            .style("opacity", 0.8)
+            .style("box-shadow", "none");
+}
+
+
+FlowChart.prototype.repositionTooltip = function() {
+    const vis = this;
+
+    // d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+    //     d.remove();
+    // });
+
+    vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
 }
 
 
