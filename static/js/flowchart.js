@@ -282,7 +282,9 @@ FlowChart.prototype.updateVis = function() {
 
                     vis.tip.show(d);
                 })
-                .on("mouseleave", vis.tip.hide)
+                .on("mouseout", function(d) {
+                    $(".d3-tip").css('opacity', 0).css('pointer-events', 'none');
+                })
                 .transition()
                     .duration(400)
                     .delay(100)
@@ -340,9 +342,6 @@ FlowChart.prototype.highlightTile = function(index) {
 
     const transitionDuration = 800;
     const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
-
-
-    // const numRects = vis.flowchart.selectAll("rect")._groups.length;
 
     var tileIndex = index;
     if (numRects-1 < index) {

@@ -317,17 +317,6 @@ function flowchartEntrance() {
         flowChart.wrangleData();
     }
 
-    // $(".d3.tip").css("top", "");
-
-    // initFlowChart = true;
-    // if (flowChartEntered === false) {
-    //     flowChart.visEntrance();
-    //     timeline = new Timeline("#slider-div");
-    //     flowChartEntered = true;
-    // }
-    // else {
-    //     flowChart.wrangleData();
-    // }
 }
 
 function highlightTile() {
@@ -345,7 +334,7 @@ function highlightTile() {
 
 function showFlowchartByRace() {
 
-    $(".d3.tip").css("top", "");
+    // $(".d3.tip").css("top", "");
     flowChart.returnTile();
 
     sleep(600).then(() => {

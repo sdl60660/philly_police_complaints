@@ -339,6 +339,7 @@ Sunburst.prototype.createOutlineSections = function(sectionNames) {
             .attr("stroke", "black")
             .attr("stroke-width", "1.5px")
             .attr("fill-opacity", 0.0)
+            // .style('pointer-events', 'none')
             .on("mouseover tap", function() {
                 vis.removeOutlineSections();
             })
