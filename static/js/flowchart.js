@@ -51,6 +51,8 @@ FlowChart.prototype.initVis = function() {
     vis.blockGroupWidth = 40;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
+    vis.highlightRectScalar = 10;
+
     vis.lastTooltipOffset;
     // vis.lastTooltipPos;
 
@@ -336,9 +338,10 @@ FlowChart.prototype.updateVis = function() {
 FlowChart.prototype.highlightTile = function(index) {
     const vis = this;
 
-    const scalar = 10;
     const transitionDuration = 800;
     const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
+
+
     // const numRects = vis.flowchart.selectAll("rect")._groups.length;
 
     var tileIndex = index;
@@ -348,12 +351,17 @@ FlowChart.prototype.highlightTile = function(index) {
 
     vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d,i) { return i === tileIndex});
 
+    vis.highlightTileX = vis.featuredTile.attr("x");
+    vis.highlightTileY = vis.featuredTile.attr("y");
+
     vis.featuredTile
         .raise()
         .transition()
         .duration(transitionDuration)
-            .attr("width", vis.trueBlockWidth*scalar - vis.blockSpacing)
-            .attr("height",vis.trueBlockWidth*scalar  - vis.blockSpacing)
+            .attr("width", vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing)
+            .attr("height", vis.trueBlockWidth*vis.highlightRectScalar  - vis.blockSpacing)
+            .attr("x", vis.highlightTileX - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
+            .attr("y", vis.highlightTileY - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
             .attr("stroke-width", 2)
             .attr("stroke", "white")
             .style("opacity", 0.9)
@@ -375,9 +383,11 @@ FlowChart.prototype.returnTile = function() {
 
     vis.featuredTile
         .transition("return-tile-size")
-        .duration(500)
+        .duration(600)
             .attr("width", vis.blockSize)
             .attr("height", vis.blockSize)
+            .attr("x", vis.highlightTileX)
+            .attr("y", vis.highlightTileY)
             .attr("stroke-width", 0)
             .attr("stroke", "none")
             .style("opacity", 0.8)
@@ -470,8 +480,6 @@ FlowChart.prototype.setToolTips = function() {
 
 FlowChart.prototype.setComplaintTypes = function() {
     var vis = this;
-
-    // vis.chartData.map(function(a) {return a.general_cap_classification})
 
     vis.incidentTypes.forEach(function(complaintName) {
         $("select#incident-type-select")
