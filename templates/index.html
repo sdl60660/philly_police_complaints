@@ -225,20 +225,24 @@
     <div class="tile-wrapper" id="flowchart-wrapper">
     <div class="container viz-tile" id="flowchart-tile">
         <div class="row viz-area">
-            <div style="text-align: right;" class="date-display-container col-md-3 col-sm-3">
-                <span style="text-align:right;" class="date-display" id="start-date-display"></span> - <span style="text-align:left;" class="date-display" id="end-date-display"></span>
-            </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-2 col-sm-2" style="border: 1px solid black"></div>
+            <div class="col-md-7 col-sm-7">
+                <div class="row">
+                    <div class="col-md-2 col-sm-3"></div>
+                    <div style="text-align: center;" class="date-display-container col-md-10 col-sm-9">
+                        <span style="text-align:right;" class="date-display" id="start-date-display"></span> - <span style="text-align:left;" class="date-display" id="end-date-display"></span>
+                    </div>
+                </div>
                 <div id="timeline-div" class="row">
                     <div class="col-md-2 col-sm-3" id="play-button-div"><button id="play-button" class="btn btn-primary">▶</button></div>
                     <div class="col-md-10 col-sm-9" id="slider-div"></div>
                 </div>
             </div>
             <div class="col-md-3 col-sm-3" class="chosen-container-div">
-                <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:350px;" tabindex="4" id="incident-type-select">
+                <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:300px;" tabindex="4" id="incident-type-select">
                 </select>
             </div>
-        </div>
+        </di>
         <div class="row viz-area">
             <div class="col-md-1 col-sm-1"></div>
             <div class="col-md-10 col-sm-10" id="chart-area"></div>

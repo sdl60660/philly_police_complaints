@@ -311,10 +311,10 @@ function flowchartEntrance() {
     if (scrollDirection === 'up') {
         d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
             d.remove();
-        });
 
-        flowChart.representedAttribute = 'no_group';
-        flowChart.wrangleData();
+            flowChart.representedAttribute = 'no_group';
+            flowChart.wrangleData();
+        });
     }
 
 }
@@ -325,6 +325,9 @@ function highlightTile() {
         d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
             d.remove();
         });
+
+        // flowChart.representedAttribute = 'no_group';
+        // flowChart.wrangleData();
     }
 
     flowChart.highlightTile(1212);
