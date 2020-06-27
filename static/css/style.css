@@ -217,6 +217,10 @@ select.other, span.other {
 	/*margin-right: 20px;*/
 }
 
+#sort-feature-select {
+	margin-top: 15px;
+}
+
 .date-display {
 	/*margin-top: 8px;*/
 	min-width: 120px;

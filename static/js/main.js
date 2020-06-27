@@ -469,11 +469,17 @@ Promise.all(promises).then(function(allData) {
     flowChart = new FlowChart("#chart-area");
     timeline = new Timeline("#slider-div");
 
+    $(".select")
+        .chosen()
+        .on('change', function(event) {
+        flowChart.wrangleData();
+    })
+
     $('.chosen-select').on('change', function(event){
         flowChart.wrangleData();
     });
 
-    districtMap = new DistrictMap("#map-area");
+    // districtMap = new DistrictMap("#map-area");
 
 });
 

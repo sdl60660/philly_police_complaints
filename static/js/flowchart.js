@@ -62,7 +62,7 @@ FlowChart.prototype.initVis = function() {
         'no_group': ["default"],
         'complainant_race': ["black", "white", "latino"],
         'po_race': ["black", "white", "latino"],
-        'district_income': ['high', 'middle', 'low']
+        'district_income_group': ['upper', 'middle', 'lower']
     };
     vis.color = d3.scaleOrdinal()
         .range(["#3232FF", "#FF1919", "#FFAC14"])
@@ -169,6 +169,8 @@ FlowChart.prototype.initVis = function() {
 
 FlowChart.prototype.wrangleData = function() {
     var vis = this;
+
+    vis.representedAttribute = $("#sort-feature-select").val();
 
     if (initFlowChart === true) {
         initFlowChart = false;
