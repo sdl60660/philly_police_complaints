@@ -226,12 +226,18 @@
     <div class="container viz-tile" id="flowchart-tile">
         <div class="row viz-area">
             <div class="col-md-2 col-sm-2">
-                <select data-placeholder="Select Complaint Types" class="select" style="width:100%;" tabindex="1" id="sort-feature-select">
-                    <option value="no_group">None</option>
-                    <option value="complainant_race">Complainant Race</option>
-                    <option value="po_race">Officer Race</option>
-                    <option value="district_income_group">Median District Income</option>
-                </select>
+                <div class="row" style="text-align: center; font-size: 11pt;">Group By</div>
+                <div class="row">
+                    <select data-placeholder="Select Complaint Types" class="select" tabindex="1" id="sort-feature-select">
+                        <option value="no_group">None</option>
+                        <option value="complainant_race">Complainant Race</option>
+                        <option value="po_race">Officer Race</option>
+                        <option value="district_income_group">Median District Income</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div id="flowchart-legend-area"></div>
+                </div>
             </div>
             <div class="col-md-7 col-sm-7">
                 <div class="row">

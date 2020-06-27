@@ -83,7 +83,6 @@ FlowChart.prototype.initVis = function() {
     vis.row1y = -35;
 
     vis.outcomeCoordinates = {
-
         "Investigation Pending": [vis.col1x, vis.row1y],
 
         "No Sustained Findings": [vis.col2x, vis.row1y],
@@ -100,11 +99,11 @@ FlowChart.prototype.initVis = function() {
 
         "No Sustained Findings": Math.round(2.0*vis.blockGroupWidth),
 
-        "Sustained Finding": Math.round(1.0*vis.blockGroupWidth),
-        "Guilty Finding": Math.round(1.0*vis.blockGroupWidth),
-        "Training/Counseling": Math.round(1.0*vis.blockGroupWidth),
-        "No Guilty Findings": Math.round(1.0*vis.blockGroupWidth),
-        "Discipline Pending": Math.round(1.0*vis.blockGroupWidth)
+        "Sustained Finding": Math.round(vis.blockGroupWidth),
+        "Guilty Finding": Math.round(vis.blockGroupWidth),
+        "Training/Counseling": Math.round(vis.blockGroupWidth),
+        "No Guilty Findings": Math.round(vis.blockGroupWidth),
+        "Discipline Pending": Math.round(vis.blockGroupWidth)
     }
 
     vis.outcomeLabels = {}
@@ -152,7 +151,9 @@ FlowChart.prototype.initVis = function() {
         .attr("fill", "rgba(255,255,255,0.5)")
         .attr("rx", 10)
         .attr("ry", 10)
-        .lower()
+        .lower();
+
+    vis.legendSVG = d3.select("#flowchart-legend-area").append("svg");
 
     vis.setComplaintTypes();
     vis.wrangleData();
@@ -218,6 +219,7 @@ FlowChart.prototype.wrangleData = function() {
         .domain(vis.representedVals[vis.representedAttribute])
 
     vis.setToolTips();
+    vis.updateLegend();
     vis.updateVis();
 }
 
@@ -487,7 +489,7 @@ FlowChart.prototype.setComplaintTypes = function() {
         $('#incident-type-select :selected').map((d,i) => $(i).val())
     );
 
-}
+};
 
 
 FlowChart.prototype.updateComplaintTypes = function() {
@@ -502,6 +504,60 @@ FlowChart.prototype.updateComplaintTypes = function() {
         $(("#incident-type-select option#" + formatSpacedStrings(d))).text((d + ' (' + numInstances + ')'));
     })
     $("#incident-type-select").trigger("chosen:updated");
+
+};
+
+
+FlowChart.prototype.updateLegend = function() {
+    const vis = this;
+
+    let keys = vis.representedVals[vis.representedAttribute].slice();
+    keys.push('other/unknown')
+
+    if (vis.representedAttribute === 'no_group') {
+        keys = [];
+    }
+
+    // Add one dot in the legend for each name.
+    const size = 8;
+    const topMargin = 10;
+    const leftMargin = 5;
+    const verticalSpacing = 9;
+    const rects = vis.legendSVG.selectAll(".legend-rect")
+      .data(keys, function(d) {
+          return d;
+      });
+
+    rects.exit().remove();
+
+    rects
+      .enter()
+      .append("rect")
+        .attr("x", leftMargin)
+        .attr("y", function (d,i) { return topMargin + i*(size+verticalSpacing); } )
+        .attr("width", size)
+        .attr("height", size)
+        .attr("class", "legend-rect")
+        .attr("fill-opacity", 0.8)
+        .style("fill", function(d) { return vis.color(d); });
+
+    const labels = vis.legendSVG.selectAll(".legend-label")
+      .data(keys, function(d) {
+          return d;
+      });
+
+    labels.exit().remove();
+
+    labels
+      .enter()
+      .append("text")
+        .attr("x", leftMargin + size*1.2 + 3)
+        .attr("y", function(d,i) { return  topMargin + i*(size+verticalSpacing) + (size/2)}) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function(d) { return vis.color(d); })
+        .text(function(d){ return d})
+        .attr("text-anchor", "left")
+        .attr("class", "legend-label")
+        .style("alignment-baseline", "middle");
 
 }
 

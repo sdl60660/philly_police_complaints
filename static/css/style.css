@@ -219,6 +219,12 @@ select.other, span.other {
 
 #sort-feature-select {
 	margin-top: 15px;
+    width: 100%;
+}
+
+#flowchart-legend-area {
+    width: 100%;
+    margin-top: 8px;
 }
 
 .date-display {
@@ -264,6 +270,7 @@ select.other, span.other {
 #flowchart-tile.group-label {
 	z-index: 20;
 }
+
 
 /*#total-complaints {*/
 	/**/

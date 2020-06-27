@@ -113,7 +113,7 @@ $("#play-button")
 
         if (button.text() == "▶") {
             button.text("❙❙");
-            interval = setInterval(step, 700);
+            interval = setInterval(step, 1300);
         }
         else {
             button.text("▶");
@@ -473,8 +473,8 @@ Promise.all(promises).then(function(allData) {
     $(".select")
         .chosen()
         .on('change', function(event) {
-        flowChart.wrangleData();
-    })
+            flowChart.wrangleData();
+    });
 
     $('.chosen-select').on('change', function(event){
         flowChart.wrangleData();
