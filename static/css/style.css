@@ -127,7 +127,7 @@ strong {
 }
 
 .step:first-child {
-	background-color: #f9f9f9 !important;
+	background-color: rgba(0,0,0,0) !important;
 }
 
 .step:not(:first-child) .title {
