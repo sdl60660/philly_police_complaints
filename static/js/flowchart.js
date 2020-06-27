@@ -1,10 +1,3 @@
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-function formatSpacedStrings(str) {
-    return str.replace(/ /g, '-').replace(/\//g, '-');
-}
 
 FlowChart = function(_parentElement) {
     this.parentElement = _parentElement;
@@ -62,7 +55,7 @@ FlowChart.prototype.initVis = function() {
         'no_group': ["default"],
         'complainant_race': ["black", "white", "latino"],
         'po_race': ["black", "white", "latino"],
-        'district_income_group': ['upper', 'middle', 'lower']
+        'district_income_group': ['higher', 'middle', 'lower']
     };
     vis.color = d3.scaleOrdinal()
         .range(["#3232FF", "#FF1919", "#FFAC14"])

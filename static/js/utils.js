@@ -23,3 +23,10 @@ function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
+
+function formatSpacedStrings(str) {
+    return str.replace(/ /g, '-').replace(/\//g, '-');
+}
