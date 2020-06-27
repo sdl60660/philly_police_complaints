@@ -341,7 +341,8 @@ function showFlowchartByRace() {
     flowChart.returnTile();
 
     sleep(600).then(() => {
-        flowChart.representedAttribute = 'complainant_race';
+        $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
+        // flowChart.representedAttribute = 'complainant_race';
         flowChart.wrangleData()
     })
 
