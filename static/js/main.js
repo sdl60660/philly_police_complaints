@@ -165,7 +165,7 @@ function displayIntroText() {
         .css("opacity", 1.0)
 
     $("#sunburst-tile")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", 0.2);
 
     var format = d3.format(",.0f")
 
@@ -196,7 +196,7 @@ function displayIntroText() {
 
 function showSunburst() {
     $("#intro-tile")
-        .css("opacity", hiddenOpacity)
+        .css("opacity", 0.2)
 
     $("#sunburst-tile")
         .css("opacity", 1.0);
@@ -283,7 +283,7 @@ function guiltyWhiteComplainantBlackOfficer() {
         .css("opacity", 1.0);
 
     $("#flowchart-tile")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", 0.2);
 
     if (scrollDirection === 'up') {
         d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
@@ -331,7 +331,9 @@ function highlightTile() {
         // flowChart.wrangleData();
     }
 
-    flowChart.highlightTile(1212);
+    else {
+        flowChart.highlightTile(1212);
+    }
 
 }
 
@@ -347,14 +349,7 @@ function showFlowchartByRace() {
         flowChart.wrangleData()
     })
 
-
-    // flowChart.representedAttribute = 'complainant_race';
-    // flowChart.wrangleData();
-
-    // $("#flowchart-tile")
-    //     .show()
 }
-
 
 
 var activeIndex;
@@ -364,8 +359,10 @@ function activate(index) {
     $("section.step")
         .css("opacity", hiddenOpacity);
 
-    $("section.step").eq(index-1)
-        .css("opacity", 1.0);
+    if (index-1 > 0) {
+        $("section.step").eq(index - 1)
+            .css("opacity", 1.0);
+    }
 
     activeIndex = index;
     var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
@@ -398,6 +395,13 @@ else {
     scrollerDiv = '.step';
 }
 scroll(d3.selectAll(scrollerDiv));
+
+if (phoneBrowsing === true) {
+    hiddenOpacity = 0.0;
+}
+else {
+    hiddenOpacity = 0.2;
+}
 
 
 scroll.on('active', function(index){
@@ -446,7 +450,6 @@ $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight)
 
 
-
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
     d3.json("static/data/district_demos.geojson")
@@ -457,18 +460,11 @@ Promise.all(promises).then(function(allData) {
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
 
-    if (phoneBrowsing === true) {
-        hiddenOpacity = 0.0;
-    }
-    else {
-        hiddenOpacity = 0.2;
-    }
-
     $("#sunburst-tile")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", 0.2);
 
     $("#flowchart-tile")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", 0.2);
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
