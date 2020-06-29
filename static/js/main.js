@@ -455,16 +455,20 @@ const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBounding
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight)
 
-let maxAnnotationHeight = 150;
-$(".step").toArray().forEach(function(annotationBox) {
-    const boxHeight = annotationBox.getBoundingClientRect().height;
-    if (boxHeight > maxAnnotationHeight) {
-        maxAnnotationHeight = boxHeight;
-    }
-});
-$(".viz-tile")
-    .css("padding-top", maxAnnotationHeight)
-// console.log(maxAnnotationHeight);
+
+// If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
+if (phoneBrowsing === true) {
+    let maxAnnotationHeight = 150;
+    $(".step").toArray().forEach(function (annotationBox) {
+        const boxHeight = annotationBox.getBoundingClientRect().height;
+        if (boxHeight > maxAnnotationHeight) {
+            maxAnnotationHeight = boxHeight;
+        }
+    });
+    $(".viz-tile")
+        .css("padding-top", maxAnnotationHeight)
+    // console.log(maxAnnotationHeight);
+}
 
 
 var promises = [

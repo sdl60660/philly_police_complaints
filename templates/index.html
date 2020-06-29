@@ -206,35 +206,38 @@
     <div class="tile-wrapper" id="sunburst-wrapper">
     <div class="container viz-tile" id="sunburst-tile">
         <div class="row">
-            <div class="col-md-2 col-sm-2"></div>
-            <div class="col-md-8 col-sm-8 viz-area" id="sunburst-area">
-                What happens when
-                <select class="sunburst-select" id="sunburst-po-race" value="po_race">
-                    <option value="all">all</option>
-                    <option value="white">white</option>
-                    <option value="black">black</option>
-                    <option value="latino">latino</option>
-                    <option value="other">other</option>
-                </select>
-{#                <span id="sunburst-po-race" value="po_race">[white]</span>#}
-                officers receive complaints from
-                <select class="sunburst-select" id="sunburst-complainant-race" value="complainant_race">
-                    <option value="all">all</option>
-                    <option value="white">white</option>
-                    <option value="black">black</option>
-                    <option value="latino">latino</option>
-                    <option value="other">other</option>
-                </select>
-                complainants, about incidents in
-                <select class="sunburst-select" id="sunburst-district-income-group" value="district_income_group">
-                    <option value="all">all</option>
-                    <option value="lower">lower</option>
-                    <option value="middle">middle</option>
-                    <option value="higher">higher</option>
-                </select>
-                income districts.
+            <div class="col-md-1"></div>
+            <div class="col-md-10 col-sm-12 viz-area">
+                <div class="row">
+                    What happens when
+                    <select class="sunburst-select" id="sunburst-po-race" value="po_race">
+                        <option value="all">all</option>
+                        <option value="white">white</option>
+                        <option value="black">black</option>
+                        <option value="latino">latino</option>
+                        <option value="other">other</option>
+                    </select>
+    {#                <span id="sunburst-po-race" value="po_race">[white]</span>#}
+                    officers receive complaints from
+                    <select class="sunburst-select" id="sunburst-complainant-race" value="complainant_race">
+                        <option value="all">all</option>
+                        <option value="white">white</option>
+                        <option value="black">black</option>
+                        <option value="latino">latino</option>
+                        <option value="other">other</option>
+                    </select>
+                    complainants, about incidents in
+                    <select class="sunburst-select" id="sunburst-district-income-group" value="district_income_group">
+                        <option value="all">all</option>
+                        <option value="lower">lower</option>
+                        <option value="middle">middle</option>
+                        <option value="higher">higher</option>
+                    </select>
+                    income districts.
+                </div>
+                <div class="row" id="sunburst-area"></div>
             </div>
-            <div class="col-md-2 col-sm-2"></div>
+            <div class="col-md-1"></div>
         </div>
     </div>
     </div>
@@ -272,10 +275,10 @@
                 <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:300px;" tabindex="4" id="incident-type-select"></select>
             </div>
         </di>
-        <div class="row viz-area">
-            <div class="col-md-1 col-sm-1"></div>
-            <div class="col-md-10 col-sm-10" id="chart-area"></div>
-            <div class="col-md-1 col-sm-1></div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 col-sm-12" id="chart-area"></div>
+            <div class="col-md-1"></div>
         </div>
     </div>
     </div>

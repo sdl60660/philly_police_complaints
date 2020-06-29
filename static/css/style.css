@@ -12,7 +12,9 @@
 body {
 	font-family: 'Inconsolata', Monaco, "Lucida Console", Consolas, "Courier New", "Helvetica Neue";
 	background-color: #f9f9f9;
-	height: 9000px;
+    width: 100%;
+	/*height: 9000px;*/
+    position: absolute;
 }
 
 .spacer {
@@ -156,18 +158,23 @@ strong {
 	margin-top: 10px;
 	font-size: 9pt;
 
-	padding-left: 10px;
+	padding-left: 15px;
+    padding-right: 15px;
 }
 
 .mobile-spacer {
     height: 0px;
 }
 
+#flowchart-tile {
+    margin-right: 100px;
+}
+
 @media (max-width: 1200px) {
     #sections {
         /*position: fixed;*/
         /*display: inline-block;*/
-        width: 300px;
+        width: 0px;
         top: 0;
         left: 50;
         z-index: 50;
@@ -206,6 +213,19 @@ strong {
     .viz-tile {
         padding-top: 150px;
     }
+
+    .container {
+        width: 95% !important;
+        padding-right: 25px !important;
+    }
+
+    #flowchart-tile {
+        margin-left: 10px;
+        margin-right: 10px;
+
+        padding-left: 20px;
+        padding-right: 10px;
+    }
 }
 
 .container {
@@ -216,10 +236,6 @@ strong {
 	/*position: inline;*/
 	/*top: 60px;*/
 	z-index: 2;
-}
-
-#flowchart-tile {
-    margin-right: 100px;
 }
 
 .complaint-box {

@@ -9,8 +9,8 @@ FlowChart = function(_parentElement) {
 FlowChart.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 95, right: 45, bottom: 45, left: 40};
-    vis.width = 1100 - vis.margin.left - vis.margin.right;
+    vis.margin = {top: 95, right: 15, bottom: 45, left: 15};
+    vis.width = 1000 - vis.margin.left - vis.margin.right;
     vis.height = 1100 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select(vis.parentElement)
@@ -18,22 +18,26 @@ FlowChart.prototype.initVis = function() {
         // .attr("width", 1000)
         // .attr("height", 1500)
 
-    if(phoneBrowsing) {
+    if (phoneBrowsing) {
+        // vis.svg
+        //     .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        //     .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
         vis.svg
-            .attr("width", vis.width + vis.margin.left + vis.margin.right)
-            .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
-
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 1000 1600")
     }
     else {
         vis.svg
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 1000 1100")
+            .attr("preserveAspectRatio", "xMinYMin meet")
+            .attr("viewBox", "0 0 1050 1100")
     }
 
 
     vis.g = vis.svg.append("g")
         .attr("class", vis.parentGroupClass)
         .attr("id", "chart-data")
+        // .attr("width", vis.width)
+        // .attr("height", vis.height)
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
