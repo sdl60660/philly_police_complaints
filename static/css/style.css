@@ -184,7 +184,7 @@ strong {
 
         width: 100%;
 
-        font-size: 18pt;
+        font-size: 15pt;
 
         position: fixed;
         left: 50;
@@ -196,7 +196,7 @@ strong {
     }
 
     .step .body {
-        font-size: 18pt;
+        font-size: 15pt;
     }
 
     .mobile-spacer {
