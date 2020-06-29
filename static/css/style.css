@@ -144,8 +144,8 @@ strong {
 	background-color: rgba(28, 148, 196, 0.25);
 	/*border-radius: 3px;*/
 
-	padding-top: 2px;
-	padding-bottom: 2px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .step.phantom .title {

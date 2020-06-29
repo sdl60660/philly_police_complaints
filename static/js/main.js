@@ -33,6 +33,12 @@ const outcomeColors = d3.scaleOrdinal()
 // Determine if the user is browsing on mobile
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)  || window.innerWidth < 1200) {
     phoneBrowsing = true;
+
+    $(".step")
+        .css("font-size", "18pt");
+
+    $(".step .body")
+        .css("font-size", "18pt");
 }
 
 function preprocessDataset(dataset) {
@@ -494,15 +500,18 @@ Promise.all(promises).then(function(allData) {
     flowChart = new FlowChart("#chart-area");
     timeline = new Timeline("#slider-div");
 
-    $(".select")
-        .chosen()
-        .on('change', function(event) {
-            flowChart.wrangleData();
-    });
 
-    $('.chosen-select').on('change', function(event){
-        flowChart.wrangleData();
-    });
+    if (phoneBrowsing === false) {
+        $(".select")
+            .chosen()
+            .on('change', function (event) {
+                flowChart.wrangleData();
+            });
+
+        $('.chosen-select').on('change', function (event) {
+            flowChart.wrangleData();
+        });
+    }
 
     // districtMap = new DistrictMap("#map-area");
 
