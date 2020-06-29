@@ -1,4 +1,10 @@
 
+:root {
+    --spacer-top: 300px;
+    --spacer-bottom: 400px;
+    --spacer-mobile: 700px;
+}
+
 .row {
 	width: 100%;
 }
@@ -111,9 +117,11 @@ strong {
 	z-index: 50;
 }
 
+
+
 .step {
-	margin-top: 300px;
-	margin-bottom: 400px;
+	margin-top: var(--spacer-top);
+	margin-bottom: var(--spacer-bottom);
 	margin-left: 10px;
 
 	min-height: 350px;
@@ -145,6 +153,55 @@ strong {
 	font-size: 9pt;
 
 	padding-left: 10px;
+}
+
+.mobile-spacer {
+    height: 0px;
+}
+
+@media (max-width: 1200px) {
+    #sections {
+        /*position: fixed;*/
+        /*display: inline-block;*/
+        width: 300px;
+        top: 0;
+        left: 50;
+        z-index: 50;
+    }
+
+    .step {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-left: 0px;
+
+        min-height: 150px;
+        padding-bottom: 10px;
+        border-radius: 15px;
+
+        width: 100%;
+
+        font-size: 18pt;
+
+        position: fixed;
+        left: 50;
+        top: 0;
+
+        opacity: 0;
+
+        overflow: hidden;
+    }
+
+    .step .body {
+        font-size: 18pt;
+    }
+
+    .mobile-spacer {
+        height: var(--spacer-mobile);
+    }
+
+    .viz-tile {
+        padding-top: 150px;
+    }
 }
 
 .container {

@@ -16,6 +16,7 @@ var sunburst;
 var introText;
 var timeline;
 var interval;
+var hiddenOpacity = 0.2;
 
 var maxDateOffset;
 
@@ -30,7 +31,7 @@ const outcomeColors = d3.scaleOrdinal()
     .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
 
 // Determine if the user is browsing on mobile
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)  || window.innerWidth < 1200) {
     phoneBrowsing = true;
 }
 
@@ -164,7 +165,7 @@ function displayIntroText() {
         .css("opacity", 1.0)
 
     $("#sunburst-tile")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     var format = d3.format(",.0f")
 
@@ -195,7 +196,7 @@ function displayIntroText() {
 
 function showSunburst() {
     $("#intro-tile")
-        .css("opacity", 0.2)
+        .css("opacity", hiddenOpacity)
 
     $("#sunburst-tile")
         .css("opacity", 1.0);
@@ -282,7 +283,7 @@ function guiltyWhiteComplainantBlackOfficer() {
         .css("opacity", 1.0);
 
     $("#flowchart-tile")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     if (scrollDirection === 'up') {
         d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
@@ -303,7 +304,7 @@ function guiltyWhiteComplainantBlackOfficer() {
 function flowchartEntrance() {
 
     $("#sunburst-tile")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     $("#flowchart-tile")
         .css("opacity", 1.0);
@@ -361,7 +362,7 @@ var lastIndex;
 function activate(index) {
 
     $("section.step")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     $("section.step").eq(index-1)
         .css("opacity", 1.0);
@@ -389,7 +390,15 @@ function activate(index) {
 var scroll = scroller()
     .container(d3.select('body'));
 
-scroll(d3.selectAll('.step'));
+var scrollerDiv;
+if (phoneBrowsing === true) {
+    scrollerDiv = '.mobile-spacer';
+}
+else {
+    scrollerDiv = '.step';
+}
+scroll(d3.selectAll(scrollerDiv));
+
 
 scroll.on('active', function(index){
     console.log(index);
@@ -411,6 +420,7 @@ scroll.on('progress', function(index, progress) {
 
 
 // var activateFunctions = ['filler'];         // fix this later
+var scrollerDivs = $(scrollerDiv);
 var activateFunctions = [];
 activateFunctions[0] = displayIntroText;
 
@@ -421,7 +431,7 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
-const sunburstWrapperHeight = $(".step")[8].getBoundingClientRect().bottom - $(".step")[1].getBoundingClientRect().top + 50 - 300;
+const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 300;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight)
 
@@ -429,7 +439,7 @@ $("#sunburst-wrapper")
 activateFunctions[8] = flowchartEntrance;
 activateFunctions[9] = highlightTile;
 activateFunctions[10] = showFlowchartByRace;
-const flowChartWrapperHeight = $(".step")[11].getBoundingClientRect().top - $(".step")[8].getBoundingClientRect().top + 400;
+const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 400;
 // console.log(flowChartWrapperHeight);
 // contst flowChartWrapperHeight = 3000;
 $("#flowchart-wrapper")
@@ -447,11 +457,18 @@ Promise.all(promises).then(function(allData) {
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
 
+    if (phoneBrowsing === true) {
+        hiddenOpacity = 0.0;
+    }
+    else {
+        hiddenOpacity = 0.2;
+    }
+
     $("#sunburst-tile")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     $("#flowchart-tile")
-        .css("opacity", 0.2);
+        .css("opacity", hiddenOpacity);
 
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
