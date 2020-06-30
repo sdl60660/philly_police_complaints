@@ -505,7 +505,7 @@ Promise.all(promises).then(function(allData) {
     timeline = new Timeline("#slider-div");
 
 
-    if (phoneBrowsing === false) {
+    // if (phoneBrowsing === false) {
         $(".select")
             .chosen()
             .on('change', function (event) {
@@ -515,7 +515,7 @@ Promise.all(promises).then(function(allData) {
         $('.chosen-select').on('change', function (event) {
             flowChart.wrangleData();
         });
-    }
+    // }
 
     // districtMap = new DistrictMap("#map-area");
 

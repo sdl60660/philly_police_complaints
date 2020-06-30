@@ -9,9 +9,11 @@ Sunburst.prototype.initVis = function() {
     var vis = this;
 
     // Dimensions of sunburst.
-    vis.margin = {'top': 15, 'bottom': 10, 'left': 5, 'right': 10}
-    vis.width = 800 - vis.margin.left - vis.margin.right;
-    vis.height = 800 - vis.margin.top - vis.margin.bottom;
+    const dimensions = Math.min(900, $("#sunburst-area").width());
+
+    vis.margin = {'top': 15, 'bottom': 10, 'left': 10, 'right': 10}
+    vis.width = dimensions - vis.margin.left - vis.margin.right;
+    vis.height = dimensions - vis.margin.top - vis.margin.bottom;
     vis.radius = Math.min(vis.width, vis.height) / 2;
 
     vis.arc = d3.arc()
@@ -234,6 +236,7 @@ Sunburst.prototype.updateVis = function() {
     vis.labels
         .enter()
         .append("text")
+        .attr("class", "sunburst-chart-labels")
         .attr("transform", function(d) {
             if (vis.previouslyAddedLabels.includes(d.data.name)) {
                 const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;

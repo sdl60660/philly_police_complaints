@@ -18,26 +18,14 @@ FlowChart.prototype.initVis = function() {
         // .attr("width", 1000)
         // .attr("height", 1500)
 
-    // if (phoneBrowsing) {
-    //     // vis.svg
-    //     //     .attr("width", vis.width + vis.margin.left + vis.margin.right)
-    //     //     .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
-    //     vis.svg
-    //         .attr("preserveAspectRatio", "xMinYMin meet")
-    //         .attr("viewBox", "0 0 1000 1600")
-    // }
-    // else {
-        vis.svg
-            .attr("preserveAspectRatio", "xMinYMin meet")
-            .attr("viewBox", "0 0 1050 1100")
-    // }
+    vis.svg
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "0 0 1050 1100")
 
 
     vis.g = vis.svg.append("g")
         .attr("class", vis.parentGroupClass)
         .attr("id", "chart-data")
-        // .attr("width", vis.width)
-        // .attr("height", vis.height)
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 

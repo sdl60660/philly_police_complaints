@@ -226,6 +226,14 @@ strong {
         padding-left: 20px;
         padding-right: 10px;
     }
+
+    .sunburst-chart-labels {
+        font-size: 18pt;
+    }
+
+    #sunburst-select-text {
+        font-size: 18pt;
+    }
 }
 
 .container {
