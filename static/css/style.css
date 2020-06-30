@@ -85,6 +85,10 @@ strong {
     margin: auto;
 }
 
+.annotated-text {
+    cursor: pointer;
+}
+
 /*.viz-area {*/
     /*position: sticky;*/
     /*top; 0;*/
