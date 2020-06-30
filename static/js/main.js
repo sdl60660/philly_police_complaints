@@ -63,7 +63,7 @@ const textAnnotations = {
 
 $('.annotated-text')
     // .on("mouseover", function() {
-    .on("mouseenter", function() {
+    .on("mousemove", function() {
         console.log('triggered');
 
         const tooltipSelect = $("#annotation-tooltip");
