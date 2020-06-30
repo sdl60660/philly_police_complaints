@@ -326,12 +326,14 @@ function flowchartEntrance() {
         .css("opacity", 1.0);
 
     if (scrollDirection === 'up') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-            d.remove();
-
-            flowChart.representedAttribute = 'no_group';
-            flowChart.wrangleData();
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            $(d).css("opacity", 0.0);
         });
+
+        $("#sort-feature-select").val("no_group").trigger("chosen:updated");
+        // flowChart.representedAttribute = 'no_group';
+        flowChart.wrangleData();
+
     }
 
 }
