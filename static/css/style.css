@@ -166,6 +166,27 @@ strong {
     height: 0px;
 }
 
+.sunburst-chart-labels {
+    /*font-family: AtlasGrotesk,"Helvetica Neue",Helvetica,Arial,sans-serif;*/
+    /*fill: #222;*/
+    /*stroke-width: 1px;*/
+    /*stroke: white;*/
+    /*color: white;*/
+    /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*/
+    /*color: #222;*/
+    /*text-shadow: #fff 0px 0px 3px;*/
+    /*-webkit-font-smoothing: antialiased;*/
+    text-shadow:
+        -1px -1px 0 #fff,
+        0px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        0px 1px 0 #fff,
+        1px 1px 0 #fff;
+
+    font-size: 14px;
+}
+
 /*#flowchart-tile {*/
     /*margin-right: 100px;*/
 /*}*/
@@ -228,7 +249,7 @@ strong {
     }
 
     .sunburst-chart-labels {
-        font-size: 18pt;
+        font-size: 16pt;
     }
 
     #sunburst-select-text {
