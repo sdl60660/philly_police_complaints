@@ -84,6 +84,16 @@ function preprocessDataset(dataset) {
             d.district_income_group = null;
         }
 
+        if (d.officer_prior_complaints > 1) {
+            d.prior_complaints_group = 'multiple';
+        }
+        else if (d.officer_prior_complaints === 1) {
+            d.prior_complaints_group = 'one';
+        }
+        else {
+            d.prior_complaints_group = 'none';
+        }
+
         d.no_group = 'default';
     })
 
@@ -480,6 +490,8 @@ Promise.all(promises).then(function(allData) {
 
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
+
+    // console.log(officerDisciplineResults);
 
     $("#sunburst-tile")
         .css("opacity", 0.2);

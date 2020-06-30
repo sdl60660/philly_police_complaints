@@ -47,8 +47,12 @@ FlowChart.prototype.initVis = function() {
         'no_group': ["default"],
         'complainant_race': ["black", "white", "latino"],
         'po_race': ["black", "white", "latino"],
-        'district_income_group': ['higher', 'middle', 'lower']
+        'district_income_group': ['higher', 'middle', 'lower'],
+        'po_sex': ['male', 'female'],
+        'complainant_sex': ['male', 'female'],
+        'prior_complaints_group': ['none', 'one', 'multiple']
     };
+
     vis.color = d3.scaleOrdinal()
         .range(["#3232FF", "#FF1919", "#FFAC14"])
         .unknown("gray")
@@ -435,7 +439,7 @@ FlowChart.prototype.setToolTips = function() {
                 tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.incident_time) + "<br></span>"
             }
             tipText += "<span class='detail-title'>District</span>: <span class='details'>" + d.district_occurrence + "<br></span>";
-            tipText += "<span class='detail-title'>District Median Income</span>: <span class='details'>" + d3.format("$,.0f")(d.district_income) + "<br></span>";
+            tipText += "<span class='detail-title'>District Median Income</span>: <span class='details'>" + d3.format("$,.0f")(d.district_income) + "<br><br></span>";
 
             if (d.officer_id) {
                 tipText += "<span class='detail-title'>Officer ID</span>: <span class='details'>" + d.officer_id + "<br></span>";
@@ -443,7 +447,15 @@ FlowChart.prototype.setToolTips = function() {
             if (d.officer_initials) {
                 tipText += "<span class='detail-title'>Officer Initials</span>: <span class='details'>" + d.officer_initials + "<br></span>";
             }
-            tipText += "<span class='detail-title'>Officer Demographics</span>: <span class='details'>" + d.po_race + ', ' + d.po_sex + "<br><br></span>";
+            tipText += "<span class='detail-title'>Officer Demographics</span>: <span class='details'>" + d.po_race + ', ' + d.po_sex + "<br></span>";
+
+            if (d.officer_prior_complaints) {
+                tipText += "<span class='detail-title'>Officer Prior Known Complaints</span>: <span class='details'>" + d.officer_prior_complaints + "<br><br></span>";
+            }
+            else {
+                tipText += '<br>';
+            }
+
 
             tipText += "<span class='detail-title'>Complaint ID</span>: <span class='details'>" + d.complaint_id + "<br></span>";
             tipText += "<span class='detail-title'>Complainant Demographics</span>: <span class='details'>";
