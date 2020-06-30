@@ -609,7 +609,7 @@ FlowChart.prototype.updateLegend = function() {
 FlowChart.prototype.setSummaryTooltips = function() {
     var vis = this;
 
-    vis.summaryTip = d3.tip
+    vis.summaryTip = d3.tip()
         .attr("class", "section-summary-tip")
         .offset()
         .html( function(d) {

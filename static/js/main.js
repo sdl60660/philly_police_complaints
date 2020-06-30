@@ -41,6 +41,52 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
         .css("font-size", "18pt");
 }
 
+
+// Highlighted annotation text
+
+const textAnnotations = {
+    'highlighted term': 'Even this one!',
+    'guilty finding': 'This is what a Guilty Finding is.',
+    'sustained finding': 'This is what a Sustained Finding is.',
+    'investigation pending': 'This is what a Pending Investigation is.',
+    'no sustained findings': 'This is what No Sustained Findings is.',
+    'no guilty findings': 'sample',
+    'discipline pending': 'sample',
+    'training/counseling': 'sample',
+    'white': 'white',
+    'black': 'black',
+    'latinx': 'latinx',
+    'other': 'other'
+};
+
+ // jQuery to move div and create pop-up tooltip with annotation
+
+$('.annotated-text')
+    // .on("mouseover", function() {
+    .on("mousemove", function() {
+
+        const tooltipSelect = $("#annotation-tooltip");
+
+        tooltipSelect
+            .text(textAnnotations[$(this).text().toLowerCase()]);
+
+        let xOffset = event.pageX - tooltipSelect.width()/2;
+        if (xOffset < 0) {
+            xOffset += -1 * xOffset;
+        }
+
+        tooltipSelect
+            .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
+            .css("opacity", 1.0)
+            .css("z-index", 100);
+    })
+    .on("mouseout", function() {
+        $("#annotation-tooltip")
+            .css("opacity", 0.0)
+            .css("z-index", -1);
+    })
+
+
 function preprocessDataset(dataset) {
     dataset.forEach(function(d) {
         d.date_received = new Date(d.date_received);
@@ -379,11 +425,11 @@ function activate(index) {
 
     activeIndex = index;
 
-    if (lastIndex < activeIndex) {
-        scrollDirection = 'down'
+    if (lastIndex > activeIndex) {
+        scrollDirection = 'up'
     }
     else {
-        scrollDirection = 'up';
+        scrollDirection = 'down';
     }
     console.log(scrollDirection);
 
