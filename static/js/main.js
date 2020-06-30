@@ -46,17 +46,33 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
 const textAnnotations = {
     'highlighted term': 'Even this one!',
-    'guilty finding': 'This is what a Guilty Finding is.',
-    'sustained finding': 'This is what a Sustained Finding is.',
-    'investigation pending': 'This is what a Pending Investigation is.',
-    'no sustained findings': 'This is what No Sustained Findings is.',
-    'no guilty findings': 'sample',
-    'discipline pending': 'sample',
-    'training/counseling': 'sample',
-    'white': 'white',
-    'black': 'black',
-    'latinx': 'latinx',
-    'other': 'other'
+
+    'sustained finding': "PPD's Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
+    "supported (or other violations were discovered during the course of the investigation). These are then sent to the " +
+    "Police Board of Inquiry for a hearing and possible discipline.",
+    'investigation pending': "This indicates a PPD Interval Affairs investigation that is still in progress. " +
+    "Sometimes investigations stay here for much longer than the mandated completion time of 75 days.",
+    'no sustained findings': "PPD's Internal Affairs investigation determined that 'allegations could not be proven, allegations that did not occur" +
+    " or that actions that occurred, but were correct, lawful and complied with departmental policies'.",
+
+    'guilty finding': "On recommendation from the Police Board of Inquiry hearing, the Police Commissioner (or a delegate)" +
+    " deems an officer's action worthy of discipline. Investigations classified in PPD's published data with a " +
+    "'Guilty Finding' include suspensions, terminations, criminal prosecutions, and reprimands. The data provided by the " +
+    "department makes no distinction.",
+    'no guilty findings': "An investigation is referred from Internal Affairs after allegations are determined to be " +
+    "supported by evidence. However, the Police Commissioner (or a delegate) determines that the officer is Not Guilty " +
+    "after a Police Board of Inquiry hearing and recommendation.",
+    'discipline pending': "An investigation from Internal Affairs has determined that one or more allegations are sustained, " +
+    "but a disciplinary decision has not been made yet.",
+    'training/counseling': "On recommendation from the Police Board of Inquiry hearing, the Police Commissioner (or a delegate)" +
+    " deems an officer's action worthy of discipline, but opts for unspecified 'training/counseling' in lieu of suspension," +
+    " termination, or criminal prosectution.",
+
+    'white': "Classified by PPD as 'white'",
+    'black': "Classified by PPD as 'black'",
+    'latinx': "Classified by PPD as 'latino'",
+    'other': "Includes less frequent race/ethnicity classification by PPD, as well as cases with multiple complainants" +
+    " of different races/ethnicities"
 };
 
  // jQuery to move div and create pop-up tooltip with annotation
