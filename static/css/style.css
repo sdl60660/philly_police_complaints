@@ -281,6 +281,18 @@ strong {
 	padding-right: 3px;
 }
 
+#annotation-tooltip {
+    max-width: 400px;
+	background-color: white;
+	color: black;
+	border-radius: 5px;
+	border: 1px solid black;
+	z-index: 100;
+    line-height: 1;
+    padding: 12px;
+    /*position: fixed;*/
+}
+
 .annotation-li {
 	margin-bottom: 5px;
 }

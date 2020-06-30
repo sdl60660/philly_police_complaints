@@ -99,7 +99,7 @@ $('.annotated-text')
         $("#annotation-tooltip")
             .css("opacity", 0.0)
             .css("z-index", -1);
-    })
+    });
 
 
 function preprocessDataset(dataset) {
