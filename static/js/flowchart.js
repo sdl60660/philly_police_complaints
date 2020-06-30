@@ -258,14 +258,14 @@ FlowChart.prototype.updateVis = function() {
                         return vis.color(d[vis.representedAttribute]);
                     }
                 })
-                .on("click", function(d) {
-                    if (d.summary) {
-                        $(".details#complaint-summary").text(d.summary);
-                    }
-                    else if (d.shortened_summary) {
-                        $(".details#complaint-summary").text(d.shortened_summary);
-                    }
-                })
+                // .on("click", function(d) {
+                //     if (d.summary) {
+                //         $(".details#complaint-summary").text(d.summary);
+                //     }
+                //     else if (d.shortened_summary) {
+                //         $(".details#complaint-summary").text(d.shortened_summary);
+                //     }
+                // })
                 .on("mouseenter", function(d) {
                     vis.tip.hide();
 
@@ -403,14 +403,29 @@ FlowChart.prototype.setToolTips = function() {
 
     vis.tip = d3.tip()
         .attr('class', 'd3-tip')
-        .offset(function() {
+        .offset(function(d) {
             const tileOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
             vis.lastTooltipOffset = tileOffset;
 
             const trueMarginSize = $("#flowchart-tile")[0].getBoundingClientRect().y;
-            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), vis.blockSize + 4];
+
+            if (d.investigative_findings === 'Sustained Finding') {
+                var xOffset = -4;
+            }
+            else {
+                var xOffset = vis.blockSize + 4;
+            }
+
+            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), xOffset];
         })
-        .direction("e")
+        .direction(function(d) {
+            if (d.investigative_findings === 'Sustained Finding') {
+                return "w";
+            }
+            else {
+                return "e";
+            }
+        })
         .html(function(d) {
 
             var tipText = "<div class='tip-text'>";
@@ -419,7 +434,8 @@ FlowChart.prototype.setToolTips = function() {
             if(d.incident_time) {
                 tipText += "<span class='detail-title'>Incident Date</span>: <span class='details'>" + d3.timeFormat("%-m/%d/%y")(d.incident_time) + "<br></span>"
             }
-            tipText += "<span class='detail-title'>District</span>: <span class='details'>" + d.district_occurrence + "<br><br></span>";
+            tipText += "<span class='detail-title'>District</span>: <span class='details'>" + d.district_occurrence + "<br></span>";
+            tipText += "<span class='detail-title'>District Median Income</span>: <span class='details'>" + d3.format("$,.0f")(d.district_income) + "<br></span>";
 
             if (d.officer_id) {
                 tipText += "<span class='detail-title'>Officer ID</span>: <span class='details'>" + d.officer_id + "<br></span>";
@@ -431,6 +447,7 @@ FlowChart.prototype.setToolTips = function() {
 
             tipText += "<span class='detail-title'>Complaint ID</span>: <span class='details'>" + d.complaint_id + "<br></span>";
             tipText += "<span class='detail-title'>Complainant Demographics</span>: <span class='details'>";
+
 
             tipText += [d.complainant_race, d.complainant_sex, d.complainant_age].filter(function(attr) {
                 return attr;
@@ -448,9 +465,9 @@ FlowChart.prototype.setToolTips = function() {
                 var summaryText = d.shortened_summary;
             }
 
-            if (summaryText.length > 500 && phoneBrowsing === false) {
-                summaryText = summaryText.slice(0, summaryText.slice(0, 500).lastIndexOf(" ")) + "... (click for more)";
-            }
+            // if (summaryText.length > 500 && phoneBrowsing === false) {
+            //     summaryText = summaryText.slice(0, summaryText.slice(0, 500).lastIndexOf(" ")) + "... (click for more)";
+            // }
 
             tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
 
@@ -634,14 +651,14 @@ FlowChart.prototype.visEntrance = function() {
                         return outcomeColors(d.investigative_findings);
                     }
                 })
-                .on("click", function(d) {
-                    if (d.summary) {
-                        $(".details#complaint-summary").text(d.summary);
-                    }
-                    else if (d.shortened_summary) {
-                        $(".details#complaint-summary").text(d.shortened_summary);
-                    }
-                })
+                // .on("click", function(d) {
+                //     if (d.summary) {
+                //         $(".details#complaint-summary").text(d.summary);
+                //     }
+                //     else if (d.shortened_summary) {
+                //         $(".details#complaint-summary").text(d.shortened_summary);
+                //     }
+                // })
                 .on("mouseenter", vis.tip.show)
                 .on("mouseleave", function() {
                     vis.tip.hide();

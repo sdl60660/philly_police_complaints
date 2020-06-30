@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67322dfc-aeaa-4cc0-87b3-8109b9ca8492" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/templates/index.html" afterPath="$PROJECT_DIR$/templates/index.html" />
+      <change beforePath="$PROJECT_DIR$/static/js/flowchart.js" afterPath="$PROJECT_DIR$/static/js/flowchart.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -27,7 +27,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/index.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="219">
@@ -61,8 +61,8 @@
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="518" column="0" lean-forward="true" selection-start-line="518" selection-start-column="0" selection-end-line="518" selection-end-column="0" />
+            <state relative-caret-position="213">
+              <caret line="73" column="29" lean-forward="false" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -78,15 +78,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="flowchart.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="flowchart.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="33" lean-forward="false" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
+            <state relative-caret-position="224">
+              <caret line="437" column="124" lean-forward="false" selection-start-line="437" selection-start-column="124" selection-end-line="437" selection-end-column="124" />
               <folding>
-                <element signature="e#18927#20247#0" expanded="false" />
-                <element signature="e#20296#22697#0" expanded="false" />
-                <marker date="1593478360037" expanded="true" signature="17405:22697" ph="..." />
+                <element signature="e#19502#20822#0" expanded="false" />
+                <marker date="1593480767801" expanded="true" signature="8501:8856" ph="..." />
+                <marker date="1593480767801" expanded="true" signature="17980:23296" ph="..." />
               </folding>
             </state>
           </provider>
@@ -164,8 +164,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>initflowchart</find>
-      <find>initflow</find>
       <find>d3-tip</find>
       <find>settool</find>
       <find>tip.show</find>
@@ -194,6 +192,8 @@
       <find>tile</find>
       <find>width</find>
       <find>flowchart-tile</find>
+      <find>on(&quot;click</find>
+      <find>income</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -215,8 +215,8 @@
         <option value="$PROJECT_DIR$/static/js/sunburst.js" />
         <option value="$PROJECT_DIR$/static/css/style.css" />
         <option value="$PROJECT_DIR$/static/js/main.js" />
-        <option value="$PROJECT_DIR$/static/js/flowchart.js" />
         <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/static/js/flowchart.js" />
       </list>
     </option>
   </component>
@@ -509,9 +509,9 @@
         <state relative-caret-position="4875">
           <caret line="359" column="112" lean-forward="false" selection-start-line="359" selection-start-column="112" selection-end-line="359" selection-end-column="112" />
           <folding>
-            <element signature="e#18927#20247#0" expanded="false" />
-            <element signature="e#20296#22697#0" expanded="false" />
-            <marker date="1593478360037" expanded="true" signature="17405:22697" ph="..." />
+            <element signature="e#19502#20822#0" expanded="false" />
+            <marker date="1593480767801" expanded="true" signature="8501:8856" ph="..." />
+            <marker date="1593480767801" expanded="true" signature="17980:23296" ph="..." />
           </folding>
         </state>
       </provider>
@@ -765,26 +765,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="518" column="0" lean-forward="true" selection-start-line="518" selection-start-column="0" selection-end-line="518" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="33" lean-forward="false" selection-start-line="27" selection-start-column="33" selection-end-line="27" selection-end-column="33" />
-          <folding>
-            <element signature="e#18927#20247#0" expanded="false" />
-            <element signature="e#20296#22697#0" expanded="false" />
-            <marker date="1593478360037" expanded="true" signature="17405:22697" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -810,6 +790,26 @@
             <element signature="n#style#0;n#span#1;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#body#0;n#!!top" expanded="true" />
             <element signature="n#div#2;n#div#0;n#div#0;n#div#3;n#body#0;n#!!top" expanded="false" />
             <element signature="n#style#0;n#select#0;n#div#2;n#div#0;n#div#0;n#div#3;n#body#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="73" column="29" lean-forward="false" selection-start-line="73" selection-start-column="23" selection-end-line="73" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/flowchart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="437" column="124" lean-forward="false" selection-start-line="437" selection-start-column="124" selection-end-line="437" selection-end-column="124" />
+          <folding>
+            <element signature="e#19502#20822#0" expanded="false" />
+            <marker date="1593480767801" expanded="true" signature="8501:8856" ph="..." />
+            <marker date="1593480767801" expanded="true" signature="17980:23296" ph="..." />
           </folding>
         </state>
       </provider>
