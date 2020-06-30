@@ -9,7 +9,7 @@ Sunburst.prototype.initVis = function() {
     var vis = this;
 
     // Dimensions of sunburst.
-    const dimensions = Math.min(900, $("#sunburst-area").width());
+    const dimensions = Math.min(850, $("#sunburst-area").width());
 
     vis.margin = {'top': 15, 'bottom': 10, 'left': 10, 'right': 10}
     vis.width = dimensions - vis.margin.left - vis.margin.right;

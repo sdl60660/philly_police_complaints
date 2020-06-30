@@ -338,16 +338,11 @@ function flowchartEntrance() {
 
 function highlightTile() {
 
-    if (scrollDirection === 'up') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-            d.remove();
-        });
+    if (scrollDirection === 'down') {
+        // d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+        //     d.remove();
+        // });
 
-        // flowChart.representedAttribute = 'no_group';
-        // flowChart.wrangleData();
-    }
-
-    else {
         flowChart.highlightTile(1212);
     }
 
@@ -381,13 +376,6 @@ function activate(index) {
     }
 
     activeIndex = index;
-    var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
-    var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
-    scrolledSections.forEach(function(i) {
-        if (i-1 >= 0) {
-            activateFunctions[i - 1]();
-        }
-    });
 
     if (lastIndex < activeIndex) {
         scrollDirection = 'down'
@@ -396,6 +384,16 @@ function activate(index) {
         scrollDirection = 'up';
     }
     console.log(scrollDirection);
+
+
+    var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
+    var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
+    scrolledSections.forEach(function(i) {
+        if (i-1 >= 0) {
+            activateFunctions[i - 1]();
+        }
+    });
+
     lastIndex = activeIndex;
 };
 
@@ -429,7 +427,8 @@ scroll.on('active', function(index){
 scroll.on('progress', function(index, progress) {
     const existingTipElement = $(".d3-tip");
 
-    if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") && existingTipElement.css("opacity") !== "0") {
+    if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") &&
+        existingTipElement.css("opacity") !== "0" && scrollDirection === 'down') {
         flowChart.repositionTooltip();
         // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
         // updateCharts();

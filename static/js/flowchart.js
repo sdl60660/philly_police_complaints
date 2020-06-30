@@ -9,7 +9,7 @@ FlowChart = function(_parentElement) {
 FlowChart.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 95, right: 15, bottom: 45, left: 40};
+    vis.margin = {top: 85, right: 15, bottom: 45, left: 40};
     vis.width = 1000 - vis.margin.left - vis.margin.right;
     vis.height = 1100 - vis.margin.top - vis.margin.bottom;
 
@@ -33,7 +33,7 @@ FlowChart.prototype.initVis = function() {
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
-    vis.blockGroupWidth = 40;
+    vis.blockGroupWidth = 41;
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
     vis.highlightRectScalar = 10;
@@ -73,7 +73,7 @@ FlowChart.prototype.initVis = function() {
         .text(d3.timeFormat("%B %Y")(endRange))
 
     vis.col1x = 0;
-    vis.col2x = 175;
+    vis.col2x = 169;
     vis.col3x = 700;
 
     vis.row1y = -35;
@@ -105,6 +105,37 @@ FlowChart.prototype.initVis = function() {
     vis.outcomeLabels = {}
     vis.outcomeCounts = {}
 
+    // var outcomeLabels = vis.g.append("text")
+    //     .data(Object.keys(vis.outcomeCoordinates))
+    //     .enter()
+    //     .attr("class", function(d) {
+    //         return "group-label " + formatSpacedStrings(d);
+    //     })
+    //     .attr("x", function(d) {
+    //         return vis.outcomeCoordinates[d][0] + (vis.trueBlockWidth * vis.colWidths[d] / 2);
+    //     })
+    //     .attr("y", function(d) {
+    //         return vis.outcomeCoordinates[d][1] - 30;
+    //     })
+    //     .attr("text-anchor", "middle")
+    //     .style("font-size", function(d) {
+    //         if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(d)) {
+    //             return "12pt";
+    //         }
+    //         else {
+    //             return "9pt";
+    //         }
+    //     })
+    //     .on("mouseenter", function(d) {
+    //         console.log(d);
+    //     })
+    //     .on("mouseout", function() {
+    //         console.log("out");
+    //     })
+    //     .text(function(d) {
+    //         return d;
+    //     });
+
     for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
         var outcomeLabel = vis.g.append("text")
             .attr("class", "group-label " + formatSpacedStrings(key))
@@ -118,6 +149,12 @@ FlowChart.prototype.initVis = function() {
                 else {
                     return "9pt";
                 }
+            })
+            .on("mouseenter", function() {
+                console.log($(this).text());
+            })
+            .on("mouseout", function() {
+                console.log("out");
             })
             .text(key)
 
@@ -254,6 +291,7 @@ FlowChart.prototype.updateVis = function() {
                 .attr("x", vis.col2x + vis.trueBlockWidth * vis.colWidths["No Sustained Findings"]/2)
                 .attr("height", vis.blockSize)
                 .attr("width", vis.blockSize)
+                // .style("border", "1px solid #f9f9f9")
                 .attr("fill", function(d) {
                     if (vis.representedAttribute === 'no_group') {
                         return outcomeColors(d.end_state);
@@ -262,14 +300,6 @@ FlowChart.prototype.updateVis = function() {
                         return vis.color(d[vis.representedAttribute]);
                     }
                 })
-                // .on("click", function(d) {
-                //     if (d.summary) {
-                //         $(".details#complaint-summary").text(d.summary);
-                //     }
-                //     else if (d.shortened_summary) {
-                //         $(".details#complaint-summary").text(d.shortened_summary);
-                //     }
-                // })
                 .on("mouseenter", function(d) {
                     vis.tip.hide();
 
@@ -319,13 +349,7 @@ FlowChart.prototype.updateVis = function() {
                 .attr("width", vis.blockSize)
                 .attr("stroke-width", 0)
                 .attr("stroke", "none")
-                .style("opacity", 0.8)
-
-    // sleep(1100).then(() => {
-    //     vis.updateCounts();
-    //     // vis.setPathArrows();
-    // })
-
+                .style("opacity", 0.8);
 
 }
 
@@ -579,6 +603,22 @@ FlowChart.prototype.updateLegend = function() {
         .attr("text-anchor", "left")
         .attr("class", "legend-label")
         .style("alignment-baseline", "middle");
+
+};
+
+FlowChart.prototype.setSummaryTooltips = function() {
+    var vis = this;
+
+    vis.summaryTip = d3.tip
+        .attr("class", "section-summary-tip")
+        .offset()
+        .html( function(d) {
+
+            }
+        );
+
+
+    vis.svg.call(vis.summaryTip);
 
 }
 
