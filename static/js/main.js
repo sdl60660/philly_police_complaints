@@ -465,7 +465,7 @@ if (phoneBrowsing === true) {
             maxAnnotationHeight = boxHeight;
         }
     });
-    $(".viz-tile")
+    $(".viz-tile:not(#intro-tile)")
         .css("padding-top", maxAnnotationHeight)
     // console.log(maxAnnotationHeight);
 }

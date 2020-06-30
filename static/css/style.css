@@ -124,7 +124,7 @@ strong {
 	margin-bottom: var(--spacer-bottom);
 	margin-left: 10px;
 
-	min-height: 350px;
+	min-height: 320px;
 	border-radius: 15px;
 
     background-color: white;
@@ -166,9 +166,9 @@ strong {
     height: 0px;
 }
 
-#flowchart-tile {
-    margin-right: 100px;
-}
+/*#flowchart-tile {*/
+    /*margin-right: 100px;*/
+/*}*/
 
 @media (max-width: 1200px) {
     #sections {
