@@ -103,15 +103,6 @@ strong {
 	/*!*top: 800px;*!*/
 /*}*/
 
-.d3-tip {
-	max-width: 400px;
-	background-color: white;
-	color: black;
-	border-radius: 5px;
-	border: 1px solid black;
-	z-index: 100;
-    position: fixed;
-}
 
 @media (hover: none) .d3-tip {
 	overflow-y: auto;
@@ -281,7 +272,7 @@ strong {
 	padding-right: 3px;
 }
 
-#annotation-tooltip {
+.d3-tip, #annotation-tooltip {
     max-width: 400px;
 	background-color: white;
 	color: black;
@@ -290,7 +281,10 @@ strong {
 	z-index: 100;
     line-height: 1;
     padding: 12px;
-    /*position: fixed;*/
+}
+
+.d3-tip {
+    position: fixed;
 }
 
 .annotation-li {
