@@ -20,6 +20,7 @@ Timeline.prototype.initVis = function() {
             	.attr("width", "110%")
             	.attr("height", "360%")
             	.attr("visibility", "visible")
+				.style("overflow", "visible");
 
     // Create an axis to overlay on top of scrollbar with same width and ticks (this is the "timeline")
     vis.timelineAxis = vis.svg
