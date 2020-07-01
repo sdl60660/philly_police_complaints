@@ -390,11 +390,7 @@ function flowchartEntrance() {
         d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
             $(d).css("opacity", 0.0);
         });
-
-        $("#sort-feature-select").val("no_group").trigger("chosen:updated");
-        // flowChart.representedAttribute = 'no_group';
-        flowChart.wrangleData();
-
+        flowChart.svg.call(flowChart.tip);
     }
 
 }
@@ -402,11 +398,17 @@ function flowchartEntrance() {
 function highlightTile() {
 
     if (scrollDirection === 'down') {
-        // d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-        //     d.remove();
-        // });
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            d.remove();
+        });
+        flowChart.svg.call(flowChart.tip);
 
         flowChart.highlightTile(1212);
+    }
+    else if (scrollDirection === 'up') {
+        $("#sort-feature-select").val("no_group").trigger("chosen:updated");
+        // flowChart.representedAttribute = 'no_group';
+        flowChart.wrangleData();
     }
 
 }
@@ -491,7 +493,7 @@ scroll.on('progress', function(index, progress) {
     const existingTipElement = $(".d3-tip");
 
     if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") &&
-        existingTipElement.css("opacity") !== "0" && scrollDirection === 'down') {
+        existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
         // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
         // updateCharts();

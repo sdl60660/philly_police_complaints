@@ -25,41 +25,6 @@ strong {
 	font-weight: 900;
 }
 
-/* Graph Scroll */
-
-/*#container{*/
-  /*position: relative;*/
-/*}*/
-
-/*#sections{*/
-  /*width: 340px;*/
-/*}*/
-
-/*#graph{*/
-  /*margin-left: 40px;*/
-  /*width: 500px;*/
-  /*position: sticky;*/
-  /*top: 0px;*/
-  /*float: right;*/
-/*}*/
-
-/*@media (max-width: 925px)  {*/
-  /*#graph{*/
-    /*width: 100%;*/
-    /*margin-left: 0px;*/
-    /*float: none;*/
-  /*}*/
-
-  /*#sections{*/
-    /*position: relative;*/
-    /*margin: 0px auto;*/
-    /*padding-top: 400px;*/
-  /*}*/
-/*}*/
-
-
-/**/
-
 .tile-wrapper {
     height: 780px;
     position: relative;
@@ -88,21 +53,6 @@ strong {
 .annotated-text {
     cursor: pointer;
 }
-
-/*.viz-area {*/
-    /*position: sticky;*/
-    /*top; 0;*/
-/*}*/
-
-/*#map-tile {*/
-	/*position: fixed;*/
-/*}*/
-
-/*#flowchart-tile {*/
-	/*position: fixed;*/
-	/*!*top: 800px;*!*/
-/*}*/
-
 
 @media (hover: none) .d3-tip {
 	overflow-y: auto;
@@ -384,12 +334,3 @@ select.other, span.other {
 #flowchart-tile.group-label {
 	z-index: 20;
 }
-
-
-/*#total-complaints {*/
-	/**/
-/*}*/
-
-/*#total-investigations {*/
-	/**/
-/*}*/

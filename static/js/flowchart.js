@@ -396,6 +396,9 @@ FlowChart.prototype.returnTile = function() {
     d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
         d.remove();
     });
+    vis.svg.call(vis.tip);
+
+    vis.tip.hide();
 
     vis.featuredTile
         .transition("return-tile-size")
