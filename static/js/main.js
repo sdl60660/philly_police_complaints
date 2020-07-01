@@ -183,7 +183,7 @@ function initSlider(maxDate) {
             startRange = addMonths(startDate, ui.values[0]);
             endRange = addMonths(startDate, ui.values[1]);
 
-            updateCharts();
+            updateFlowchartDates();
         }
     })
 
@@ -216,17 +216,25 @@ $(window)
 
 
 function step() {
+
     endRange = monthDiff(startDate, endRange) >= maxDateOffset ? addMonths(startRange, 1) : addMonths(endRange, 1);
     
     var sliderValue = monthDiff(startDate, endRange);
     $("#slider-div")
         .slider("values", 1, sliderValue);
     
-    updateCharts();
+    updateFlowchartDates();
+
+    if (monthDiff(startDate, endRange) === maxDateOffset) {
+        $("#play-button")
+            .text("▶");
+        clearInterval(interval);
+    };
+
 }
 
 
-function updateCharts() {
+function updateFlowchartDates() {
     $("#start-date-display")
         .text(d3.timeFormat("%B %Y")(startRange));
 
@@ -527,7 +535,6 @@ scroll.on('progress', function(index, progress) {
         existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
         // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
-        // updateCharts();
     }
 
     // console.log(index, progress);

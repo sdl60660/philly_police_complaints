@@ -229,12 +229,12 @@ strong {
 	border-radius: 5px;
 	border: 1px solid black;
 	z-index: 100;
-    line-height: 1;
     padding: 12px;
 }
 
 .d3-tip {
     position: fixed;
+    line-height: 1;
 }
 
 .annotation-li {
