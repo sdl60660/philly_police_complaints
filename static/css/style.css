@@ -302,7 +302,11 @@ select.other, span.other {
 
 
 .chosen-container-div {
-	margin-top: 20px;
+	/*margin-top: 20px;*/
+}
+
+.chosen-container {
+    margin-top: 5px;
 }
 
 .chosen-choices {
