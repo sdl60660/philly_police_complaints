@@ -432,6 +432,11 @@ function showFlowchartByRace() {
 
     // $(".d3.tip").css("top", "");
     if (scrollDirection === 'down') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            d.remove();
+        });
+        flowChart.svg.call(flowChart.tip);
+
         flowChart.returnTile();
 
         sleep(600).then(() => {

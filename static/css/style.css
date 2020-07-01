@@ -222,7 +222,7 @@ strong {
 	padding-right: 3px;
 }
 
-.d3-tip, #annotation-tooltip {
+.d3-tip, #annotation-tooltip, #category-tooltip {
     max-width: 400px;
 	background-color: white;
 	color: black;

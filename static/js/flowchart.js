@@ -102,74 +102,52 @@ FlowChart.prototype.initVis = function() {
         "Discipline Pending": Math.round(vis.blockGroupWidth)
     }
 
-    vis.outcomeLabels = {}
-    vis.outcomeCounts = {}
+    vis.outcomeLabels = vis.g.selectAll("text")
+        .data(Object.keys(vis.outcomeCoordinates))
+        .enter()
+        .append("text")
+        .attr("class", function(d) {
+            return "group-label " + formatSpacedStrings(d);
+        })
+        .attr("x", function(d) {
+            return vis.outcomeCoordinates[d][0] + (vis.trueBlockWidth * vis.colWidths[d] / 2);
+        })
+        .attr("y", function(d) {
+            return vis.outcomeCoordinates[d][1] - 30;
+        })
+        .attr("text-anchor", "middle")
+        .style("font-size", function(d) {
+            if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(d)) {
+                return "12pt";
+            }
+            else {
+                return "9pt";
+            }
+        })
+        .on("mousemove", function() {
+            const tooltipSelect = $("#category-tooltip");
 
-    // var outcomeLabels = vis.g.append("text")
-    //     .data(Object.keys(vis.outcomeCoordinates))
-    //     .enter()
-    //     .attr("class", function(d) {
-    //         return "group-label " + formatSpacedStrings(d);
-    //     })
-    //     .attr("x", function(d) {
-    //         return vis.outcomeCoordinates[d][0] + (vis.trueBlockWidth * vis.colWidths[d] / 2);
-    //     })
-    //     .attr("y", function(d) {
-    //         return vis.outcomeCoordinates[d][1] - 30;
-    //     })
-    //     .attr("text-anchor", "middle")
-    //     .style("font-size", function(d) {
-    //         if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(d)) {
-    //             return "12pt";
-    //         }
-    //         else {
-    //             return "9pt";
-    //         }
-    //     })
-    //     .on("mouseenter", function(d) {
-    //         console.log(d);
-    //     })
-    //     .on("mouseout", function() {
-    //         console.log("out");
-    //     })
-    //     .text(function(d) {
-    //         return d;
-    //     });
+            tooltipSelect
+                .html(vis.updateCounts($(this).text()));
 
-    for (let [key, value] of Object.entries(vis.outcomeCoordinates)) {
-        var outcomeLabel = vis.g.append("text")
-            .attr("class", "group-label " + formatSpacedStrings(key))
-            .attr("x", value[0] + (vis.trueBlockWidth * vis.colWidths[key] / 2))
-            .attr("y", value[1] - 30)
-            .attr("text-anchor", "middle")
-            .style("font-size", function() {
-                if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(key)) {
-                    return "12pt";
-                }
-                else {
-                    return "9pt";
-                }
-            })
-            .on("mouseenter", function() {
-                console.log($(this).text());
-            })
-            .on("mouseout", function() {
-                console.log("out");
-            })
-            .text(key)
+            let xOffset = event.pageX - tooltipSelect.width()/2;
+            if (xOffset < 0) {
+                xOffset += -1 * xOffset;
+            }
 
-        // var svgW
-        var labelWidth = outcomeLabel.node().getBBox().width + outcomeLabel.node().getBBox().x;
-
-        vis.outcomeLabels[key] = outcomeLabel;
-        vis.outcomeCounts[key] = vis.g.append("text")
-                                    .attr("class", "outcome-counts " + formatSpacedStrings(key))
-                                    .attr("x", labelWidth - 10)
-                                    .attr("y", value[1] - 60)
-                                    .attr("text-anchor", "start")
-                                    .style("font-size", "7pt")
-                                    .text("")
-    }
+            tooltipSelect
+                .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
+                .css("opacity", 1.0)
+                .css("z-index", 100);
+        })
+        .on("mouseout", function() {
+            $("#category-tooltip")
+                .css("opacity", 0.0)
+                .css("z-index", -1);
+        })
+        .text(function(d) {
+            return d;
+        });
 
     vis.incidentTypes = ['Departmental Violations', 'Lack Of Service', 'Physical Abuse',  'Verbal Abuse','Unprofessional Conduct', 'Criminal Allegation', 'Harassment','Civil Rights Complaint','Domestic', 'Falsification', 'Sexual Crime/Misconduct','Drugs']
 
@@ -652,40 +630,37 @@ FlowChart.prototype.setSummaryTooltips = function() {
 }
 
 
-FlowChart.prototype.updateCounts = function() {
+FlowChart.prototype.updateCounts = function(outcome) {
     var vis = this;
 
-    Object.keys(vis.outcomeCoordinates).forEach(function(outcome) {
-        var outputString = '';
-        var labelX = vis.outcomeLabels[outcome].node().getBoundingClientRect().width + vis.outcomeCoordinates[outcome][0];
+    var outputString = '';
 
-        var stateVar = 'end_state'
-        if (outcome == 'Sustained Finding') {
-            stateVar = 'investigative_findings';
+    var stateVar = 'end_state'
+    if (outcome === 'Sustained Finding') {
+        stateVar = 'investigative_findings';
+    }
+
+    vis.representedVals[vis.representedAttribute].forEach(function(group) {
+        var groupCount = vis.chartData.filter(function(d) {
+            return d[stateVar] === outcome && d[vis.representedAttribute] === group;
+        }).length;
+
+        var groupTotal = vis.chartData.filter(function(d) {
+            return d[vis.representedAttribute] === group;
+        }).length;
+        // var groupTotal = vis.finalOutcomeIndices[outcome]
+
+        if (groupTotal > 0) {
+            var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
+        }
+        else {
+            var percentageVal = '';
         }
 
-        vis.representedVals.forEach(function(group) {
-            var groupCount = vis.chartData.filter(function(d) {
-                return d[stateVar] == outcome && d[vis.representedAttribute] == group;
-            }).length
-
-            var groupTotal = vis.chartData.filter(function(d) {
-                return d[vis.representedAttribute] == group;
-            }).length
-            // var groupTotal = vis.finalOutcomeIndices[outcome]
-
-            if (groupTotal > 0) {
-                var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
-            }
-            else {
-                var percentageVal = '';
-            }
-
-            outputString += '<tspan x=' + labelX + ' style="fill:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</tspan>';
-        })
-        vis.outcomeCounts[outcome]
-            .html(outputString);
+        outputString += '<span' + ' style="color:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</span><br>';
     })
+
+    return outputString;
 }
 
 
