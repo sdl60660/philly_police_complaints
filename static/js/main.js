@@ -72,7 +72,11 @@ const textAnnotations = {
     'black': "Classified by PPD as 'black'",
     'latinx': "Classified by PPD as 'latino'",
     'other': "Includes less frequent race/ethnicity classification by PPD, as well as cases with multiple complainants" +
-    " of different races/ethnicities"
+    " of different races/ethnicities",
+
+    'last public update': "The city only publishes complaint data for the trailing five years. This means that for cases more than " +
+    "five years old, no further updates are publicly available through the data portal. This means that technically, in 2020, we don't know " +
+    "the lastest details of a pending investigation for certain, but we do know that it remained pending for at least five years."
 };
 
  // jQuery to move div and create pop-up tooltip with annotation
@@ -405,6 +409,7 @@ function highlightTile() {
 
         flowChart.highlightTile(1212);
     }
+
     else if (scrollDirection === 'up') {
         $("#sort-feature-select").val("no_group").trigger("chosen:updated");
         // flowChart.representedAttribute = 'no_group';
@@ -417,13 +422,38 @@ function highlightTile() {
 function showFlowchartByRace() {
 
     // $(".d3.tip").css("top", "");
-    flowChart.returnTile();
+    if (scrollDirection === 'down') {
+        flowChart.returnTile();
 
-    sleep(600).then(() => {
-        $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
-        // flowChart.representedAttribute = 'complainant_race';
-        flowChart.wrangleData()
-    })
+        sleep(600).then(() => {
+            $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
+            // flowChart.representedAttribute = 'complainant_race';
+            flowChart.wrangleData()
+        })
+    }
+    else if (scrollDirection === 'up') {
+        flowChart.returnTileSections();
+    }
+
+}
+
+function highlightOverduePending() {
+    startRange = startDate;
+    endRange = new Date("Jan 01 2018");
+
+    var sliderEndValue = monthDiff(startDate, endRange);
+    $("#slider-div")
+        .slider("values", 0, 0)
+        .slider("values", 1, sliderEndValue);
+
+    $("#start-date-display")
+        .text(d3.timeFormat("%B %Y")(startRange));
+
+    $("#end-date-display")
+        .text( d3.timeFormat("%B %Y")(endRange));
+
+    flowChart.wrangleData();
+    flowChart.highlightTileSection("Investigation Pending");
 
 }
 
@@ -515,7 +545,7 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
-const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 300;
+const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 250;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight)
 
@@ -523,7 +553,9 @@ $("#sunburst-wrapper")
 activateFunctions[8] = flowchartEntrance;
 activateFunctions[9] = highlightTile;
 activateFunctions[10] = showFlowchartByRace;
-const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 400;
+activateFunctions[11] = highlightOverduePending;
+
+const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 500;
 // console.log(flowChartWrapperHeight);
 // contst flowChartWrapperHeight = 3000;
 $("#flowchart-wrapper")
@@ -582,15 +614,15 @@ Promise.all(promises).then(function(allData) {
 
 
     // if (phoneBrowsing === false) {
-        $(".select")
-            .chosen()
-            .on('change', function (event) {
-                flowChart.wrangleData();
-            });
-
-        $('.chosen-select').on('change', function (event) {
+    $(".select")
+        .chosen()
+        .on('change', function (event) {
             flowChart.wrangleData();
         });
+
+    $('.chosen-select').on('change', function (event) {
+        flowChart.wrangleData();
+    });
     // }
 
     // districtMap = new DistrictMap("#map-area");

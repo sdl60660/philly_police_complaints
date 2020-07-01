@@ -125,7 +125,7 @@
             <div class="title">White Complainant/Black Officer</div>
             <div class="body">
                 Conversely, investigations against <span class="annotated-text category-text black">Black</span> officers
-                filed by <span class="annotated-text category-text white">White</span> complainants are <strong style="text-decoration: underline">6.5 times
+                filed by <span class="annotated-text category-text white">White</span> complainants are <strong style="text-decoration: underline">six-and-a-half times
                 more likely</strong> to result in a guilty finding than those filed against <span class="category-text white">White</span>
                 officers by <span class="annotated-text category-text black">Black</span> complainants.
                 <br><br>
@@ -139,7 +139,7 @@
         <section class="step">
             <div class="title">The Full Picture</div>
             <div class="body">
-                This flowchart represents each disciplinary investigation as a single tile.
+                This visual represents each disciplinary investigation as a single tile.
                 <br><br>
                 They can be filtered by date, using the timeline at the top or by type of investigation, using the options on the top-right.
             </div>
@@ -169,6 +169,18 @@
                 (trailing only whether the officer was white).
                 <br><br>
                 Hover over the section headers for summary information. Use the dropdown on the legend box (top-left) to change the feature the tiles are sorted on.
+            </div>
+        </section>
+        <div class="mobile-spacer"></div>
+        <section class="step">
+            <div class="title">Overdue Investigations</div>
+            <div class="body">
+                According to <a href="https://www.phila.gov/phils/Docs/Inventor/graphics/execorders/93-09.htm">Philadelphia Law</a>,
+                investigations must be completed by Internal Affairs within seventy-five days of the complaint filing date.
+                <br><br>
+                The tiles have been filtered to include only investigations with complaint dates at least two years old. Despite that,
+                there are over three dozen investigations that are still pending (or were still pending as of the city's
+                <span style="background-color: rgba(245, 229, 27, 0.5)" class="annotated-text">last public update</span>).
             </div>
         </section>
         <div class="mobile-spacer"></div>
@@ -238,7 +250,6 @@
                         <option value="latino">Latinx</option>
                         <option value="other">other</option>
                     </select>
-    {#                <span id="sunburst-po-race" value="po_race">[white]</span>#}
                     officers receive complaints from
                     <select class="sunburst-select" id="sunburst-complainant-race" value="complainant_race">
                         <option value="all">all</option>
@@ -295,13 +306,14 @@
                     <div class="col-md-10 col-sm-9" id="slider-div"></div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-3" class="chosen-container-div">
-                <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:300px;" tabindex="4" id="incident-type-select"></select>
+            <div class="col-md-3 col-sm-3" class="chosen-container-div" style="text-align:center;">
+                <div class="row" style="text-align: center; font-size: 11pt; width: 100%;">Complaint Classification</div>
+                <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:100%;" tabindex="4" id="incident-type-select"></select>
             </div>
         </div>
         <div class="row">
             <div class="col-md-1"></div>
-            <div class="col-md-10 col-sm-12" id="chart-area" style="width:100%; margin-top: -75px;"></div>
+            <div class="col-md-10 col-sm-12" id="chart-area" style="width:100%; margin-top: -55px;"></div>
             <div class="col-md-1"></div>
         </div>
     </div>

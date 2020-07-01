@@ -411,7 +411,30 @@ FlowChart.prototype.returnTile = function() {
             .attr("stroke", "none")
             .style("opacity", 0.8)
             .attr("box-shadow", "none");
-}
+};
+
+
+FlowChart.prototype.highlightTileSection = function(sectionName) {
+    const vis = this;
+
+    vis.flowchart
+        .style("fill-opacity", function(d) {
+            if (d.end_state === sectionName) {
+                return 1.0;
+            }
+            else {
+                return 0.3;
+            }
+        });
+};
+
+
+FlowChart.prototype.returnTileSections = function() {
+    const vis = this;
+
+    vis.flowchart
+        .style("fill-opacity", 0.8);
+};
 
 
 FlowChart.prototype.repositionTooltip = function() {
