@@ -547,10 +547,6 @@ FlowChart.prototype.setComplaintTypes = function() {
 FlowChart.prototype.updateComplaintTypes = function() {
     var vis = this;
 
-    // vis.selectedComplaintTypes = Array.from(
-    //     $('#incident-type-select :selected').map((d,i) => $(i).val())
-    // );
-
     vis.selectedComplaintTypes.forEach(function(d) {
         var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
         $(("#incident-type-select option#" + formatSpacedStrings(d))).text((d + ' (' + numInstances + ')'));
@@ -624,40 +620,46 @@ FlowChart.prototype.setSummaryTooltips = function() {
             }
         );
 
-
     vis.svg.call(vis.summaryTip);
 
 }
 
 
 FlowChart.prototype.updateCounts = function(outcome) {
-    var vis = this;
+    const vis = this;
 
-    var outputString = '';
+    let outputString = '';
 
-    var stateVar = 'end_state'
+    let stateVar = 'end_state'
     if (outcome === 'Sustained Finding') {
         stateVar = 'investigative_findings';
     }
 
+    const fullGroupCount = vis.chartData.filter(function(d) {
+        return d[stateVar] === outcome;
+    }).length
+    const fullGroupTotal = vis.chartData.length;
+
+    let percentageVal = ' (' + d3.format('.1f')(100 * (fullGroupCount / fullGroupTotal)) + '%)';
+    outputString += '<span' + '>' + "total: " + fullGroupCount + '/' + fullGroupTotal + percentageVal + '</span><br>';
+
     vis.representedVals[vis.representedAttribute].forEach(function(group) {
-        var groupCount = vis.chartData.filter(function(d) {
+        let groupCount = vis.chartData.filter(function(d) {
             return d[stateVar] === outcome && d[vis.representedAttribute] === group;
         }).length;
 
-        var groupTotal = vis.chartData.filter(function(d) {
+        let groupTotal = vis.chartData.filter(function(d) {
             return d[vis.representedAttribute] === group;
         }).length;
-        // var groupTotal = vis.finalOutcomeIndices[outcome]
 
         if (groupTotal > 0) {
-            var percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
+            percentageVal = ' (' + d3.format('.1f')(100 * (groupCount / groupTotal)) + '%)';
         }
         else {
-            var percentageVal = '';
+            percentageVal = '';
         }
 
-        outputString += '<span' + ' style="color:' + vis.color(group) + ';" dy="1.2em">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</span><br>';
+        outputString += '<span' + ' style="color:' + vis.color(group) + ';">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</span><br>';
     })
 
     return outputString;
