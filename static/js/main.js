@@ -74,9 +74,10 @@ const textAnnotations = {
     'other': "Includes less frequent race/ethnicity classification by PPD, as well as cases with multiple complainants" +
     " of different races/ethnicities",
 
-    'last public update': "The city only publishes complaint data for the trailing five years. This means that for cases more than " +
-    "five years old, no further updates are publicly available through the data portal. This means that technically, in 2020, we don't know " +
-    "the lastest details of a pending investigation for certain, but we do know that it remained pending for at least five years."
+    'last public update': "The city only publishes data for complaints filed within the past five years. For cases more than " +
+    "five years old, no further updates are publicly available through the data portal. This means that technically, in 2020, " +
+    "we don't necessarily know the latest details of a pending investigation from 2014, but we do know that it remained pending " +
+    "for at least five years."
 };
 
  // jQuery to move div and create pop-up tooltip with annotation
