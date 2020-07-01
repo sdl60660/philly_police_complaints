@@ -531,13 +531,7 @@ FlowChart.prototype.setToolTips = function() {
                 var summaryText = d.shortened_summary;
             }
 
-            // if (summaryText.length > 500 && phoneBrowsing === false) {
-            //     summaryText = summaryText.slice(0, summaryText.slice(0, 500).lastIndexOf(" ")) + "... (click for more)";
-            // }
-
             tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
-
-
 
             tipText += "</div>";
 
@@ -560,6 +554,8 @@ FlowChart.prototype.setComplaintTypes = function() {
     $(".chosen-select")
         .chosen()
         .on('change', function () {
+            vis.selectedComplaintTypes = $(".chosen-select").chosen().val();
+            console.log(vis.selectedComplaintTypes);
             vis.wrangleData();
         });
 
@@ -573,9 +569,9 @@ FlowChart.prototype.setComplaintTypes = function() {
 FlowChart.prototype.updateComplaintTypes = function() {
     var vis = this;
 
-    vis.selectedComplaintTypes = Array.from(
-        $('#incident-type-select :selected').map((d,i) => $(i).val())
-    );
+    // vis.selectedComplaintTypes = Array.from(
+    //     $('#incident-type-select :selected').map((d,i) => $(i).val())
+    // );
 
     vis.selectedComplaintTypes.forEach(function(d) {
         var numInstances = vis.chartData.filter(function(x) {return x.general_cap_classification == d}).length;
