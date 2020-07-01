@@ -343,3 +343,16 @@ select.other, span.other {
 #flowchart-tile.group-label {
 	z-index: 20;
 }
+
+
+.footer {
+	margin-top: 40px;
+	margin-bottom: 60px;
+    font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+.icon-img {
+	height: 13px;
+	width: 13px;
+	margin-bottom: 2px;
+}
