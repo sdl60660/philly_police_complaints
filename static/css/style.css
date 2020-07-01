@@ -232,6 +232,10 @@ strong {
     padding: 12px;
 }
 
+#category-tooltip {
+    line-height: 1;
+}
+
 .d3-tip {
     position: fixed;
     line-height: 1;

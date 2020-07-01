@@ -641,7 +641,11 @@ FlowChart.prototype.updateCounts = function(outcome) {
     const fullGroupTotal = vis.chartData.length;
 
     let percentageVal = ' (' + d3.format('.1f')(100 * (fullGroupCount / fullGroupTotal)) + '%)';
-    outputString += '<span' + '>' + "total: " + fullGroupCount + '/' + fullGroupTotal + percentageVal + '</span><br>';
+    outputString += '<span' + '>' + '<span style="text-decoration: underline">total</span>: ' + fullGroupCount + '/' + fullGroupTotal + percentageVal + '</span><br>';
+
+    if (vis.representedAttribute === 'no_group') {
+        return outputString;
+    }
 
     vis.representedVals[vis.representedAttribute].forEach(function(group) {
         let groupCount = vis.chartData.filter(function(d) {
@@ -659,7 +663,7 @@ FlowChart.prototype.updateCounts = function(outcome) {
             percentageVal = '';
         }
 
-        outputString += '<span' + ' style="color:' + vis.color(group) + ';">' + group + ': ' + groupCount + '/' + groupTotal + percentageVal + '</span><br>';
+        outputString += '<span' + ' style="color:' + vis.color(group) + ';"><span style="text-decoration: underline">' + group + '</span>: ' + groupCount + '/' + groupTotal + percentageVal + '</span><br>';
     })
 
     return outputString;
