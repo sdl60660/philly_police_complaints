@@ -620,9 +620,11 @@ Promise.all(promises).then(function(allData) {
             flowChart.wrangleData();
         });
 
-    $('.chosen-select').on('change', function (event) {
-        flowChart.wrangleData();
-    });
+    // $('.chosen-select')
+    //     .chosen()
+    //     .on('change', function (event) {
+    //     flowChart.wrangleData();
+    // });
     // }
 
     // districtMap = new DistrictMap("#map-area");

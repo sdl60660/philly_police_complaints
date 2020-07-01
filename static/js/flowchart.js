@@ -286,7 +286,7 @@ FlowChart.prototype.updateVis = function() {
         .enter()
             .append("rect")
                 .attr("class", "complaint-box")
-                .style("opacity", 0.8)
+                .style("fill-opacity", 0.9)
                 .attr("y", -100)
                 .attr("x", vis.col2x + vis.trueBlockWidth * vis.colWidths["No Sustained Findings"]/2)
                 .attr("height", vis.blockSize)
@@ -306,7 +306,9 @@ FlowChart.prototype.updateVis = function() {
                     vis.tip.show(d);
                 })
                 .on("mouseout", function(d) {
-                    $(".d3-tip").css('opacity', 0).css('pointer-events', 'none');
+                    $(".d3-tip")
+                        .css('opacity', 0)
+                        .css('pointer-events', 'none');
                 })
                 .transition()
                     .duration(400)
@@ -349,7 +351,7 @@ FlowChart.prototype.updateVis = function() {
                 .attr("width", vis.blockSize)
                 .attr("stroke-width", 0)
                 .attr("stroke", "none")
-                .style("opacity", 0.8);
+                .style("fill-opacity", 0.9);
 
 }
 
@@ -435,7 +437,7 @@ FlowChart.prototype.returnTileSections = function() {
     const vis = this;
 
     vis.flowchart
-        .style("fill-opacity", 0.8);
+        .style("fill-opacity", 0.9);
 };
 
 
@@ -557,6 +559,9 @@ FlowChart.prototype.setComplaintTypes = function() {
 
     $(".chosen-select")
         .chosen()
+        .on('change', function () {
+            vis.wrangleData();
+        });
 
     vis.selectedComplaintTypes = Array.from(
         $('#incident-type-select :selected').map((d,i) => $(i).val())
