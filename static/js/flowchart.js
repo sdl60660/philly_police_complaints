@@ -418,7 +418,7 @@ FlowChart.prototype.highlightTileSection = function(sectionName) {
     const vis = this;
 
     vis.flowchart
-        .transition()
+        .transition("fade-opacity")
         .duration(600)
         .style("fill-opacity", function(d) {
             if (d.end_state === sectionName) {
