@@ -215,6 +215,11 @@ $(window)
         if (timeline) {
             timeline.updateDimensions();
         }
+
+        // if (1500 > window.innerWidth > 1200) {
+        //     ("#flowchart-wrapper")
+        //         .css("margin-left", "310px");
+        // }
     })
 
 
@@ -674,6 +679,12 @@ Promise.all(promises).then(function(allData) {
     if (startingOffset > 5) {
         catchupPagePosition(startingOffset)
     }
+
+    // if (1500 > window.innerWidth > 1200) {
+    //         ("#flowchart-wrapper")
+    //             .css("margin-left", "310px");
+    //     }
+
     // districtMap = new DistrictMap("#map-area");
 
 });

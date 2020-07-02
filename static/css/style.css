@@ -147,6 +147,10 @@ strong {
     /*margin-right: 100px;*/
 /*}*/
 
+#flowchart-wrapper {
+    margin-left: 310px;
+}
+
 @media (max-width: 1200px) {
     #sections {
         /*position: fixed;*/
@@ -194,6 +198,10 @@ strong {
     .container {
         width: 95% !important;
         padding-right: 25px !important;
+    }
+
+    #flowchart-wrapper {
+        margin-left: unset;
     }
 
     #flowchart-tile {
