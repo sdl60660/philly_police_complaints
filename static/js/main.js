@@ -578,7 +578,7 @@ function setDynamicPadding(tileID, startIndex, endIndex) {
         }
     });
 
-    $(${tileID})
+    $(tileID)
         .css("padding-top", maxAnnotationHeight);
 
     console.log(maxAnnotationHeight);
