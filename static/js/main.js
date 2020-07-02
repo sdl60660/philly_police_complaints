@@ -398,6 +398,7 @@ function guiltyWhiteComplainantBlackOfficer() {
         d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
             d.remove();
         });
+        flowChart.svg.call(flowChart.tip);
     }
 
     sunburst.removeOutlineSections();
@@ -466,6 +467,14 @@ function showFlowchartByRace() {
 }
 
 function highlightOverduePending() {
+
+    if (scrollDirection === 'down') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            d.remove();
+        });
+        flowChart.svg.call(flowChart.tip);
+    }
+
     $(".chosen-select").chosen().val(flowChart.incidentTypes).trigger("chosen:updated");
     flowChart.selectedComplaintTypes = flowChart.incidentTypes;
 
@@ -490,6 +499,13 @@ function highlightOverduePending() {
 }
 
 function showComplaintTypes() {
+    if (scrollDirection === 'down') {
+        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+            d.remove();
+        });
+        flowChart.svg.call(flowChart.tip);
+    }
+
     const selectedVals = ['Physical Abuse', 'Criminal Allegation', 'Verbal Abuse', 'Sexual Crime/Misconduct', 'Civil Rights Complaint'];
     $(".chosen-select").chosen().val(selectedVals).trigger("chosen:updated");
     flowChart.selectedComplaintTypes = selectedVals;
