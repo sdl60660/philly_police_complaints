@@ -37,7 +37,7 @@ FlowChart.prototype.initVis = function() {
          vis.blockSize = 4.5;
          vis.blockGroupWidth = 42;
     }
-    
+
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
