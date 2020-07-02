@@ -608,7 +608,7 @@ activateFunctions[10] = showFlowchartByRace;
 activateFunctions[11] = highlightOverduePending;
 activateFunctions[12] = showComplaintTypes;
 
-const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 600;
+const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 800;
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight);
 
