@@ -397,17 +397,33 @@ FlowChart.prototype.returnTile = function() {
 FlowChart.prototype.highlightTileSection = function(sectionName) {
     const vis = this;
 
+    // const enterGroup = vis.flowchart
+    //     .enter()
+    //     .transition("fade-opacity")
+    //         .duration(600)
+    //         .style("fill-opacity", function(d) {
+    //             if (d.end_state === sectionName) {
+    //                 return 1.0;
+    //             }
+    //             else {
+    //                 return 0.3;
+    //             }
+    //         });
+
+    // console.log(enterGroup)
+
     vis.flowchart
         .transition("fade-opacity")
-        .duration(600)
-        .style("fill-opacity", function(d) {
-            if (d.end_state === sectionName) {
-                return 1.0;
-            }
-            else {
-                return 0.3;
-            }
-        });
+            .duration(600)
+            .style("fill-opacity", function(d) {
+                if (d.end_state === sectionName) {
+                    return 1.0;
+                }
+                else {
+                    return 0.3;
+                }
+            });
+
 };
 
 
@@ -608,21 +624,6 @@ FlowChart.prototype.updateLegend = function() {
         .style("alignment-baseline", "middle");
 
 };
-
-FlowChart.prototype.setSummaryTooltips = function() {
-    var vis = this;
-
-    vis.summaryTip = d3.tip()
-        .attr("class", "section-summary-tip")
-        .offset()
-        .html( function(d) {
-
-            }
-        );
-
-    vis.svg.call(vis.summaryTip);
-
-}
 
 
 FlowChart.prototype.updateCounts = function(outcome) {

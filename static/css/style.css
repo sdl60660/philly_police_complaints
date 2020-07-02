@@ -134,6 +134,10 @@ strong {
     font-size: 14px;
 }
 
+/*#sunburst-wrapper {*/
+    /*margin-bottom: 150px;*/
+/*}*/
+
 /*#flowchart-tile {*/
     /*margin-right: 100px;*/
 /*}*/
@@ -362,12 +366,19 @@ select.other, span.other {
 	margin-bottom: 2px;
 }
 
+/*hr {*/
+    /*background-color: #eee;*/
+    /*border: 0 none;*/
+    /*color: #444444;*/
+    /*height: 1px;*/
+/*}*/
+
 
 /*Scroll Arrow at Top of Page*/
 
 .downArrow{
 	position: absolute;
-	bottom: 5%;
+	bottom: 8%;
 	left: 50%;
 }
 

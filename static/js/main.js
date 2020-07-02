@@ -452,6 +452,9 @@ function showFlowchartByRace() {
 }
 
 function highlightOverduePending() {
+    $(".chosen-select").chosen().val(flowChart.incidentTypes).trigger("chosen:updated");
+    flowChart.selectedComplaintTypes = flowChart.incidentTypes;
+
     startRange = startDate;
     endRange = new Date("Jan 01 2018");
 
@@ -468,6 +471,29 @@ function highlightOverduePending() {
 
     flowChart.wrangleData();
     flowChart.highlightTileSection("Investigation Pending");
+
+}
+
+function showComplaintTypes() {
+    const selectedVals = ['Physical Abuse', 'Criminal Allegation', 'Verbal Abuse', 'Sexual Crime/Misconduct', 'Civil Rights Complaint'];
+    $(".chosen-select").chosen().val(selectedVals).trigger("chosen:updated");
+    flowChart.selectedComplaintTypes = selectedVals;
+
+    startRange = startDate;
+    endRange = addMonths(startDate, maxDateOffset);
+
+    var sliderEndValue = monthDiff(startDate, endRange);
+    $("#slider-div")
+        .slider("values", 0, 0)
+        .slider("values", 1, sliderEndValue);
+
+    $("#start-date-display")
+        .text(d3.timeFormat("%B %Y")(startRange));
+
+    $("#end-date-display")
+        .text( d3.timeFormat("%B %Y")(endRange));
+
+    flowChart.wrangleData();
 
 }
 
@@ -546,7 +572,6 @@ scroll.on('progress', function(index, progress) {
 })
 
 
-// var activateFunctions = ['filler'];         // fix this later
 var scrollerDivs = $(scrollerDiv);
 var activateFunctions = [];
 activateFunctions[0] = displayIntroText;
@@ -558,7 +583,8 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
-const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 250;
+
+const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 450;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight)
 
@@ -567,10 +593,9 @@ activateFunctions[8] = flowchartEntrance;
 activateFunctions[9] = highlightTile;
 activateFunctions[10] = showFlowchartByRace;
 activateFunctions[11] = highlightOverduePending;
+activateFunctions[12] = showComplaintTypes;
 
-const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 500;
-// console.log(flowChartWrapperHeight);
-// contst flowChartWrapperHeight = 3000;
+const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 600;
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight)
 
@@ -589,6 +614,12 @@ if (phoneBrowsing === true) {
     // console.log(maxAnnotationHeight);
 }
 
+$("#sunburst-tile")
+    .css("opacity", 0.2);
+
+$("#flowchart-tile")
+    .css("opacity", 0.2);
+
 
 var promises = [
     d3.json("static/data/complaint_discipline_viz_data.json"),
@@ -600,19 +631,10 @@ Promise.all(promises).then(function(allData) {
     officerDisciplineResults = allData[0];
     districtGeoJSON = allData[1];
 
-    // console.log(officerDisciplineResults);
-
-    $("#sunburst-tile")
-        .css("opacity", 0.2);
-
-    $("#flowchart-tile")
-        .css("opacity", 0.2);
-
     var datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
         return new Date(d.date_received);
     });
 
-    // var maxDateOffset = (datasetDateRange[1].getTime() - datasetDateRange[0].getTime()) / (1000 * 3600 * 24);
     maxDateOffset = monthDiff(datasetDateRange[0], datasetDateRange[1]);
 
     initSlider(maxDateOffset);
@@ -625,21 +647,13 @@ Promise.all(promises).then(function(allData) {
     flowChart = new FlowChart("#chart-area");
     timeline = new Timeline("#slider-div");
 
-
-    // if (phoneBrowsing === false) {
     $(".select")
         .chosen()
         .on('change', function (event) {
             flowChart.wrangleData();
         });
 
-    // $('.chosen-select')
-    //     .chosen()
-    //     .on('change', function (event) {
-    //     flowChart.wrangleData();
-    // });
-    // }
-
+    displayIntroText();
     // districtMap = new DistrictMap("#map-area");
 
 });
