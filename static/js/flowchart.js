@@ -29,11 +29,19 @@ FlowChart.prototype.initVis = function() {
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.blockSize = 5;
+    if (phoneBrowsing === true || window.innerHeight > 910) {
+        vis.blockSize = 5;
+        vis.blockGroupWidth = 40;
+    }
+    else {
+         vis.blockSize = 4.5;
+         vis.blockGroupWidth = 42;
+    }
+    
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
-    vis.blockGroupWidth = 41;
+
     vis.fullBlockWidth = vis.blockGroupWidth*vis.trueBlockWidth;
 
     vis.highlightRectScalar = 10;
@@ -72,8 +80,8 @@ FlowChart.prototype.initVis = function() {
         .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(endRange))
 
-    vis.col1x = 0;
-    vis.col2x = 169;
+    vis.col1x = 2;
+    vis.col2x = 175;
     vis.col3x = 700;
 
     vis.row1y = -35;
@@ -87,7 +95,7 @@ FlowChart.prototype.initVis = function() {
         "Guilty Finding": [vis.col3x, vis.row1y + 55],
         "Training/Counseling": [vis.col3x, vis.row1y + 175],
         "No Guilty Findings": [vis.col3x, vis.row1y + 395],
-        "Discipline Pending": [vis.col3x, vis.row1y + 525]
+        "Discipline Pending": [vis.col3x, vis.row1y + 485]
     }
 
     vis.colWidths = {
@@ -156,7 +164,7 @@ FlowChart.prototype.initVis = function() {
         .attr("x", vis.col3x + 25)
         .attr("y", vis.row1y + 80)
         .attr("width", vis.fullBlockWidth*1.1)
-        .attr("height", 620)
+        .attr("height", 575)
         .attr("stroke-width", "1px")
         .attr("stroke", "black")
         .attr("fill", "rgba(255,255,255,0.5)")
