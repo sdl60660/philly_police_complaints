@@ -371,11 +371,6 @@ FlowChart.prototype.highlightTile = function(index) {
 FlowChart.prototype.returnTile = function() {
     const vis = this;
 
-    d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-        d.remove();
-    });
-    vis.svg.call(vis.tip);
-
     vis.tip.hide();
 
     vis.featuredTile
@@ -389,7 +384,14 @@ FlowChart.prototype.returnTile = function() {
             .attr("stroke", "none")
             .style("opacity", 0.8)
             .attr("box-shadow", "none")
-        .on("end", vis.wrangleData());
+        .on("end", function() {
+            d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+                d.remove();
+            });
+            vis.svg.call(vis.tip);
+
+            vis.wrangleData()
+        });
 };
 
 
