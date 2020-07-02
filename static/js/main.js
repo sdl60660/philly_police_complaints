@@ -281,9 +281,11 @@ function updateFlowchartDates() {
     $("#end-date-display")
         .text( d3.timeFormat("%B %Y")(endRange));
 
-    var sliderValue = monthDiff(startDate, endRange);
+    var startSliderValue = monthDiff(startDate, startRange);
+    var endSliderValue = monthDiff(startDate, endRange);
     $("#slider-div")
-        .slider("values", 1, sliderValue);
+        .slider("values", 0, startSliderValue)
+        .slider("values", 1, endSliderValue);
 
     flowChart.wrangleData();
 }
@@ -471,7 +473,6 @@ function highlightTile() {
 
 function showFlowchartByRace() {
 
-    // $(".d3.tip").css("top", "");
     $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
 
     if (scrollDirection === 'down') {
@@ -483,21 +484,11 @@ function showFlowchartByRace() {
         flowChart.returnTile();
     }
     else if (scrollDirection === 'up') {
+        flowChart.returnTileSections();
+
         startRange = startDate;
         endRange = addMonths(startDate, maxDateOffset);
-
-        var sliderEndValue = monthDiff(startDate, endRange);
-        $("#slider-div")
-            .slider("values", 0, 0)
-            .slider("values", 1, sliderEndValue);
-
-        $("#start-date-display")
-            .text(d3.timeFormat("%B %Y")(startRange));
-
-        $("#end-date-display")
-            .text( d3.timeFormat("%B %Y")(endRange));
-
-        flowChart.returnTileSections();
+        updateFlowchartDates();
     }
 
 }
@@ -517,22 +508,12 @@ function highlightOverduePending() {
     startRange = startDate;
     endRange = new Date("Jan 01 2018");
 
-    var sliderEndValue = monthDiff(startDate, endRange);
-    $("#slider-div")
-        .slider("values", 0, 0)
-        .slider("values", 1, sliderEndValue);
-
-    $("#start-date-display")
-        .text(d3.timeFormat("%B %Y")(startRange));
-
-    $("#end-date-display")
-        .text( d3.timeFormat("%B %Y")(endRange));
-
-    flowChart.wrangleData();
+    updateFlowchartDates();
 
     flowChart.highlightTileSection("Investigation Pending");
 
 }
+
 
 function showComplaintTypes() {
     if (scrollDirection === 'down') {
@@ -549,18 +530,7 @@ function showComplaintTypes() {
     startRange = startDate;
     endRange = addMonths(startDate, maxDateOffset);
 
-    var sliderEndValue = monthDiff(startDate, endRange);
-    $("#slider-div")
-        .slider("values", 0, 0)
-        .slider("values", 1, sliderEndValue);
-
-    $("#start-date-display")
-        .text(d3.timeFormat("%B %Y")(startRange));
-
-    $("#end-date-display")
-        .text( d3.timeFormat("%B %Y")(endRange));
-
-    flowChart.wrangleData();
+    updateFlowchartDates();
 
 }
 
