@@ -262,6 +262,15 @@ function step() {
 
 }
 
+
+function resetFlowchartTooltips() {
+    d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
+        d.remove();
+    });
+    flowChart.svg.call(flowChart.tip);
+}
+
+
 // This will run if a user loads/reloads in the middle of the screen. It will run all activate functions that
 // should have run by the given Y Position
 function catchupPagePosition(startYPosition) {
@@ -418,10 +427,7 @@ function guiltyWhiteComplainantBlackOfficer() {
         .css("opacity", 0.2);
 
     if (scrollDirection === 'up') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            d.remove();
-        });
-        flowChart.svg.call(flowChart.tip);
+        resetFlowchartTooltips();
     }
 
     sunburst.removeOutlineSections();
@@ -443,10 +449,7 @@ function flowchartEntrance() {
         .css("opacity", 1.0);
 
     if (scrollDirection === 'up') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            $(d).css("opacity", 0.0);
-        });
-        flowChart.svg.call(flowChart.tip);
+        resetFlowchartTooltips();
     }
 
 }
@@ -454,10 +457,7 @@ function flowchartEntrance() {
 function highlightTile() {
 
     if (scrollDirection === 'down') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            d.remove();
-        });
-        flowChart.svg.call(flowChart.tip);
+        resetFlowchartTooltips();
 
         flowChart.highlightTile(1212);
     }
@@ -476,11 +476,7 @@ function showFlowchartByRace() {
     $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
 
     if (scrollDirection === 'down') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            d.remove();
-        });
-        flowChart.svg.call(flowChart.tip);
-
+        resetFlowchartTooltips();
         flowChart.returnTile();
     }
     else if (scrollDirection === 'up') {
@@ -496,10 +492,7 @@ function showFlowchartByRace() {
 function highlightOverduePending() {
 
     if (scrollDirection === 'down') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            d.remove();
-        });
-        flowChart.svg.call(flowChart.tip);
+        resetFlowchartTooltips();
     }
 
     $(".chosen-select").chosen().val(flowChart.incidentTypes).trigger("chosen:updated");
@@ -517,10 +510,7 @@ function highlightOverduePending() {
 
 function showComplaintTypes() {
     if (scrollDirection === 'down') {
-        d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-            d.remove();
-        });
-        flowChart.svg.call(flowChart.tip);
+        resetFlowchartTooltips();
     }
 
     const selectedVals = ['Physical Abuse', 'Criminal Allegation', 'Verbal Abuse', 'Sexual Crime/Misconduct', 'Civil Rights Complaint'];
