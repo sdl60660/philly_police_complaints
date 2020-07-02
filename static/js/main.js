@@ -565,11 +565,24 @@ scroll.on('progress', function(index, progress) {
     if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") &&
         existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
-        // endRange = addMonths(startDate, Math.round(Math.min(1, (progress / 33.8)) * maxDateOffset));
     }
+});
 
-    // console.log(index, progress);
-})
+
+function setDynamicPadding(tileID, startIndex, endIndex) {
+    let maxAnnotationHeight = 150;
+    $(".step").toArray().slice(startIndex, endIndex+1).forEach(function (annotationBox) {
+        const boxHeight = annotationBox.getBoundingClientRect().height;
+        if (boxHeight > maxAnnotationHeight) {
+            maxAnnotationHeight = boxHeight;
+        }
+    });
+
+    $(`#${tileID}`)
+        .css("padding-top", maxAnnotationHeight);
+
+    console.log(maxAnnotationHeight);
+}
 
 
 var scrollerDivs = $(scrollerDiv);
@@ -586,7 +599,7 @@ activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
 
 const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 450;
 $("#sunburst-wrapper")
-    .css("height", sunburstWrapperHeight)
+    .css("height", sunburstWrapperHeight);
 
 
 activateFunctions[8] = flowchartEntrance;
@@ -597,22 +610,15 @@ activateFunctions[12] = showComplaintTypes;
 
 const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 600;
 $("#flowchart-wrapper")
-    .css("height", flowChartWrapperHeight)
+    .css("height", flowChartWrapperHeight);
 
 
 // If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
 if (phoneBrowsing === true) {
-    let maxAnnotationHeight = 150;
-    $(".step").toArray().forEach(function (annotationBox) {
-        const boxHeight = annotationBox.getBoundingClientRect().height;
-        if (boxHeight > maxAnnotationHeight) {
-            maxAnnotationHeight = boxHeight;
-        }
-    });
-    $(".viz-tile:not(#intro-tile)")
-        .css("padding-top", maxAnnotationHeight)
-    // console.log(maxAnnotationHeight);
+    setDynamicPadding('#sunburst-tile', 1, 7);
+    setDynamicPadding('#flowchart-tile', 8, 12);
 }
+
 
 $("#sunburst-tile")
     .css("opacity", 0.2);
