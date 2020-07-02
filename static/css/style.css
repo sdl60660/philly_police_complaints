@@ -32,6 +32,10 @@ strong {
     /*opacity: 0.2;*/
 }
 
+#intro-wrapper {
+    min-height: 100vh;
+}
+
 .viz-tile {
 	/*visibility: hidden;*/
 	/*display: none;*/
@@ -346,8 +350,9 @@ select.other, span.other {
 
 
 .footer {
-	margin-top: 40px;
-	margin-bottom: 60px;
+	padding-top: 40px;
+	padding-bottom: 60px;
+    min-height: 100vh;
     font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
