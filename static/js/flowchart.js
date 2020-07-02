@@ -352,7 +352,7 @@ FlowChart.prototype.highlightTile = function(index) {
 
     vis.featuredTile
         .raise()
-        .transition()
+        .transition("highlight-tile")
         .duration(transitionDuration)
             .attr("width", vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing)
             .attr("height", vis.trueBlockWidth*vis.highlightRectScalar  - vis.blockSpacing)
@@ -361,12 +361,10 @@ FlowChart.prototype.highlightTile = function(index) {
             .attr("stroke-width", 2)
             .attr("stroke", "white")
             .style("opacity", 0.9)
-            .attr("box-shadow", "10px 10px");
-
-    sleep(transitionDuration).then(() => {
-        vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
-    })
-
+            .attr("box-shadow", "10px 10px")
+        .on("end", function() {
+            vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
+        });
 }
 
 
@@ -382,7 +380,7 @@ FlowChart.prototype.returnTile = function() {
 
     vis.featuredTile
         .transition("return-tile-size")
-        .duration(600)
+        // .duration(600)
             .attr("width", vis.blockSize)
             .attr("height", vis.blockSize)
             .attr("x", vis.highlightTileX)
@@ -390,29 +388,18 @@ FlowChart.prototype.returnTile = function() {
             .attr("stroke-width", 0)
             .attr("stroke", "none")
             .style("opacity", 0.8)
-            .attr("box-shadow", "none");
+            .attr("box-shadow", "none")
+        .on("end", vis.wrangleData());
 };
 
 
 FlowChart.prototype.highlightTileSection = function(sectionName) {
     const vis = this;
 
-    // const enterGroup = vis.flowchart
-    //     .enter()
-    //     .transition("fade-opacity")
-    //         .duration(600)
-    //         .style("fill-opacity", function(d) {
-    //             if (d.end_state === sectionName) {
-    //                 return 1.0;
-    //             }
-    //             else {
-    //                 return 0.3;
-    //             }
-    //         });
-
-    // console.log(enterGroup)
+    // console.log(vis.flowchart);
 
     vis.flowchart
+        .join()
         .transition("fade-opacity")
             .duration(600)
             .style("fill-opacity", function(d) {

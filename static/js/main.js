@@ -18,6 +18,9 @@ var timeline;
 var interval;
 var hiddenOpacity = 0.2;
 
+var activeIndex;
+var lastIndex;
+
 var maxDateOffset;
 
 var initFlowChart = true;
@@ -437,13 +440,8 @@ function showFlowchartByRace() {
         });
         flowChart.svg.call(flowChart.tip);
 
+        $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
         flowChart.returnTile();
-
-        sleep(600).then(() => {
-            $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
-            // flowChart.representedAttribute = 'complainant_race';
-            flowChart.wrangleData()
-        })
     }
     else if (scrollDirection === 'up') {
         flowChart.returnTileSections();
@@ -470,6 +468,7 @@ function highlightOverduePending() {
         .text( d3.timeFormat("%B %Y")(endRange));
 
     flowChart.wrangleData();
+
     flowChart.highlightTileSection("Investigation Pending");
 
 }
@@ -497,9 +496,6 @@ function showComplaintTypes() {
 
 }
 
-
-var activeIndex;
-var lastIndex;
 function activate(index) {
 
     $("section.step")
