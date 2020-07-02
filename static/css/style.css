@@ -175,7 +175,7 @@ strong {
     }
 
     .mobile-spacer {
-        height: var(--spacer-mobile);
+        height: 1vh;
     }
 
     .viz-tile {
@@ -370,6 +370,7 @@ select.other, span.other {
 	bottom: 5%;
 	left: 50%;
 }
+
 .bounce {
 	-moz-animation: bounce 3s infinite;
 	-webkit-animation: bounce 3s infinite;
