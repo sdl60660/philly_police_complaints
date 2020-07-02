@@ -427,7 +427,8 @@ FlowChart.prototype.returnTileSections = function() {
     const vis = this;
 
     vis.flowchart
-        .style("fill-opacity", 0.9);
+        .style("fill-opacity", 0.9)
+        .on("end", vis.wrangleData());
 };
 
 

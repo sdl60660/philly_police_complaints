@@ -53,12 +53,19 @@ const textAnnotations = {
     'sustained finding': "PPD's Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
     "supported (or other violations were discovered during the course of the investigation). These are then sent to the " +
     "Police Board of Inquiry for a hearing and possible discipline.",
+    'sustained findings': "PPD's Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
+    "supported (or other violations were discovered during the course of the investigation). These are then sent to the " +
+    "Police Board of Inquiry for a hearing and possible discipline.",
     'investigation pending': "This indicates a PPD Interval Affairs investigation that is still in progress. " +
     "Sometimes investigations stay here for much longer than the mandated completion time of 75 days.",
     'no sustained findings': "PPD's Internal Affairs investigation determined that 'allegations could not be proven, allegations that did not occur" +
     " or that actions that occurred, but were correct, lawful and complied with departmental policies'.",
 
     'guilty finding': "On recommendation from the Police Board of Inquiry hearing, the Police Commissioner (or a delegate)" +
+    " deems an officer's action worthy of discipline. Investigations classified in PPD's published data with a " +
+    "'Guilty Finding' include suspensions, terminations, criminal prosecutions, and reprimands. The data provided by the " +
+    "department makes no distinction.",
+    'guilty findings': "On recommendation from the Police Board of Inquiry hearing, the Police Commissioner (or a delegate)" +
     " deems an officer's action worthy of discipline. Investigations classified in PPD's published data with a " +
     "'Guilty Finding' include suspensions, terminations, criminal prosecutions, and reprimands. The data provided by the " +
     "department makes no distinction.",
@@ -87,7 +94,7 @@ const textAnnotations = {
 
 $('.annotated-text')
     // .on("mouseover", function() {
-    .on("mousemove", function() {
+    .on("mousemove hover touch", function() {
         const tooltipSelect = $("#annotation-tooltip");
 
         tooltipSelect
@@ -101,13 +108,27 @@ $('.annotated-text')
         tooltipSelect
             .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
             .css("opacity", 1.0)
-            .css("z-index", 100);
+            .css("z-index", 101);
     })
-    .on("mouseout", function() {
-        $("#annotation-tooltip")
-            .css("opacity", 0.0)
-            .css("z-index", -1);
+
+if (phoneBrowsing === false) {
+    $('.annotated-text')
+        .on("mouseout", function() {
+            $("#annotation-tooltip")
+                .css("opacity", 0.0)
+                .css("z-index", -1);
+        });
+}
+else {
+    $('body').on("hover touch", function(evt) {
+        if(evt.target.class !== "annotated-text") {
+            $("#annotation-tooltip")
+                .css("opacity", 0.0)
+                .css("z-index", -1);
+        }
     });
+}
+
 
 
 function preprocessDataset(dataset) {
@@ -451,16 +472,31 @@ function highlightTile() {
 function showFlowchartByRace() {
 
     // $(".d3.tip").css("top", "");
+    $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
+
     if (scrollDirection === 'down') {
         d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
             d.remove();
         });
         flowChart.svg.call(flowChart.tip);
 
-        $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
         flowChart.returnTile();
     }
     else if (scrollDirection === 'up') {
+        startRange = startDate;
+        endRange = addMonths(startDate, maxDateOffset);
+
+        var sliderEndValue = monthDiff(startDate, endRange);
+        $("#slider-div")
+            .slider("values", 0, 0)
+            .slider("values", 1, sliderEndValue);
+
+        $("#start-date-display")
+            .text(d3.timeFormat("%B %Y")(startRange));
+
+        $("#end-date-display")
+            .text( d3.timeFormat("%B %Y")(endRange));
+
         flowChart.returnTileSections();
     }
 
