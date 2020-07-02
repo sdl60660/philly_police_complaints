@@ -236,6 +236,17 @@ function step() {
 
 }
 
+// This will run if a user loads/reloads in the middle of the screen. It will run all activate functions that
+// should have run by the given Y Position
+function catchupPagePosition(startYPosition) {
+    $(".step").toArray().forEach(function(step,i) {
+        if (startYPosition > $(step).offset().top) {
+            console.log(i);
+            activateFunctions[i]();
+        }
+    });
+}
+
 
 function updateFlowchartDates() {
     $("#start-date-display")
@@ -656,6 +667,13 @@ Promise.all(promises).then(function(allData) {
         });
 
     displayIntroText();
+
+    // If user loads visualization in the middle of the page, run all activate functions that they should have passed
+    // already to "catch them up"
+    const startingOffset = window.pageYOffset;
+    if (startingOffset > 5) {
+        catchupPagePosition(startingOffset)
+    }
     // districtMap = new DistrictMap("#map-area");
 
 });
