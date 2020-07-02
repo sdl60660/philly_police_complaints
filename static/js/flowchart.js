@@ -400,8 +400,7 @@ FlowChart.prototype.highlightTileSection = function(sectionName) {
 
     // console.log(vis.flowchart);
 
-    vis.flowchart
-        .join()
+    vis.g.selectAll("rect")
         .transition("fade-opacity")
             .duration(600)
             .style("fill-opacity", function(d) {
