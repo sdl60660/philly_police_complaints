@@ -222,6 +222,18 @@ strong {
     #sunburst-select-text {
         font-size: 18pt;
     }
+
+    #annotation-tooltip {
+        font-size: 14pt;
+    }
+
+    h2 {
+        font-size: 24pt;
+    }
+
+     #intro-text-block {
+         font-size: 16pt;
+     }
 }
 
 .container {
