@@ -101,13 +101,23 @@ $('.annotated-text')
         tooltipSelect
             .text(textAnnotations[$(this).text().toLowerCase()]);
 
+        console.log(event, tooltipSelect.width(), tooltipSelect.height());
+
         let xOffset = event.pageX - tooltipSelect.width()/2;
         if (xOffset < 0) {
             xOffset += -1 * xOffset;
         }
 
+        let yOffset = event.pageY - tooltipSelect.height() - 30;
+        if (event.clientY < tooltipSelect.height() + 40) {
+            yOffset = event.pageY + 15;
+        }
+
+        console.log(yOffset);
+
         tooltipSelect
-            .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
+            // .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
+            .css({top: yOffset, left: xOffset})
             .css("opacity", 1.0)
             .css("z-index", 101);
     })
@@ -532,11 +542,13 @@ function hideFinalAnnotationSlide() {
 function activate(index) {
 
     $("section.step")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", hiddenOpacity)
+        .css("z-index", 10);
 
     if (index-1 > 0) {
         $("section.step").eq(index - 1)
-            .css("opacity", 1.0);
+            .css("opacity", 1.0)
+            .css("z-index", 51);
     }
 
     activeIndex = index;
