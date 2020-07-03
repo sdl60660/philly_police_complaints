@@ -246,6 +246,10 @@ strong {
      .footer {
          font-size: 16pt;
      }
+
+     .tip-text {
+         font-size: 12pt;
+     }
 }
 
 .container {
