@@ -108,8 +108,8 @@ $('.annotated-text')
             xOffset += -1 * xOffset;
         }
 
-        let yOffset = event.pageY - tooltipSelect.height() - 30;
-        if (event.clientY < tooltipSelect.height() + 40) {
+        let yOffset = event.pageY - tooltipSelect.height() - 35;
+        if (event.clientY < tooltipSelect.height() + 35) {
             yOffset = event.pageY + 15;
         }
 
