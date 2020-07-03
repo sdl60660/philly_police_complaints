@@ -371,7 +371,9 @@ FlowChart.prototype.highlightTile = function(index) {
             .style("opacity", 0.9)
             .attr("box-shadow", "10px 10px")
         .on("end", function() {
-            vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
+            if (activeIndex === 9) {
+                vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
+            }
         });
 }
 

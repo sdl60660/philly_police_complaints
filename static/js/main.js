@@ -611,10 +611,13 @@ scroll.on('progress', function(index, progress) {
     if (index >= 13 && progress > 2.15 && $("section.step").eq(12).css("opacity") !== "0") {
         // console.log(index, progress);
         hideFinalAnnotationSlide();
+        $(".step").css("position", "absolute");
     }
     else if (index >= 13 && progress < 2.15 && $("section.step").eq(12).css("opacity") === "0") {
         $("section.step").eq(12)
             .css("opacity", 1.0);
+        $(".step").css("position", "fixed");
+
     }
 });
 

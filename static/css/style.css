@@ -152,6 +152,14 @@ strong {
     margin-left: 310px;
 }
 
+.footer {
+    font-size: 10pt;
+    padding-top: 40px;
+	padding-bottom: 60px;
+    min-height: 100vh;
+    font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
 @media (max-width: 1200px) {
     #sections {
         /*position: fixed;*/
@@ -228,10 +236,14 @@ strong {
     }
 
     h2 {
-        font-size: 24pt;
+        font-size: 26pt;
     }
 
      #intro-text-block {
+         font-size: 16pt;
+     }
+
+     .footer {
          font-size: 16pt;
      }
 }
@@ -378,14 +390,6 @@ select.other, span.other {
 
 #flowchart-tile.group-label {
 	z-index: 20;
-}
-
-
-.footer {
-	padding-top: 40px;
-	padding-bottom: 60px;
-    min-height: 100vh;
-    font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 .icon-img {
