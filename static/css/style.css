@@ -55,6 +55,7 @@ strong {
 }
 
 .annotated-text {
+    z-index: 90;
     cursor: pointer;
 }
 
@@ -179,6 +180,8 @@ strong {
         top: 0;
 
         opacity: 0.0;
+
+        z-index: 80;
 
         overflow: hidden;
     }

@@ -95,6 +95,7 @@ const textAnnotations = {
 $('.annotated-text')
     // .on("mouseover", function() {
     .on("mousemove hover touch", function() {
+        console.log("triggered");
         const tooltipSelect = $("#annotation-tooltip");
 
         tooltipSelect
@@ -120,12 +121,10 @@ if (phoneBrowsing === false) {
         });
 }
 else {
-    $('body').on("hover touch", function(evt) {
-        if(evt.target.class !== "annotated-text") {
-            $("#annotation-tooltip")
-                .css("opacity", 0.0)
-                .css("z-index", -1);
-        }
+    $(window).on("scroll", function() {
+        $("#annotation-tooltip")
+            .css("opacity", 0.0)
+            .css("z-index", -1);
     });
 }
 
@@ -524,6 +523,12 @@ function showComplaintTypes() {
 
 }
 
+function hideFinalAnnotationSlide() {
+    $("section.step").eq(12)
+        .css("opacity", hiddenOpacity);
+}
+
+
 function activate(index) {
 
     $("section.step")
@@ -590,6 +595,15 @@ scroll.on('progress', function(index, progress) {
         existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
     }
+
+    if (index >= 13 && progress > 2.15 && $("section.step").eq(12).css("opacity") !== "0") {
+        // console.log(index, progress);
+        hideFinalAnnotationSlide();
+    }
+    else if (index >= 13 && progress < 2.15 && $("section.step").eq(12).css("opacity") === "0") {
+        $("section.step").eq(12)
+            .css("opacity", 1.0);
+    }
 });
 
 
@@ -635,6 +649,8 @@ activateFunctions[12] = showComplaintTypes;
 const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 800;
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight);
+
+activateFunctions[13] = hideFinalAnnotationSlide();
 
 
 // If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
