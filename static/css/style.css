@@ -81,6 +81,8 @@ strong {
 	margin-bottom: var(--spacer-bottom);
 	margin-left: 10px;
 
+    position: relative;
+
 	min-height: 320px;
 	border-radius: 15px;
 

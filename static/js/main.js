@@ -29,6 +29,8 @@ var sunburstEntered = false;
 
 var scrollDirection = 'down';
 
+var scrollerDiv;
+
 const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
     .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
@@ -42,6 +44,42 @@ if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(naviga
 
     $(".step .body")
         .css("font-size", "18pt");
+}
+
+if (phoneBrowsing === false) {
+    $('.annotated-text')
+        .on("mouseout", function() {
+            $("#annotation-tooltip")
+                .css("opacity", 0.0)
+                .css("z-index", -1);
+        });
+}
+else {
+    $(window).on("scroll", function() {
+        $("#annotation-tooltip")
+            .css("opacity", 0.0)
+            .css("z-index", -1);
+    });
+}
+
+if (phoneBrowsing === true) {
+    scrollerDiv = '.mobile-spacer';
+}
+else {
+    scrollerDiv = '.step';
+}
+
+if (phoneBrowsing === true) {
+    hiddenOpacity = 0.0;
+}
+else {
+    hiddenOpacity = 0.2;
+}
+
+// If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
+if (phoneBrowsing === true) {
+    setDynamicPadding('#sunburst-tile', 1, 7);
+    setDynamicPadding('#flowchart-tile', 8, 12);
 }
 
 
@@ -120,23 +158,7 @@ $('.annotated-text')
             .css({top: yOffset, left: xOffset})
             .css("opacity", 1.0)
             .css("z-index", 101);
-    })
-
-if (phoneBrowsing === false) {
-    $('.annotated-text')
-        .on("mouseout", function() {
-            $("#annotation-tooltip")
-                .css("opacity", 0.0)
-                .css("z-index", -1);
-        });
-}
-else {
-    $(window).on("scroll", function() {
-        $("#annotation-tooltip")
-            .css("opacity", 0.0)
-            .css("z-index", -1);
     });
-}
 
 
 
@@ -577,21 +599,7 @@ function activate(index) {
 var scroll = scroller()
     .container(d3.select('body'));
 
-var scrollerDiv;
-if (phoneBrowsing === true) {
-    scrollerDiv = '.mobile-spacer';
-}
-else {
-    scrollerDiv = '.step';
-}
 scroll(d3.selectAll(scrollerDiv));
-
-if (phoneBrowsing === true) {
-    hiddenOpacity = 0.0;
-}
-else {
-    hiddenOpacity = 0.2;
-}
 
 
 scroll.on('active', function(index){
@@ -608,12 +616,12 @@ scroll.on('progress', function(index, progress) {
         flowChart.repositionTooltip();
     }
 
-    if (index >= 13 && progress > 2.15 && $("section.step").eq(12).css("opacity") !== "0") {
+    if (index >= 13 && progress > 2.15 && $("section.step").eq(12).css("opacity") !== "0" && phoneBrowsing === true) {
         // console.log(index, progress);
         hideFinalAnnotationSlide();
         $(".step").css("position", "absolute");
     }
-    else if (index >= 13 && progress < 2.15 && $("section.step").eq(12).css("opacity") === "0") {
+    else if (index >= 13 && progress < 2.15 && $("section.step").eq(12).css("opacity") === "0" && phoneBrowsing === true) {
         $("section.step").eq(12)
             .css("opacity", 1.0);
         $(".step").css("position", "fixed");
@@ -666,13 +674,6 @@ $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight);
 
 activateFunctions[13] = hideFinalAnnotationSlide();
-
-
-// If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
-if (phoneBrowsing === true) {
-    setDynamicPadding('#sunburst-tile', 1, 7);
-    setDynamicPadding('#flowchart-tile', 8, 12);
-}
 
 
 $("#sunburst-tile")
