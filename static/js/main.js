@@ -34,7 +34,7 @@ const outcomeColors = d3.scaleOrdinal()
     .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
 
 // Determine if the user is browsing on mobile
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)  || window.innerWidth < 1200) {
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)  || window.innerWidth < 1100) {
     phoneBrowsing = true;
 
     $(".step")

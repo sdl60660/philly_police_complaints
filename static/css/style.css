@@ -160,7 +160,7 @@ strong {
     font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
     #sections {
         /*position: fixed;*/
         /*display: inline-block;*/
