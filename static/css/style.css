@@ -150,6 +150,11 @@ strong {
     /*margin-right: 100px;*/
 /*}*/
 
+#sunburst-wrapper {
+    margin-left: 310px;
+}
+
+
 #flowchart-wrapper {
     margin-left: 310px;
 }
