@@ -150,13 +150,9 @@ strong {
     /*margin-right: 100px;*/
 /*}*/
 
-#sunburst-wrapper {
-    margin-left: 310px;
-}
 
-
-#flowchart-wrapper {
-    margin-left: 310px;
+#flowchart-wrapper, #sunburst-wrapper {
+    padding-left: 310px;
 }
 
 .footer {
@@ -218,8 +214,8 @@ strong {
         padding-right: 25px !important;
     }
 
-    #flowchart-wrapper {
-        margin-left: unset;
+    #flowchart-wrapper, #sunburst-wrapper {
+        padding-left: unset;
     }
 
     #flowchart-tile {

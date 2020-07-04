@@ -31,6 +31,8 @@ var scrollDirection = 'down';
 
 var scrollerDiv;
 
+const phoneBrowsingCutoff = 1100;
+
 const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
     .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
@@ -38,7 +40,7 @@ const outcomeColors = d3.scaleOrdinal()
 
 function determinePhoneBrowsing() {
     // Determine if the user is browsing on mobile
-    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1100) {
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < phoneBrowsingCutoff) {
         phoneBrowsing = true;
 
         $(".step")
@@ -271,7 +273,12 @@ $(window)
             timeline.updateDimensions();
         }
 
-        determinePhoneBrowsing();
+        if ( (phoneBrowsing === true && window.innerWidth > phoneBrowsingCutoff)
+            ||  (phoneBrowsing === false && window.innerWidth < phoneBrowsingCutoff) )  {
+
+            this.location.reload(false);
+        }
+
 
         // if (1500 > window.innerWidth > 1200) {
         //     ("#flowchart-wrapper")
@@ -601,6 +608,7 @@ function activate(index) {
 
 
 determinePhoneBrowsing();
+
 
 var scroll = scroller()
     .container(d3.select('body'));
