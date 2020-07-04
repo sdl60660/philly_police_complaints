@@ -35,51 +35,54 @@ const outcomeColors = d3.scaleOrdinal()
     .domain(["Sustained Finding", "No Sustained Findings", "Investigation Pending", "Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"])
     .range(['#658dc6', '#f28e2c', '#8dc665', "#7498cb", "#93afd7", "#b2c6e2", "#a2a2a2"])
 
-// Determine if the user is browsing on mobile
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)  || window.innerWidth < 1100) {
-    phoneBrowsing = true;
 
-    $(".step")
-        .css("font-size", "18pt");
+function determinePhoneBrowsing() {
+    // Determine if the user is browsing on mobile
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1100) {
+        phoneBrowsing = true;
 
-    $(".step .body")
-        .css("font-size", "18pt");
-}
+        $(".step")
+            .css("font-size", "18pt");
 
-if (phoneBrowsing === false) {
-    $('.annotated-text')
-        .on("mouseout", function() {
+        $(".step .body")
+            .css("font-size", "18pt");
+    }
+
+    if (phoneBrowsing === false) {
+        $('.annotated-text')
+            .on("mouseout", function () {
+                $("#annotation-tooltip")
+                    .css("opacity", 0.0)
+                    .css("z-index", -1);
+            });
+    }
+    else {
+        $(window).on("scroll", function () {
             $("#annotation-tooltip")
                 .css("opacity", 0.0)
                 .css("z-index", -1);
         });
-}
-else {
-    $(window).on("scroll", function() {
-        $("#annotation-tooltip")
-            .css("opacity", 0.0)
-            .css("z-index", -1);
-    });
-}
+    }
 
-if (phoneBrowsing === true) {
-    scrollerDiv = '.mobile-spacer';
-}
-else {
-    scrollerDiv = '.step';
-}
+    if (phoneBrowsing === true) {
+        scrollerDiv = '.mobile-spacer';
+    }
+    else {
+        scrollerDiv = '.step';
+    }
 
-if (phoneBrowsing === true) {
-    hiddenOpacity = 0.0;
-}
-else {
-    hiddenOpacity = 0.2;
-}
+    if (phoneBrowsing === true) {
+        hiddenOpacity = 0.0;
+    }
+    else {
+        hiddenOpacity = 0.2;
+    }
 
-// If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
-if (phoneBrowsing === true) {
-    setDynamicPadding('#sunburst-tile', 1, 7);
-    setDynamicPadding('#flowchart-tile', 8, 12);
+    // If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
+    if (phoneBrowsing === true) {
+        setDynamicPadding('#sunburst-tile', 1, 7);
+        setDynamicPadding('#flowchart-tile', 8, 12);
+    }
 }
 
 
@@ -268,6 +271,8 @@ $(window)
             timeline.updateDimensions();
         }
 
+        determinePhoneBrowsing();
+
         // if (1500 > window.innerWidth > 1200) {
         //     ("#flowchart-wrapper")
         //         .css("margin-left", "310px");
@@ -276,7 +281,6 @@ $(window)
 
 
 function step() {
-
     endRange = monthDiff(startDate, endRange) >= maxDateOffset ? addMonths(startRange, 1) : addMonths(endRange, 1);
     
     var sliderValue = monthDiff(startDate, endRange);
@@ -595,6 +599,8 @@ function activate(index) {
     lastIndex = activeIndex;
 };
 
+
+determinePhoneBrowsing();
 
 var scroll = scroller()
     .container(d3.select('body'));
