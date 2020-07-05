@@ -3,6 +3,7 @@
     --spacer-top: 300px;
     --spacer-bottom: 400px;
     --spacer-mobile: 700px;
+    --annotation-width: 300px;
 }
 
 .row {
@@ -71,7 +72,7 @@ strong {
 #sections {
 	position: absolute;
 	display: inline-block;
-	width: 300px;
+	width: var(--annotation-width);
 	top: 0px;
 	z-index: 50;
 }
@@ -152,7 +153,8 @@ strong {
 
 
 #flowchart-wrapper, #sunburst-wrapper {
-    padding-left: 310px;
+    padding-left: calc(var(--annotation-width) + 10px);
+    width: calc(100% - var(--annotation-width) + 10px);
 }
 
 .footer {
@@ -216,6 +218,7 @@ strong {
 
     #flowchart-wrapper, #sunburst-wrapper {
         padding-left: unset;
+        width: unset;
     }
 
     #flowchart-tile {

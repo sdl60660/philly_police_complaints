@@ -50,6 +50,7 @@ function determinePhoneBrowsing() {
             .css("font-size", "18pt");
     }
 
+    // If hover available (desktop), remove annotation on mouseout otherwise (mobile) do it on scroll
     if (phoneBrowsing === false) {
         $('.annotated-text')
             .on("mouseout", function () {
