@@ -165,6 +165,10 @@ strong {
     font-family: "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
+#intro-area h2 {
+    line-height: 1.25;
+}
+
 @media (max-width: 1100px) {
     #sections {
         /*position: fixed;*/
