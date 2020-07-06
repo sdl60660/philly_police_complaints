@@ -493,6 +493,7 @@ function flowchartEntrance() {
 
     if (scrollDirection === 'up') {
         resetFlowchartTooltips();
+        flowChart.returnTile();
     }
 
 }
