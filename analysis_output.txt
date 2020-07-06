@@ -1,0 +1,145 @@
+
+Outcome: Sustained Finding
+==========================
+Balanced group sizes: 11748 11748
+Optimization terminated successfully.
+         Current function value: 0.504556
+         Iterations 7
+                                          Results: Logit
+===================================================================================================
+Model:                         Logit                          Pseudo R-squared:          0.272     
+Dependent Variable:            investigative_outcome          AIC:                       11907.0496
+Date:                          2020-07-06 15:43               BIC:                       12098.7069
+No. Observations:              11748                          Log-Likelihood:            -5927.5   
+Df Model:                      25                             LL-Null:                   -8143.1   
+Df Residuals:                  11722                          LLR p-value:               0.0000    
+Converged:                     1.0000                         Scale:                     1.0000    
+No. Iterations:                7.0000                                                              
+---------------------------------------------------------------------------------------------------
+                                                    Coef.  Std.Err.    z     P>|z|   [0.025  0.975]
+---------------------------------------------------------------------------------------------------
+complainant_age                                     0.0204   0.0018  11.6323 0.0000  0.0169  0.0238
+district_population                                 0.0000   0.0000   9.8184 0.0000  0.0000  0.0000
+district_income                                     0.0000   0.0000  20.1308 0.0000  0.0000  0.0000
+district_pct_black                                  0.0146   0.0010  14.0814 0.0000  0.0126  0.0166
+month_of_year                                       0.0718   0.0067  10.7085 0.0000  0.0587  0.0849
+complainant_race_asian                             -1.1132   0.2961  -3.7598 0.0002 -1.6935 -0.5329
+complainant_race_black                             -0.2009   0.0832  -2.4150 0.0157 -0.3640 -0.0379
+complainant_race_latino                             0.2711   0.1150   2.3566 0.0184  0.0456  0.4966
+complainant_race_white                              0.0070   0.0958   0.0730 0.9418 -0.1808  0.1948
+complainant_sex_female                             -0.2907   0.0810  -3.5896 0.0003 -0.4495 -0.1320
+complainant_sex_male                               -0.1120   0.0762  -1.4702 0.1415 -0.2614  0.0373
+po_race_asian                                      -2.8922   0.2245 -12.8842 0.0000 -3.3322 -2.4523
+po_race_black                                      -2.0196   0.0869 -23.2467 0.0000 -2.1899 -1.8493
+po_race_latino                                     -2.2224   0.1167 -19.0424 0.0000 -2.4511 -1.9937
+po_race_white                                      -2.0920   0.0811 -25.7925 0.0000 -2.2509 -1.9330
+po_sex_female                                      -0.4796   0.1159  -4.1369 0.0000 -0.7069 -0.2524
+po_sex_male                                        -0.1694   0.0928  -1.8250 0.0680 -0.3513  0.0125
+general_cap_classification_Civil Rights Complaint  -2.4623   0.1548 -15.9020 0.0000 -2.7658 -2.1588
+general_cap_classification_Criminal Allegation     -2.0577   0.1270 -16.1998 0.0000 -2.3067 -1.8087
+general_cap_classification_Departmental Violations -2.0628   0.0816 -25.2923 0.0000 -2.2227 -1.9030
+general_cap_classification_Domestic                -2.1708   0.2677  -8.1100 0.0000 -2.6954 -1.6462
+general_cap_classification_Harassment              -2.6043   0.1402 -18.5819 0.0000 -2.8790 -2.3296
+general_cap_classification_Lack Of Service         -2.2870   0.0913 -25.0547 0.0000 -2.4660 -2.1081
+general_cap_classification_Physical Abuse          -2.2554   0.0837 -26.9353 0.0000 -2.4195 -2.0913
+general_cap_classification_Unprofessional Conduct  -2.5325   0.1269 -19.9527 0.0000 -2.7813 -2.2838
+general_cap_classification_Verbal Abuse            -2.7801   0.1158 -24.0042 0.0000 -3.0071 -2.5531
+===================================================================================================
+
+Random Forest Feature Importances:
+
+po_race_white 0.1718835298470356
+po_sex_male 0.12280137471200926
+general_cap_classification_Physical Abuse 0.11686264784332927
+complainant_sex_female 0.08826851259505768
+po_race_black 0.08116777941123862
+complainant_race_black 0.07897078119377272
+po_sex_female 0.058845665860749734
+general_cap_classification_Verbal Abuse 0.048607144407322486
+po_race_latino 0.04603806141516239
+general_cap_classification_Departmental Violations 0.043852686304279735
+district_income 0.02852019529272077
+district_population 0.019364317087224
+district_pct_black 0.016587459504355546
+general_cap_classification_Lack Of Service 0.013920817496094449
+complainant_race_latino 0.01351507927157581
+complainant_sex_male 0.013022307280419072
+general_cap_classification_Unprofessional Conduct 0.012864477512624803
+general_cap_classification_Harassment 0.007237814543986504
+month_of_year 0.006829765123624578
+complainant_age 0.006654530973600846
+complainant_race_white 0.004107975659729074
+complainant_race_asian 7.707666408718683e-05
+po_race_asian 0.0
+general_cap_classification_Civil Rights Complaint 0.0
+general_cap_classification_Criminal Allegation 0.0
+general_cap_classification_Domestic 0.0
+
+Accuracy: 0.71 (+/- 0.19)
+
+
+Outcome: Guilty Finding
+=======================
+Balanced group sizes: 13500 13500
+Optimization terminated successfully.
+         Current function value: 0.371167
+         Iterations 7
+                                          Results: Logit
+===================================================================================================
+Model:                         Logit                          Pseudo R-squared:          0.465     
+Dependent Variable:            investigative_outcome          AIC:                       10061.5060
+Date:                          2020-07-06 15:43               BIC:                       10211.7149
+No. Observations:              13500                          Log-Likelihood:            -5010.8   
+Df Model:                      19                             LL-Null:                   -9357.5   
+Df Residuals:                  13480                          LLR p-value:               0.0000    
+Converged:                     1.0000                         Scale:                     1.0000    
+No. Iterations:                7.0000                                                              
+---------------------------------------------------------------------------------------------------
+                                                    Coef.  Std.Err.    z     P>|z|   [0.025  0.975]
+---------------------------------------------------------------------------------------------------
+complainant_age                                     0.0398   0.0019  21.1116 0.0000  0.0361  0.0435
+district_population                                 0.0000   0.0000  11.5556 0.0000  0.0000  0.0000
+district_income                                     0.0000   0.0000  26.2525 0.0000  0.0000  0.0000
+district_pct_black                                  0.0087   0.0012   7.3280 0.0000  0.0064  0.0110
+month_of_year                                      -0.0110   0.0079  -1.3911 0.1642 -0.0265  0.0045
+complainant_race_black                             -1.6480   0.0765 -21.5323 0.0000 -1.7980 -1.4980
+complainant_race_latino                            -1.3716   0.1299 -10.5567 0.0000 -1.6263 -1.1170
+complainant_race_white                             -0.4580   0.0834  -5.4924 0.0000 -0.6215 -0.2946
+complainant_sex_female                             -0.9234   0.0753 -12.2651 0.0000 -1.0710 -0.7758
+complainant_sex_male                               -1.3430   0.0756 -17.7588 0.0000 -1.4912 -1.1947
+po_race_black                                      -1.9448   0.0793 -24.5226 0.0000 -2.1002 -1.7893
+po_race_latino                                     -2.2572   0.1079 -20.9114 0.0000 -2.4687 -2.0456
+po_race_white                                      -3.4134   0.0828 -41.2052 0.0000 -3.5758 -3.2511
+po_sex_female                                      -1.0112   0.1215  -8.3244 0.0000 -1.2493 -0.7731
+po_sex_male                                        -0.1465   0.0934  -1.5685 0.1168 -0.3295  0.0366
+general_cap_classification_Departmental Violations -1.5362   0.0902 -17.0326 0.0000 -1.7130 -1.3595
+general_cap_classification_Harassment              -0.2010   0.1109  -1.8125 0.0699 -0.4183  0.0164
+general_cap_classification_Lack Of Service         -1.4643   0.0844 -17.3415 0.0000 -1.6298 -1.2988
+general_cap_classification_Physical Abuse          -0.5155   0.0696  -7.4045 0.0000 -0.6519 -0.3790
+general_cap_classification_Verbal Abuse            -0.9327   0.1029  -9.0640 0.0000 -1.1344 -0.7310
+===================================================================================================
+
+Random Forest Feature Importances:
+
+po_race_white 0.27349569530261
+complainant_race_black 0.17935715955691323
+general_cap_classification_Departmental Violations 0.1320248489189315
+district_income 0.08980198999889255
+complainant_sex_female 0.062299707430782274
+district_pct_black 0.050936339206747575
+complainant_sex_male 0.05048806817349336
+month_of_year 0.047295395701567544
+po_sex_male 0.035212550876738094
+po_race_black 0.015788698989208084
+district_population 0.011300658013168374
+complainant_age 0.01129361389604478
+complainant_race_latino 0.010420364965093742
+po_sex_female 0.010384196270069746
+general_cap_classification_Lack Of Service 0.009719790811964087
+complainant_race_white 0.005479847908593182
+po_race_latino 0.0020612644362212676
+general_cap_classification_Verbal Abuse 0.001494161364628119
+general_cap_classification_Physical Abuse 0.0009355308583620177
+general_cap_classification_Harassment 0.00021011731997060726
+
+Accuracy: 0.83 (+/- 0.02)
