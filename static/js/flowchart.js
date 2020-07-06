@@ -543,6 +543,11 @@ FlowChart.prototype.setToolTips = function() {
                 var summaryText = d.shortened_summary;
             }
 
+            if (d.discipline_id === "13-0541-PS-Physical Abuse") {
+                summaryText = calloutSummary(summaryText);
+                console.log(summaryText);
+            }
+
             tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
 
             tipText += "</div>";
@@ -553,6 +558,19 @@ FlowChart.prototype.setToolTips = function() {
 
 }
 
+function calloutSummary(summaryText) {
+    const highlights = [
+        'the officer said, "If you hold your d**k tight it won\'t fall off, do you want me to hold it for you, f*ggot?"',
+        'he cut him off, stating that his officers would not say anything like that and what occurred was not harassment',
+        'The sergeant ordered the complainant to put his hands up.  After he was handcuffed, the sergeant kicked him numerous times.'
+    ]
+
+    highlights.forEach(function(textBlock) {
+        summaryText = summaryText.replace(textBlock, (`<span style="background-color:rgba(245, 229, 27, 0.5)">${textBlock}</span>`));
+    })
+
+    return summaryText;
+}
 
 
 FlowChart.prototype.setComplaintTypes = function() {
