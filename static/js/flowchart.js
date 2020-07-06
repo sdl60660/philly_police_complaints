@@ -287,7 +287,7 @@ FlowChart.prototype.updateVis = function() {
                     }
                 })
                 .on("mouseenter", function(d) {
-                    console.log(d);
+                    // console.log(d);
                     vis.tip.hide();
 
                     vis.tip.show(d);
@@ -371,10 +371,7 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
             .attr("x", vis.highlightTileX - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
             .attr("y", vis.highlightTileY - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
             .attr("stroke-width", 2)
-            .attr("stroke", function(d) {
-                console.log(d);
-                return "white";
-            })
+            .attr("stroke", "white")
             .style("opacity", 0.9)
             .attr("box-shadow", "10px 10px")
         .on("end", function() {
@@ -467,14 +464,21 @@ FlowChart.prototype.setToolTips = function() {
 
             const trueMarginSize = $("#flowchart-tile")[0].getBoundingClientRect().y;
 
+            let yOffset = trueMarginSize - Math.min(trueMarginSize, tileOffset);
+
             if (d.investigative_findings === 'Sustained Finding') {
                 var xOffset = -4;
+            }
+            else if ((d.end_state === 'No Sustained Findings' && d.final_state_index / (vis.colWidths['No Sustained Findings'])) ||
+                d.end_state === 'No Guilty Findings' || d.end_state === 'Discipline Pending') {
+                var xOffset = 0;
+                yOffset -= vis.blockSize;
             }
             else {
                 var xOffset = vis.blockSize + 4;
             }
 
-            return [trueMarginSize - Math.min(trueMarginSize, tileOffset), xOffset];
+            return [yOffset, xOffset];
         })
         .direction(function(d) {
             if (d.end_state === 'No Guilty Findings' || d.end_state === 'Discipline Pending') {
@@ -497,6 +501,7 @@ FlowChart.prototype.setToolTips = function() {
             }
         })
         .html(function(d) {
+            // console.log(this.direction(d));
 
             var tipText = "<div class='tip-text'>";
 
