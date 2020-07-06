@@ -498,11 +498,12 @@ function flowchartEntrance() {
 }
 
 function highlightTile() {
+    const selectedStory = "13-0541-PS-Physical Abuse";
 
     if (scrollDirection === 'down') {
         resetFlowchartTooltips();
 
-        flowChart.highlightTile(1212);
+        flowChart.highlightTile(selectedStory);
     }
 
     else if (scrollDirection === 'up') {

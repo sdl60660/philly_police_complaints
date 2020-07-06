@@ -287,6 +287,7 @@ FlowChart.prototype.updateVis = function() {
                     }
                 })
                 .on("mouseenter", function(d) {
+                    console.log(d);
                     vis.tip.hide();
 
                     vis.tip.show(d);
@@ -342,18 +343,21 @@ FlowChart.prototype.updateVis = function() {
 }
 
 
-FlowChart.prototype.highlightTile = function(index) {
+FlowChart.prototype.highlightTile = function(disciplineID) {
     const vis = this;
 
-    const transitionDuration = 800;
-    const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
+    const transitionDuration = 600;
 
-    var tileIndex = index;
-    if (numRects-1 < index) {
-        tileIndex = Math.round(getRandomArbitrary(0, numRects-1));
+    vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d) { return d.discipline_id === disciplineID});
+
+    if (vis.featuredTile.empty() === true) {
+        const numRects = vis.g.selectAll("rect.complaint-box")._groups[0].length;
+        const tileIndex = Math.round(getRandomArbitrary(0, numRects-1));
+
+        vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d,i) { return i === tileIndex});
     }
 
-    vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d,i) { return i === tileIndex});
+    // console.log(vis.featuredTile);
 
     vis.highlightTileX = vis.featuredTile.attr("x");
     vis.highlightTileY = vis.featuredTile.attr("y");
@@ -367,7 +371,10 @@ FlowChart.prototype.highlightTile = function(index) {
             .attr("x", vis.highlightTileX - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
             .attr("y", vis.highlightTileY - (vis.trueBlockWidth*vis.highlightRectScalar - vis.blockSpacing) / 2)
             .attr("stroke-width", 2)
-            .attr("stroke", "white")
+            .attr("stroke", function(d) {
+                console.log(d);
+                return "white";
+            })
             .style("opacity", 0.9)
             .attr("box-shadow", "10px 10px")
         .on("end", function() {
@@ -400,7 +407,7 @@ FlowChart.prototype.returnTile = function() {
             });
             vis.svg.call(vis.tip);
 
-            vis.wrangleData()
+            vis.wrangleData();
         });
 };
 
@@ -470,7 +477,19 @@ FlowChart.prototype.setToolTips = function() {
             return [trueMarginSize - Math.min(trueMarginSize, tileOffset), xOffset];
         })
         .direction(function(d) {
-            if (d.investigative_findings === 'Sustained Finding') {
+            if (d.end_state === 'No Guilty Findings' || d.end_state === 'Discipline Pending') {
+                return "n";
+            }
+            else if (d.end_state === 'No Sustained Findings') {
+                const tileRow = d.final_state_index / (vis.colWidths['No Sustained Findings']);
+                if (tileRow >= 72) {
+                    return "n";
+                }
+                else {
+                    return "e";
+                }
+            }
+            else if (d.investigative_findings === 'Sustained Finding') {
                 return "w";
             }
             else {
