@@ -38,6 +38,8 @@ FlowChart.prototype.initVis = function() {
          vis.blockGroupWidth = 42;
     }
 
+    vis.pinnedTooltip = false;
+
     vis.blockSpacing = 1;
     vis.trueBlockWidth = (vis.blockSize + vis.blockSpacing);
     vis.transitionDelay = 20;
@@ -175,6 +177,7 @@ FlowChart.prototype.initVis = function() {
     vis.legendSVG = d3.select("#flowchart-legend-area").append("svg");
 
     vis.setComplaintTypes();
+    vis.setToolTips();
     vis.wrangleData();
 }
 
@@ -237,7 +240,6 @@ FlowChart.prototype.wrangleData = function() {
     vis.color
         .domain(vis.representedVals[vis.representedAttribute])
 
-    vis.setToolTips();
     vis.updateLegend();
     vis.updateVis();
 }
@@ -257,7 +259,7 @@ FlowChart.prototype.updateVis = function() {
     // EXIT old elements not present in new data (this shouldn't be the case)
     vis.flowchart
         .exit()
-            .remove()
+            .remove();
 
     var newElementIndex = 0;
     vis.flowchart.enter().each(function(d) {
@@ -265,7 +267,7 @@ FlowChart.prototype.updateVis = function() {
             d.enter_index = newElementIndex;
             newElementIndex += 1
         }
-    })
+    });
 
     // ENTER new elements present in the data...
     vis.flowchart
@@ -288,8 +290,14 @@ FlowChart.prototype.updateVis = function() {
                 })
                 .on("mouseenter", function(d) {
                     // console.log(d);
-                    vis.tip.hide();
+                    // vis.tip.hide();
+                    if (vis.pinnedTooltip === true) {
+                        vis.tip.hide();
+                        d3.selectAll(".d3-tip").remove();
+                        vis.setToolTips();
 
+                        vis.pinnedTooltip = false;
+                    }
                     vis.tip.show(d);
                 })
                 .on("mouseout", function(d) {
@@ -345,8 +353,9 @@ FlowChart.prototype.updateVis = function() {
 
 FlowChart.prototype.highlightTile = function(disciplineID) {
     const vis = this;
-
     const transitionDuration = 600;
+
+    vis.pinnedTooltip = true;
 
     vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d) { return d.discipline_id === disciplineID});
 
@@ -385,7 +394,16 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
 FlowChart.prototype.returnTile = function() {
     const vis = this;
 
+    // vis.tip.hide();
+    // d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
+    //     d.remove();
+    // });
+    // vis.svg.call(vis.tip);
+
     vis.tip.hide();
+    d3.selectAll(".d3-tip").remove();
+    // vis.svg.call(vis.tip);
+    vis.setToolTips();
 
     vis.featuredTile
         .transition("return-tile-size")
@@ -396,15 +414,12 @@ FlowChart.prototype.returnTile = function() {
             .attr("y", vis.highlightTileY)
             .attr("stroke-width", 0)
             .attr("stroke", "none")
-            .style("opacity", 0.8)
+            .style("opacity", 0.9)
             .attr("box-shadow", "none")
         .on("end", function() {
-            d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-                d.remove();
-            });
-            vis.svg.call(vis.tip);
-
-            vis.wrangleData();
+            if (activeIndex === 11) {
+                vis.wrangleData();
+            }
         });
 };
 

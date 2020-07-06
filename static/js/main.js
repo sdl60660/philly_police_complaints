@@ -307,9 +307,7 @@ function step() {
 
 
 function resetFlowchartTooltips() {
-    d3.selectAll(".d3-tip")._groups[0].forEach(function (d) {
-        d.remove();
-    });
+    d3.selectAll(".d3-tip").remove();
     flowChart.svg.call(flowChart.tip);
 }
 
@@ -492,7 +490,7 @@ function flowchartEntrance() {
         .css("opacity", 1.0);
 
     if (scrollDirection === 'up') {
-        resetFlowchartTooltips();
+        // resetFlowchartTooltips();
         flowChart.returnTile();
     }
 

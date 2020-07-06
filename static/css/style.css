@@ -157,6 +157,10 @@ strong {
     width: calc(100% - var(--annotation-width) + 10px);
 }
 
+/*.sunburst-select::-ms-expand {*/
+    /*display: none;*/
+/*}*/
+
 .footer {
     font-size: 10pt;
     padding-top: 40px;
