@@ -57,6 +57,7 @@ strong {
 
 .annotated-text {
     z-index: 90;
+    padding: 1px;
     cursor: pointer;
 }
 

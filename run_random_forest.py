@@ -16,7 +16,7 @@ from imblearn.over_sampling import SMOTE
 
 
 categorical_cols = ['complainant_race', 'complainant_sex', 'po_race', 'po_sex', 'general_cap_classification']
-non_categorical_cols = ['complainant_age', 'district_population', 'district_income', 'district_pct_black'] # +  ['officer_prior_complaints', 'officer_prior_sustained_complaints'] # 'district_median_income', 'complainant_age'
+non_categorical_cols = ['complainant_age', 'district_population', 'district_income', 'district_pct_black'] # +  ['officer_prior_complaints', 'officer_prior_sustained_complaints']
 # print(len([x for x in data if x['incident_time']]))
 
 def build_dataframe(data, outcome="disciplinary"):

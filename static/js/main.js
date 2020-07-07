@@ -92,9 +92,15 @@ function determinePhoneBrowsing() {
 // Highlighted annotation text
 
 const textAnnotations = {
+    'analysis': 'A Random Forest classifier was used to look at both investigative and disciplinary outcomes. Features included ' +
+    'complainant and officer demographic information, police district demographics, prior known complaints against an officer (using assigned IDs),' +
+    'time of year, and complaint type.',
+    'sustained': 'An Internal Affairs investigation determined that one or more of the allegations filed in the complaint were ' +
+    'supported (or other violations were discovered during the course of the investigation).',
+    'investigation': 'Note that a single complaint can result in one or many disciplinary investigations against one or many officers.',
     'highlighted term': 'Even this one!',
 
-    'sustained finding': "PPD's Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
+    'sustained finding': "An Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
     "supported (or other violations were discovered during the course of the investigation). These are then sent to the " +
     "Police Board of Inquiry for a hearing and possible discipline.",
     'sustained findings': "PPD's Internal Affairs investigation determined that one or more of the allegations filed in the complaint were " +
