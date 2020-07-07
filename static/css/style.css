@@ -293,7 +293,7 @@ strong {
 	padding-right: 3px;
 }
 
-.d3-tip, #annotation-tooltip, #category-tooltip {
+.d3-tip, #annotation-tooltip, #category-tooltip, #sample-tooltip {
     max-width: 400px;
 	background-color: white;
 	color: black;
@@ -301,6 +301,11 @@ strong {
 	border: 1px solid black;
 	z-index: 100;
     padding: 12px;
+}
+
+#sample-tooltip {
+    max-width: 500px;
+    line-height: 1.1;
 }
 
 #category-tooltip {

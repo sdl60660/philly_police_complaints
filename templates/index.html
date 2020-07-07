@@ -47,6 +47,24 @@
 
     <div id="annotation-tooltip" style="opacity: 0.0; position:absolute;">Default Text</div>
     <div id="category-tooltip" style="opacity: 0.0; position:absolute;">Default Text</div>
+    <div id='sample-tooltip' style="opacity: 0.0; position:absolute;">
+        <span class='detail-title'>Complaint Date</span>: <span class='details'>5/12/14<br></span>
+        <span class='detail-title'>District</span>: <span class='details'>19<br></span>
+        <span class='detail-title'>District Median Income</span>: <span class='details'>$41,071<br><br></span>
+        <span class='detail-title'>Officer Initials</span>: <span class='details'>MH<br></span>
+        <span class='detail-title'>Officer Demographics</span>: <span class='details'>white, male<br></span><br>
+        <span class='detail-title'>Complaint ID</span>: <span class='details'>14-0248<br></span>
+        <span class='detail-title'>Complainant Demographics</span>: <span class='details'>black, female, 46<br><br></span>
+        <span class='detail-title'>Complaint Type</span>: <span class='details'>Verbal Abuse<br></span>
+        <span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>The complainant,
+        SD, 46/B/F, states that she was falsely arrested and verbally abused by Officer H, 19th District. According to the
+        complainant, on 4-26-14, at 11:00 AM, she exited a deli with a can of beer.  When she stopped to talk to a friend,
+        Officer H called her over to the car and asked, "Don't you think it's kind of early to be drinking?" The complainant
+        said she wasn't drinking and the can wasn't open; Officer H disagreed with her.  She informed Officer H that she had
+        just paid a $200.00 fine for an open container of beer in March and showed him a copy of the citation.  He laughed,
+        stating, "I wrote this and I'm going to write you another f**king one." The complainant maintains Officer H incorrectly
+        wrote the can size on the citation as being 16 ounces instead of 24 ounces.<br></span>
+    </div>
 
     <div id="sections">
 
@@ -164,12 +182,12 @@
         <section class="step">
             <div class="title">Organizing The Data</div>
             <div class="body">
-                You can sort these tiles by a number of features and observe some of the same patterns explored above.
+                You can sort these complaints by a number of features and observe some of the same patterns explored above.
                 <br><br>
                 Here, the chart has been sorted by complainant race. Recall that a complainant being Black was the second strongest indicator of whether an investigation would result in a guilty finding
                 (trailing only whether the officer was White).
                 <br><br>
-                Hover over/tap the section headers for summary information. Use the dropdown on the legend box (top-left) to change the way the tiles are sorted.
+                Hover over/tap the section headers for summary information. Use the dropdown on the legend box (top-left) to change the way the complaints are sorted.
             </div>
         </section>
         <div class="mobile-spacer"></div>
@@ -179,7 +197,7 @@
                 According to <a href="https://www.phila.gov/phils/Docs/Inventor/graphics/execorders/93-09.htm">Philadelphia Law</a>,
                 investigations must be completed by Internal Affairs within seventy-five days of the complaint filing date.
                 <br><br>
-                Even when tiles are filtered to only include complaints that are over two years old,
+                Even when complaints are filtered to only include those that are over two years old,
                 there are still nearly 40 pending investigations (or that were still pending as of the city's
                 <span style="background-color: rgba(245, 229, 27, 0.5)" class="annotated-text">last public update</span>).
             </div>
@@ -213,9 +231,9 @@
                 <div id="intro-text-block">
                     <p>
                         In 2018, Philadelphia began publishing police complaint data (dating back until 2013) online. Complaint
-                        data is redacted and it is not possible to identify the officer or the complainant through the online records.
+                        data is redacted and it's extremely difficult (if not impossible) to identify the officer or the complainant through the online records.
                         However, the records do provide information on the demographics of the officer and complainant, the context of the complaint,
-                        and the status of the case.
+                        and the status of the case. (<span class='annotated-text' id="sample-investigation" style="padding: 1px; background-color:rgba(245, 229, 27, 0.5)">Here is a sample complaint investigation.</span>)
                     </p>
                     <br>
                     <p>

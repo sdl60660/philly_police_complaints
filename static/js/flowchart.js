@@ -578,6 +578,10 @@ FlowChart.prototype.setToolTips = function() {
 
             tipText += "</div>";
 
+            if (d.discipline_id === '14-0248-MH-Verbal Abuse') {
+                console.log(tipText);
+            }
+
             return tipText;
         })
     vis.svg.call(vis.tip);

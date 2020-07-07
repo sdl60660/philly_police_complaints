@@ -54,14 +54,29 @@ function determinePhoneBrowsing() {
     if (phoneBrowsing === false) {
         $('.annotated-text')
             .on("mouseout", function () {
-                $("#annotation-tooltip")
+
+                if ($(this).attr("id") === 'sample-investigation') {
+                    var tooltipSelect = $("#sample-tooltip");
+                }
+                else {
+                    var tooltipSelect = $("#annotation-tooltip");
+                }
+
+                tooltipSelect
                     .css("opacity", 0.0)
                     .css("z-index", -1);
             });
     }
     else {
         $(window).on("scroll", function () {
-            $("#annotation-tooltip")
+            if ($(this).attr("id") === 'sample-investigation') {
+                var tooltipSelect = $("#sample-tooltip");
+            }
+            else {
+                var tooltipSelect = $("#annotation-tooltip");
+            }
+
+           tooltipSelect
                 .css("opacity", 0.0)
                 .css("z-index", -1);
         });
@@ -145,13 +160,18 @@ const textAnnotations = {
 $('.annotated-text')
     // .on("mouseover", function() {
     .on("mousemove hover touch", function() {
-        console.log("triggered");
-        const tooltipSelect = $("#annotation-tooltip");
+        if ($(this).attr("id") === 'sample-investigation') {
+            var tooltipSelect = $("#sample-tooltip");
+        }
+        else {
+            var tooltipSelect = $("#annotation-tooltip");
 
-        tooltipSelect
-            .text(textAnnotations[$(this).text().toLowerCase()]);
+            tooltipSelect
+                .text(textAnnotations[$(this).text().toLowerCase()]);
+        }
 
-        console.log(event, tooltipSelect.width(), tooltipSelect.height());
+
+        // console.log(event, tooltipSelect.width(), tooltipSelect.height());
 
         let xOffset = event.pageX - tooltipSelect.width()/2;
         if (xOffset < 0) {
@@ -163,7 +183,7 @@ $('.annotated-text')
             yOffset = event.pageY + 15;
         }
 
-        console.log(yOffset);
+        // console.log(yOffset);
 
         tooltipSelect
             // .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
