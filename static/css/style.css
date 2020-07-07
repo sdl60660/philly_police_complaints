@@ -180,6 +180,10 @@ strong {
     width: 100% !important;
 }
 
+#end-text-block {
+    margin-bottom: 200px;
+}
+
 @media (max-width: 1100px) {
     #sections {
         /*position: fixed;*/
@@ -216,6 +220,16 @@ strong {
 
     .step .body {
         font-size: 15pt;
+    }
+
+    .step .title {
+        text-align: center;
+        font-weight: bolder;
+        background-color: rgba(28, 148, 196, 0.25);
+        /*border-radius: 3px;*/
+
+        padding-top: 6px;
+        padding-bottom: 6px;
     }
 
     .mobile-spacer {
@@ -260,7 +274,7 @@ strong {
         font-size: 26pt;
     }
 
-     #intro-text-block {
+     #intro-text-block, #end-text-block {
          font-size: 16pt;
      }
 

@@ -647,12 +647,13 @@ scroll.on('progress', function(index, progress) {
         flowChart.repositionTooltip();
     }
 
-    if (index >= 13 && progress > 2.15 && $("section.step").eq(12).css("opacity") !== "0" && phoneBrowsing === true) {
-        // console.log(index, progress);
+    console.log(index, progress);
+
+    if (index >= 13 && progress > 2.1 && $("section.step").eq(12).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();
         $(".step").css("position", "absolute");
     }
-    else if (index >= 13 && progress < 2.15 && $("section.step").eq(12).css("opacity") === "0" && phoneBrowsing === true) {
+    else if (index >= 13 && progress < 2.1 && $("section.step").eq(12).css("opacity") === "0" && phoneBrowsing === true) {
         $("section.step").eq(12)
             .css("opacity", 1.0);
         $(".step").css("position", "fixed");
