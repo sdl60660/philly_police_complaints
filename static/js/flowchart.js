@@ -495,6 +495,11 @@ FlowChart.prototype.setToolTips = function() {
                 var xOffset = vis.blockSize + 4;
             }
 
+            // If browser isn't Chrome, don't worry about the yOffset issue
+            if ((!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) === false) {
+                yOffset = -vis.blockSize;
+            }
+
             return [yOffset, xOffset];
         })
         .direction(function(d) {
