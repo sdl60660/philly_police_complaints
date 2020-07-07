@@ -35,6 +35,7 @@ strong {
 
 #intro-wrapper {
     min-height: 100vh;
+    z-index: 100;
 }
 
 .viz-tile {
@@ -99,6 +100,7 @@ strong {
 	/*margin-bottom: var(--spacer-bottom);*/
 	/*background-color: rgba(0,0,0,0) !important;*/
     opacity: 0.0;
+    z-index: -1;
 }
 
 .step .title {

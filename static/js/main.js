@@ -11,9 +11,7 @@ var startRange = addMonths(startDate, 0);
 var endRange = addMonths(startDate, 1);
 
 var flowChart;
-var districtMap;
 var sunburst;
-var introText;
 var timeline;
 var interval;
 var hiddenOpacity = 0.2;
@@ -24,7 +22,6 @@ var lastIndex;
 var maxDateOffset;
 
 var initFlowChart = true;
-// var flowChartEntered = false;
 var sunburstEntered = false;
 
 var scrollDirection = 'down';
@@ -183,8 +180,6 @@ $('.annotated-text')
             yOffset = event.pageY + 15;
         }
 
-        // console.log(yOffset);
-
         tooltipSelect
             // .css({top: event.pageY - tooltipSelect.height() - 40, left: xOffset})
             .css({top: yOffset, left: xOffset})
@@ -306,11 +301,6 @@ $(window)
             this.location.reload(false);
         }
 
-
-        // if (1500 > window.innerWidth > 1200) {
-        //     ("#flowchart-wrapper")
-        //         .css("margin-left", "310px");
-        // }
     })
 
 
@@ -765,12 +755,6 @@ Promise.all(promises).then(function(allData) {
         catchupPagePosition(startingOffset)
     }
 
-    // if (1500 > window.innerWidth > 1200) {
-    //         ("#flowchart-wrapper")
-    //             .css("margin-left", "310px");
-    //     }
-
-    // districtMap = new DistrictMap("#map-area");
 
 });
 
