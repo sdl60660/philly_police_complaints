@@ -29,13 +29,20 @@ FlowChart.prototype.initVis = function() {
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    if (phoneBrowsing === true || window.innerHeight > 910) {
+    vis.col1x = 2;
+    vis.col2x = 175;
+    vis.col3x = 700;
+
+    vis.row1y = -35;
+
+    if (phoneBrowsing === true || window.innerHeight > 950) {
         vis.blockSize = 5;
         vis.blockGroupWidth = 40;
     }
     else {
-         vis.blockSize = 4.5;
-         vis.blockGroupWidth = 42;
+         vis.blockSize = 4;
+         vis.blockGroupWidth = 43;
+         vis.col2x = 200;
     }
 
     vis.pinnedTooltip = false;
@@ -82,11 +89,6 @@ FlowChart.prototype.initVis = function() {
         .style("font-size", "14px")
         .text(d3.timeFormat("%B %Y")(endRange))
 
-    vis.col1x = 2;
-    vis.col2x = 175;
-    vis.col3x = 700;
-
-    vis.row1y = -35;
 
     vis.outcomeCoordinates = {
         "Investigation Pending": [vis.col1x, vis.row1y],
