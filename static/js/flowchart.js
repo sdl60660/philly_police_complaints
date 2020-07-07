@@ -29,7 +29,7 @@ FlowChart.prototype.initVis = function() {
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.col1x = 2;
+    vis.col1x = 4;
     vis.col2x = 175;
     vis.col3x = 700;
 
