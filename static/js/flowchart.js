@@ -496,7 +496,7 @@ FlowChart.prototype.setToolTips = function() {
             }
 
             // If browser isn't Chrome, don't worry about the yOffset issue
-            if ((!!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime)) === false) {
+            if (typeof window.chrome === "undefined") {
                 yOffset = -vis.blockSize;
             }
 
@@ -572,7 +572,6 @@ FlowChart.prototype.setToolTips = function() {
 
             if (d.discipline_id === "13-0541-PS-Physical Abuse") {
                 summaryText = calloutSummary(summaryText);
-                console.log(summaryText);
             }
 
             tipText += "<span class='detail-title'>Complaint Summary</span>: <span class='details' id='complaint-summary'>" + summaryText + "<br></span>";
