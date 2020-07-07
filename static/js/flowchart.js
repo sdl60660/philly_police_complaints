@@ -20,7 +20,7 @@ FlowChart.prototype.initVis = function() {
 
     vis.svg
         .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 1050 1100")
+        .attr("viewBox", "0 0 1050 800")
 
 
     vis.g = vis.svg.append("g")
