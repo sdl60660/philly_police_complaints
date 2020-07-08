@@ -497,6 +497,28 @@ function guiltyWhiteComplainantBlackOfficer() {
 }
 
 
+function enableSunburstUserControl() {
+    Array.from(document.getElementsByClassName("sunburst-select")).forEach(function(selectElement) {
+        selectElement.disabled = false;
+    });
+
+    $(".sunburst-select")
+        .css('-webkit-appearance', 'menulist-button')
+        .css('appearance', 'menulist-button');
+}
+
+
+function disableSunburstUserControl() {
+    Array.from(document.getElementsByClassName("sunburst-select")).forEach(function(selectElement) {
+        selectElement.disabled = true;
+    });
+
+    $(".sunburst-select")
+        .css('-webkit-appearance', 'none')
+        .css('appearance', 'none');
+}
+
+
 function flowchartEntrance() {
 
     $("#sunburst-tile")
@@ -647,7 +669,7 @@ scroll.on('progress', function(index, progress) {
         flowChart.repositionTooltip();
     }
 
-    console.log(index, progress);
+    // console.log(index, progress);
 
     if (index >= 13 && progress > 2.1 && $("section.step").eq(12).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();

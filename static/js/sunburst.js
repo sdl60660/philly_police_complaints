@@ -204,7 +204,7 @@ Sunburst.prototype.updateVis = function() {
         .on("mouseout", function() {
             vis.mouseout();
         })
-        .transition()
+        .transition("change-slices")
             .duration(1000)
             .ease(d3.easePoly)
             .attrTween("d", arcTweenPath)
