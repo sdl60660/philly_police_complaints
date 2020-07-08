@@ -193,7 +193,7 @@ FlowChart.prototype.initVis = function() {
     vis.svg.append("rect")
         .attr("x", vis.col3x + 25)
         .attr("y", vis.row1y + 80)
-        .attr("width", vis.fullBlockWidth*1.1)
+        .attr("width", vis.fullBlockWidth*1.12)
         .attr("height", 565 + 2*vis.rowHeightAdjustment)
         .attr("stroke-width", "1px")
         .attr("stroke", "black")
