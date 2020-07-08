@@ -181,7 +181,8 @@ strong {
 }
 
 #end-text-block {
-    margin-bottom: 200px;
+    /*margin-bottom: 200px;*/
+    min-height: 100vh;
 }
 
 @media (max-width: 1100px) {
