@@ -679,16 +679,18 @@ scroll.on('progress', function(index, progress) {
         flowChart.repositionTooltip();
     }
 
-    // console.log(index, progress);
+    console.log(index, progress);
 
-    if (index >= 14 && progress > 2.1 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {
+    if (index >= 14 && progress > 2.0 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();
-        $(".step").css("position", "absolute");
+        $(".step")
+            .css("position", "absolute");
     }
-    else if (index >= 14 && progress < 2.1 && $("section.step").eq(13).css("opacity") === "0" && phoneBrowsing === true) {
-        $("section.step").eq(12)
+    else if (index >= 14 && progress < 2.0 && $("section.step").eq(13).css("opacity") === "0" && phoneBrowsing === true) {
+        $("section.step").eq(13)
             .css("opacity", 1.0);
-        $(".step").css("position", "fixed");
+        $(".step")
+            .css("position", "fixed");
 
     }
 });
@@ -701,6 +703,11 @@ function setDynamicPadding(tileID, startIndex, endIndex) {
         if (boxHeight > maxAnnotationHeight) {
             maxAnnotationHeight = boxHeight;
         }
+    });
+
+    $(".step").toArray().slice(startIndex, endIndex+1).forEach(function (annotationBox) {
+        $(annotationBox)
+            .css("min-height", 0.7*maxAnnotationHeight);
     });
 
     $(tileID)
