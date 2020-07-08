@@ -402,6 +402,7 @@ function showSunburst() {
     if (sunburstEntered === false) {
         sunburst = new Sunburst("#sunburst-area");
         sunburstEntered = true;
+        disableSunburstUserControl();
     }
 
     $("#sunburst-area path.child")
@@ -518,6 +519,11 @@ function disableSunburstUserControl() {
         .css('appearance', 'none');
 }
 
+function enableUserExamine() {
+    sunburst.removeOutlineSections();
+    enableSunburstUserControl();
+}
+
 
 function flowchartEntrance() {
 
@@ -606,7 +612,7 @@ function showComplaintTypes() {
 }
 
 function hideFinalAnnotationSlide() {
-    $("section.step").eq(12)
+    $("section.step").eq(13)
         .css("opacity", hiddenOpacity);
 }
 
@@ -664,18 +670,18 @@ scroll.on('active', function(index){
 scroll.on('progress', function(index, progress) {
     const existingTipElement = $(".d3-tip");
 
-    if (index >= 9 && lastIndex === index && existingTipElement.css("opacity") &&
+    if (index >= 10 && lastIndex === index && existingTipElement.css("opacity") &&
         existingTipElement.css("opacity") !== "0") {
         flowChart.repositionTooltip();
     }
 
     // console.log(index, progress);
 
-    if (index >= 13 && progress > 2.1 && $("section.step").eq(12).css("opacity") !== "0" && phoneBrowsing === true) {
+    if (index >= 14 && progress > 2.1 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();
         $(".step").css("position", "absolute");
     }
-    else if (index >= 13 && progress < 2.1 && $("section.step").eq(12).css("opacity") === "0" && phoneBrowsing === true) {
+    else if (index >= 14 && progress < 2.1 && $("section.step").eq(13).css("opacity") === "0" && phoneBrowsing === true) {
         $("section.step").eq(12)
             .css("opacity", 1.0);
         $(".step").css("position", "fixed");
@@ -711,23 +717,24 @@ activateFunctions[4] = guiltyWhiteComplainant;
 activateFunctions[5] = guiltyBlackComplainant;
 activateFunctions[6] = guiltyBlackComplainantWhiteOfficer;
 activateFunctions[7] = guiltyWhiteComplainantBlackOfficer;
+activateFunctions[8] = enableUserExamine;
 
-const sunburstWrapperHeight = scrollerDivs[8].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 450;
+const sunburstWrapperHeight = scrollerDivs[9].getBoundingClientRect().bottom - scrollerDivs[1].getBoundingClientRect().top + 50 - 450;
 $("#sunburst-wrapper")
     .css("height", sunburstWrapperHeight);
 
 
-activateFunctions[8] = flowchartEntrance;
-activateFunctions[9] = highlightTile;
-activateFunctions[10] = showFlowchartByRace;
-activateFunctions[11] = highlightOverduePending;
-activateFunctions[12] = showComplaintTypes;
+activateFunctions[9] = flowchartEntrance;
+activateFunctions[10] = highlightTile;
+activateFunctions[11] = showFlowchartByRace;
+activateFunctions[12] = highlightOverduePending;
+activateFunctions[13] = showComplaintTypes;
 
-const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[8].getBoundingClientRect().top + 700;
+const flowChartWrapperHeight = scrollerDivs[scrollerDivs.length - 1].getBoundingClientRect().top - scrollerDivs[9].getBoundingClientRect().top + 700;
 $("#flowchart-wrapper")
     .css("height", flowChartWrapperHeight);
 
-activateFunctions[13] = hideFinalAnnotationSlide();
+activateFunctions[14] = hideFinalAnnotationSlide();
 
 
 $("#sunburst-tile")

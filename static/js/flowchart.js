@@ -386,7 +386,7 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
             .style("opacity", 0.9)
             .attr("box-shadow", "10px 10px")
         .on("end", function() {
-            if (activeIndex === 10) {
+            if (activeIndex === 11) {
                 vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
             }
         });
@@ -419,7 +419,7 @@ FlowChart.prototype.returnTile = function() {
             .style("opacity", 0.9)
             .attr("box-shadow", "none")
         .on("end", function() {
-            if (activeIndex === 11) {
+            if (activeIndex === 12) {
                 vis.wrangleData();
             }
         });
