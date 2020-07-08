@@ -56,8 +56,9 @@ Sunburst.prototype.initVis = function() {
 
     vis.selectedValPct = vis.g.append("text")
         .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
+        .attr("id", "sunburst-val-pct-text")
         .attr("text-anchor", "middle")
-        .style("font-size", "20pt")
+        // .style("font-size", "20pt")
         .style("fill-opacity", 0.6)
         .text("")
 
@@ -301,7 +302,7 @@ Sunburst.prototype.updateVis = function() {
 Sunburst.prototype.mouseout = function() {
     var vis = this;
 
-    $(".sunburst-segment").attr("fill-opacity", 0.6)
+    $(".sunburst-segment").attr("fill-opacity", 0.6);
 
     vis.selectedValPct
         .text("");

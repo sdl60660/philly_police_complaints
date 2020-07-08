@@ -192,6 +192,10 @@ strong {
     border-radius: 15px;
 }
 
+#sunburst-val-pct-text {
+    font-size: 20pt;
+}
+
 @media (max-width: 1100px) {
     #sections {
         /*position: fixed;*/
@@ -238,6 +242,10 @@ strong {
 
         padding-top: 6px;
         padding-bottom: 6px;
+    }
+
+    #sunburst-val-pct-text {
+        font-size: 30pt;
     }
 
     .mobile-spacer {
