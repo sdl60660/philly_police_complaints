@@ -450,12 +450,11 @@ select.other, span.other {
 	margin-bottom: 2px;
 }
 
-/*hr {*/
-    /*background-color: #eee;*/
-    /*border: 0 none;*/
-    /*color: #444444;*/
-    /*height: 1px;*/
-/*}*/
+hr {
+    background-color: #bbb !important;
+    color: #bbb !important;
+    border: solid 0.3px #bbb !important;
+}
 
 
 /*Scroll Arrow at Top of Page*/
