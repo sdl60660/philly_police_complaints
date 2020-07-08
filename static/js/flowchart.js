@@ -35,14 +35,21 @@ FlowChart.prototype.initVis = function() {
 
     vis.row1y = -35;
 
-    if (phoneBrowsing === true || window.innerHeight > 950) {
+    if (phoneBrowsing === true) {
+        vis.blockSize = 5;
+        vis.blockGroupWidth = 40;
+        vis.col1x += 50;
+        vis.col2x += 50;
+        vis.col3x += 50;
+    }
+    else if (window.innerHeight > 950) {
         vis.blockSize = 5;
         vis.blockGroupWidth = 40;
     }
     else {
          vis.blockSize = 4;
          vis.blockGroupWidth = 43;
-         vis.col2x = 200;
+         vis.col2x += 25;
     }
 
     vis.pinnedTooltip = false;
@@ -130,10 +137,20 @@ FlowChart.prototype.initVis = function() {
         .attr("text-anchor", "middle")
         .style("font-size", function(d) {
             if (['Investigation Pending', 'No Sustained Findings', 'Sustained Finding'].includes(d)) {
-                return "12pt";
+                if (phoneBrowsing === true) {
+                    return "16pt";
+                }
+                else {
+                    return "12pt";
+                }
             }
             else {
-                return "9pt";
+                if (phoneBrowsing === true) {
+                    return '11pt';
+                }
+                else {
+                   return "9pt";
+                }
             }
         })
         .on("mousemove", function() {
