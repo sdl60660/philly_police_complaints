@@ -516,7 +516,8 @@ function disableSunburstUserControl() {
 
     $(".sunburst-select")
         .css('-webkit-appearance', 'none')
-        .css('appearance', 'none');
+        .css('appearance', 'none')
+        .css('opacity', 1.0);
 }
 
 function enableUserExamine() {
