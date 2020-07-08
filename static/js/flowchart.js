@@ -29,27 +29,36 @@ FlowChart.prototype.initVis = function() {
         .attr("transform",
               "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.col1x = 4;
-    vis.col2x = 175;
-    vis.col3x = 700;
+    vis.col1x = 25;
+    vis.col2x = 200;
+    vis.col3x = 725;
 
     vis.row1y = -35;
 
+    // Make adjustments for different screen heights, so that the visualization doesn't get cut off at the bottom
     if (phoneBrowsing === true) {
         vis.blockSize = 5;
         vis.blockGroupWidth = 40;
-        vis.col1x += 50;
-        vis.col2x += 50;
-        vis.col3x += 50;
+
+        vis.col1x += 25;
+        vis.col2x += 25;
+        vis.col3x += 25;
+
+        vis.rowHeightAdjustment = 0;
     }
     else if (window.innerHeight > 950) {
         vis.blockSize = 5;
         vis.blockGroupWidth = 40;
+
+        vis.rowHeightAdjustment = 0;
     }
     else {
          vis.blockSize = 4;
          vis.blockGroupWidth = 43;
+
          vis.col2x += 25;
+
+         vis.rowHeightAdjustment = -30;
     }
 
     vis.pinnedTooltip = false;
@@ -104,9 +113,9 @@ FlowChart.prototype.initVis = function() {
 
         "Sustained Finding": [vis.col3x, vis.row1y],
         "Guilty Finding": [vis.col3x, vis.row1y + 55],
-        "Training/Counseling": [vis.col3x, vis.row1y + 175],
-        "No Guilty Findings": [vis.col3x, vis.row1y + 395],
-        "Discipline Pending": [vis.col3x, vis.row1y + 485]
+        "Training/Counseling": [vis.col3x, vis.row1y + 175 + vis.rowHeightAdjustment],
+        "No Guilty Findings": [vis.col3x, vis.row1y + 395 + 2*vis.rowHeightAdjustment],
+        "Discipline Pending": [vis.col3x, vis.row1y + 475 + 2*vis.rowHeightAdjustment]
     }
 
     vis.colWidths = {
@@ -185,7 +194,7 @@ FlowChart.prototype.initVis = function() {
         .attr("x", vis.col3x + 25)
         .attr("y", vis.row1y + 80)
         .attr("width", vis.fullBlockWidth*1.1)
-        .attr("height", 575)
+        .attr("height", 565 + 2*vis.rowHeightAdjustment)
         .attr("stroke-width", "1px")
         .attr("stroke", "black")
         .attr("fill", "rgba(255,255,255,0.5)")
