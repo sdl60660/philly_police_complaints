@@ -182,7 +182,7 @@ strong {
 
 #end-text-block {
     /*margin-bottom: 200px;*/
-    /*min-height: 100vh;*/
+    margin-bottom: 30vh;
     padding: 20px;
     padding-top: 25px;
     padding-bottom: 30px;
@@ -301,6 +301,10 @@ strong {
      .tip-text {
          font-size: 12pt;
      }
+
+     .spacer {
+        height: 0px;
+    }
 }
 
 .container {

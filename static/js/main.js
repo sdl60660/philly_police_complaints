@@ -478,11 +478,6 @@ function guiltyBlackComplainantWhiteOfficer() {
 
 
 function guiltyWhiteComplainantBlackOfficer() {
-    $("#sunburst-tile")
-        .css("opacity", 1.0);
-
-    $("#flowchart-tile")
-        .css("opacity", 0.2);
 
     if (scrollDirection === 'up') {
         resetFlowchartTooltips();
@@ -521,6 +516,14 @@ function disableSunburstUserControl() {
 }
 
 function enableUserExamine() {
+    if (scrollDirection === 'up') {
+        $("#sunburst-tile")
+            .css("opacity", 1.0);
+
+        $("#flowchart-tile")
+            .css("opacity", 0.2);
+    }
+
     sunburst.removeOutlineSections();
     enableSunburstUserControl();
 }
@@ -529,7 +532,7 @@ function enableUserExamine() {
 function flowchartEntrance() {
 
     $("#sunburst-tile")
-        .css("opacity", hiddenOpacity);
+        .css("opacity", 0.2);
 
     $("#flowchart-tile")
         .css("opacity", 1.0);
