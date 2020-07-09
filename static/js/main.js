@@ -360,6 +360,28 @@ function updateFlowchartDates() {
 }
 
 
+function artificialHover(outcomeName) {
+    $("#sunburst-area path").removeAttr('style');
+
+    const guiltyFindingElement = $(`path#${outcomeName.replace(" ", "-")}`)[0];
+    const guiltyValue = guiltyFindingElement.getAttribute("value");
+    sunburst.mouseover(guiltyValue, guiltyFindingElement);
+}
+
+function setSelectOptions(optionPairs) {
+    optionPairs.forEach(function(pair) {
+        var selectID = pair[0];
+        var optionVal = pair[1];
+
+        $(`select#${selectID}`)
+            .val(optionVal)
+            .attr("class", `sunburst-select ${$(`select#${selectID}`).val()}`);
+    })
+
+    sunburst.wrangleData();
+}
+
+
 function displayIntroText() {
 
     $("#intro-tile")
@@ -436,28 +458,6 @@ function showDisciplinaryGroups() {
     $("#sunburst-area path.Sustained-Finding")
         .css("fill-opacity", 0.8);
 
-}
-
-
-function artificialHover(outcomeName) {
-    $("#sunburst-area path").removeAttr('style');
-
-    const guiltyFindingElement = $(`path#${outcomeName.replace(" ", "-")}`)[0];
-    const guiltyValue = guiltyFindingElement.getAttribute("value");
-    sunburst.mouseover(guiltyValue, guiltyFindingElement);
-}
-
-function setSelectOptions(optionPairs) {
-    optionPairs.forEach(function(pair) {
-        var selectID = pair[0];
-        var optionVal = pair[1];
-
-        $(`select#${selectID}`)
-            .val(optionVal)
-            .attr("class", `sunburst-select ${$(`select#${selectID}`).val()}`);
-    })
-
-    sunburst.wrangleData();
 }
 
 
