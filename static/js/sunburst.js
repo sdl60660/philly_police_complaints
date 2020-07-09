@@ -303,7 +303,6 @@ Sunburst.prototype.updateVis = function() {
         if (sunburst.plotAreas._groups[0].includes(sunburst.mousedOverElement)) {
             const guiltyFindingElement = $(vis.mousedOverElement)[0];
             const guiltyValue = guiltyFindingElement.getAttribute("value");
-            console.log(guiltyValue, vis.mousedOverElement);
             vis.mouseover(guiltyValue, vis.mousedOverElement);
         }
         else {

@@ -204,6 +204,8 @@ FlowChart.prototype.initVis = function() {
 
     vis.legendSVG = d3.select("#flowchart-legend-area").append("svg");
 
+    vis.flowchartReady = false;
+
     vis.setComplaintTypes();
     vis.setToolTips();
     vis.wrangleData();
@@ -342,20 +344,14 @@ FlowChart.prototype.updateVis = function() {
                     .attr("y", function(d,i) {
                         return vis.outcomeCoordinates[d.end_state][1] + vis.trueBlockWidth * ~~(d.final_state_index/vis.colWidths[d.end_state]);
                     })
-                    // .style("opacity", 0.8)
+                    .on("end", function() {
+                        vis.flowchartReady = true;
+                    });
 
     vis.flowchart
         .transition()
             .duration(400)
-            .delay(function(d) {
-
-                if (d.investigative_findings === "Sustained Finding") {
-                    return 100;
-                }
-                else {
-                    return 100;
-                }
-            })
+            .delay(100)
                 .attr("x",  function(d,i) {
                     return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%(vis.colWidths[d.end_state]));
                 })
@@ -374,7 +370,8 @@ FlowChart.prototype.updateVis = function() {
                 .attr("width", vis.blockSize)
                 .attr("stroke-width", 0)
                 .attr("stroke", "none")
-                .style("fill-opacity", 0.9);
+                .style("fill-opacity", 0.9)
+
 
 }
 

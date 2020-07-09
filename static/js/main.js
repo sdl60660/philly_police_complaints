@@ -331,8 +331,11 @@ function resetFlowchartTooltips() {
 // This will run if a user loads/reloads in the middle of the screen. It will run all activate functions that
 // should have run by the given Y Position
 function catchupPagePosition(startYPosition) {
-    $(".step").toArray().forEach(function(step,i) {
-        if (startYPosition > $(step).offset().top) {
+    $(".step").toArray().forEach( function(step, i) {
+
+        const topMargin = parseInt($(step).css("margin-top"));
+
+        if (startYPosition + topMargin > $(step).offset().top) {
             console.log(i);
             activateFunctions[i]();
         }
@@ -537,7 +540,7 @@ function flowchartEntrance() {
     $("#flowchart-tile")
         .css("opacity", 1.0);
 
-    if (scrollDirection === 'up') {
+    if (scrollDirection === 'up' && typeof flowChart.highlightTileX !== "undefined") {
         // resetFlowchartTooltips();
         flowChart.returnTile();
     }
@@ -547,7 +550,7 @@ function flowchartEntrance() {
 function highlightTile() {
     const selectedStory = "13-0541-PS-Physical Abuse";
 
-    if (scrollDirection === 'down') {
+    if (scrollDirection === 'down' && flowChart.flowchartReady === true) {
         resetFlowchartTooltips();
 
         flowChart.highlightTile(selectedStory);
@@ -566,7 +569,7 @@ function showFlowchartByRace() {
 
     $("#sort-feature-select").val("complainant_race").trigger("chosen:updated");
 
-    if (scrollDirection === 'down') {
+    if (scrollDirection === 'down' && typeof flowChart.highlightTileX !== "undefined") {
         resetFlowchartTooltips();
         flowChart.returnTile();
     }
@@ -641,13 +644,13 @@ function activate(index) {
     else {
         scrollDirection = 'down';
     }
-    console.log(scrollDirection);
 
 
     var sign = (activeIndex - lastIndex) < 0 ? -1 : 1;
     var scrolledSections = d3.range(lastIndex + sign, activeIndex + sign, sign);
     scrolledSections.forEach(function(i) {
         if (i-1 >= 0) {
+            console.log(i);
             activateFunctions[i - 1]();
         }
     });
@@ -679,7 +682,7 @@ scroll.on('progress', function(index, progress) {
         flowChart.repositionTooltip();
     }
 
-    console.log(index, progress);
+    // console.log(index, progress);
 
     if (index >= 14 && progress > 2.0 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();
