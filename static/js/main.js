@@ -424,12 +424,17 @@ function showDisciplinaryGroups() {
     //     .hide()
     setSelectOptions([["sunburst-complainant-race", "all"], ["sunburst-po-race", "all"]]);
 
+    artificialHover("Sustained Finding");
+
 
     $("#sunburst-area path.child")
         .css("fill-opacity", 0.8);
 
     $("#sunburst-area path.parent")
         .css("fill-opacity", 0.3);
+
+    $("#sunburst-area path.Sustained-Finding")
+        .css("fill-opacity", 0.8);
 
 }
 
