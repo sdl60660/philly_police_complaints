@@ -233,8 +233,8 @@ strong {
     }
 
     .step .body {
-        padding-top: 5px;
-        padding-bottom: 15px;
+        padding: 5px 20px 15px 20px;
+
         font-size: 15pt;
     }
 
@@ -534,3 +534,31 @@ hr {
     transform: translateY(-15px);
   }
 }
+
+
+/*Scrollbar*/
+
+/*@media (max-width: 1100px) {*/
+    /*::-webkit-scrollbar {*/
+        /*-webkit-appearance: none;*/
+    /*}*/
+
+    /*::-webkit-scrollbar:vertical {*/
+        /*width: 20px;*/
+    /*}*/
+
+    /*::-webkit-scrollbar:horizontal {*/
+        /*height: 12px;*/
+    /*}*/
+
+    /*::-webkit-scrollbar-thumb {*/
+        /*background-color: rgba(0, 0, 0, .5);*/
+        /*border-radius: 10px;*/
+        /*border: 2px solid #ffffff;*/
+    /*}*/
+
+    /*::-webkit-scrollbar-track {*/
+        /*border-radius: 10px;*/
+        /*background-color: rgba(0, 0, 0, 0);*/
+    /*}*/
+/*}*/

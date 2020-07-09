@@ -10,16 +10,12 @@ FlowChart.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 85, right: 15, bottom: 45, left: 40};
-    vis.width = 1000 - vis.margin.left - vis.margin.right;
-    vis.height = 1100 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select(vis.parentElement)
         .append("svg");
-        // .attr("width", 1000)
-        // .attr("height", 1500)
 
     vis.svg
-        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("preserveAspectRatio", "xMaxYMax meet")
         .attr("viewBox", "0 0 1050 800")
 
 
@@ -789,7 +785,6 @@ FlowChart.prototype.visEntrance = function() {
                 .attr("class", "complaint-box")
                 .style("opacity", 0.0)
                 .attr("y", -100)
-                // .attr("x", vis.width/2)
                 .attr("x",  function(d) {
                     return vis.outcomeCoordinates[d.end_state][0] + vis.trueBlockWidth * (d.final_state_index%vis.colWidths[d.end_state]);
                 })
