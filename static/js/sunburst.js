@@ -76,6 +76,7 @@ Sunburst.prototype.initVis = function() {
     })
 
     vis.previouslyAddedLabels = [];
+    vis.mousedOverElement = null;
 
     vis.wrangleData();
 }
@@ -296,6 +297,20 @@ Sunburst.prototype.updateVis = function() {
 
         return tween;
     }
+
+    if (vis.mousedOverElement != null) {
+
+        if (sunburst.plotAreas._groups[0].includes(sunburst.mousedOverElement)) {
+            const guiltyFindingElement = $(vis.mousedOverElement)[0];
+            const guiltyValue = guiltyFindingElement.getAttribute("value");
+            console.log(guiltyValue, vis.mousedOverElement);
+            vis.mouseover(guiltyValue, vis.mousedOverElement);
+        }
+        else {
+            vis.mouseout();
+        }
+
+    }
 }
 
 // Restore normal opacity levels and clear center text
@@ -314,6 +329,8 @@ Sunburst.prototype.mouseout = function() {
 Sunburst.prototype.mouseover = function(value, element) {
     var vis = this;
 
+    vis.mousedOverElement = element;
+
     $(".sunburst-segment").attr("fill-opacity", 0.2);
 
     vis.selectedValPct
@@ -330,6 +347,8 @@ Sunburst.prototype.mouseover = function(value, element) {
 
 Sunburst.prototype.createOutlineSections = function(sectionNames) {
     var vis = this;
+
+    vis.mousedOverElement = null;
 
     sectionNames.forEach(function(sectionName) {
         var idName = sectionName.replace(" ", "-");
