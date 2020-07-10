@@ -4,8 +4,6 @@ import re
 
 from datetime import datetime
 
-from pprint import pprint
-
 
 def find_prior_complaints(officer_id, data, data_index):
     if not officer_id:
