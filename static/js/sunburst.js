@@ -8,7 +8,7 @@ Sunburst = function(_parentElement) {
 Sunburst.prototype.initVis = function() {
     var vis = this;
 
-    // Dimensions of sunburst.
+    // Dimensions of sunburst. Max width of 850, then scale down based on available window width.
     const dimensions = Math.min(850, $("#sunburst-area").width());
 
     vis.margin = {'top': 15, 'bottom': 10, 'left': 10, 'right': 10}
@@ -16,6 +16,7 @@ Sunburst.prototype.initVis = function() {
     vis.height = dimensions - vis.margin.top - vis.margin.bottom;
     vis.radius = Math.min(vis.width, vis.height) / 2;
 
+    // Arc layout for sunburst
     vis.arc = d3.arc()
         .startAngle(function(d) {
             d.x0s = d.x0;
@@ -31,6 +32,7 @@ Sunburst.prototype.initVis = function() {
         .outerRadius(d => d.y1 - 1)
 
 
+    // Create hierarchical data
     vis.partition = data => d3.partition()
         .size([2 * Math.PI, vis.radius])
             (d3.hierarchy(vis.data)
@@ -50,10 +52,12 @@ Sunburst.prototype.initVis = function() {
         .attr("text-anchor", "middle")
         .attr("font-size", 11)
 
+    // We'll use this later in the attrTween function for animating transitions on the sunburst
     vis.previousAngles = {};
 
     vis.format = d3.format(",d")
 
+    // Label in center of sunburst with the percentage value of the hovered section
     vis.selectedValPct = vis.g.append("text")
         .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
         .attr("id", "sunburst-val-pct-text")
@@ -62,6 +66,7 @@ Sunburst.prototype.initVis = function() {
         .style("fill-opacity", 0.6)
         .text("")
 
+    // Lebel in the center of the sunburst with count value of the hovered section
     vis.selectedValTotals = vis.g.append("text")
         .attr("transform", "translate(" + vis.radius + "," + vis.radius + ")")
         .attr("text-anchor", "middle")
@@ -70,11 +75,14 @@ Sunburst.prototype.initVis = function() {
         .style("fill-opacity", 0.6)
         .text("")
 
+    // If the select options change in the text above the sunburst, update the visual
     $('.sunburst-select').on('change', function(e) {
         $(this).attr("class", `sunburst-select ${$(this).val()}`)
         vis.wrangleData();
     })
 
+    // Used to prevent labels from the center of the sunburst if they're removed and re-added
+    // (in cases where the chart is filtered so that no cases match the outcome)
     vis.previouslyAddedLabels = [];
     vis.mousedOverElement = null;
 
@@ -86,6 +94,7 @@ Sunburst.prototype.wrangleData = function() {
 
     vis.chartData = officerDisciplineResults;
 
+    // Process 'other' or 'all' options for complainant/officer race selects
     ['po', 'complainant'].forEach(function(category) {
         let itemSelect = $(`#sunburst-${category}-race`).val();
 
@@ -103,6 +112,7 @@ Sunburst.prototype.wrangleData = function() {
         }
     });
 
+    // Process 'all' option for district median income select
     let itemSelect = $(`#sunburst-district-income-group`).val();
 
     if (itemSelect !== 'all') {
@@ -112,12 +122,15 @@ Sunburst.prototype.wrangleData = function() {
             })
     }
 
+    // Capture total number of cases that match the given filters in order to accurately calculate percentages later
     vis.totalSize = vis.chartData.length;
 
+    // Put data into nest
     var nest = d3.nest()
         .key(function(d) {return d.investigative_findings})
         .map(vis.chartData);
 
+    // Format data with parents/children and counts rather than full arrays of data
     var investigative_result_counts = [];
     ["Sustained Finding", "No Sustained Findings", "Investigation Pending"].forEach(function(i_key) {
 
@@ -142,6 +155,7 @@ Sunburst.prototype.wrangleData = function() {
         }
     })
 
+    // Add top-level root element
     vis.data = {'name': 'investigative_results', 'children': investigative_result_counts}
 
     vis.root = vis.partition(vis.data);
