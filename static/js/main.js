@@ -350,8 +350,6 @@ $(window)
             var arrowFadeHeight = $('#sunburst-wrapper').offset().top;
         }
 
-        console.log(arrowFadeHeight, $(window).scrollTop());
-
         if ($(window).scrollTop() > arrowFadeHeight) {
             $(".downArrow")
                 .css("opacity", 0.0);
@@ -741,7 +739,16 @@ scroll.on('active', function(index){
 })
 
 scroll.on('progress', function(index, progress) {
-    // console.log(index, progress);
+    console.log(index, progress);
+
+    if (index === 14 && progress >= 1.5) {
+        $("#flowchart-tile")
+            .css("opacity", 0.2);
+    }
+    else if (index === 14 && progress < 1.5) {
+        $("#flowchart-tile")
+            .css("opacity", 1.0);
+    }
 
     if (index >= 14 && progress > 2.0 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {
         hideFinalAnnotationSlide();
