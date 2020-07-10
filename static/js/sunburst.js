@@ -155,19 +155,28 @@ Sunburst.prototype.wrangleData = function() {
         }
     })
 
-    // Add top-level root element
-    vis.data = {'name': 'investigative_results', 'children': investigative_result_counts}
-
+    // Add top-level root element so that data can be properly parsed for sunburst
+    vis.data = { 'name': 'investigative_results', 'children': investigative_result_counts };
+    // Put data into proper d3 layout, initialized above in initVis()
     vis.root = vis.partition(vis.data);
 
     vis.updateVis();
 
-}
+};
 
 // Main function to draw and set up the visualization, once we have the data.
 Sunburst.prototype.updateVis = function() {
     var vis = this;
 
+    vis.addSunburstSlices();
+    vis.addSunburstLabels();
+};
+
+
+Sunburst.prototype.addSunburstSlices = function() {
+    var vis = this;
+
+    // Join partition data to paths, match existing slices with the outcome name
     vis.plotAreas = vis.g.selectAll("path")
         .data(vis.root.descendants().filter(function(d) {
                 return d.depth
@@ -176,18 +185,23 @@ Sunburst.prototype.updateVis = function() {
                 return d.data.name;
             })
 
+    // Remove any sunburst slices that are not present in current filtering
+    // (e.g. if there are no 'guilty findings' with a particular filter set, remove the 'guilty finding' slice)
     vis.plotAreas
         .exit()
         .remove();
 
+    // Add new outcomes to sunburst as slices (paths)
     vis.plotAreas
         .enter()
         .append("path")
         .attr("parent", function(d) {
             if(d.depth > 1) {
+                // If this is a child outcome (disciplinary), add its parent
                 return d.parent.data.name.replace(" ", "-");
             }
             else {
+                // Otherwise, it will be considered its own parent
                 return d.data.name;
             }
         })
@@ -203,8 +217,6 @@ Sunburst.prototype.updateVis = function() {
             return d.data.name.replace(" ", "-");
         })
         .attr("fill", function(d) {
-            // while (d.depth > 1)
-            //     d = d.parent;
             return outcomeColors(d.data.name);
         })
         .attr("value", function(d) {
@@ -223,12 +235,15 @@ Sunburst.prototype.updateVis = function() {
         .transition("change-slices")
             .duration(1000)
             .ease(d3.easePoly)
+            // Run custom attrTween function on transitions to smoothly change arc size
             .attrTween("d", arcTweenPath)
+        // We'll use the previousAngles dict initialized earlier to store angles.
+        // This is going to help the arcTweenPath function when it needs to re-add a slice that wasn't present in a previous filtering
         .each(function(d) {
             vis.previousAngles[d.data.name] = vis.previousAngles[d.data.name] ?
                 {'x0': d.x0, 'x1': d.x0, 'y0': vis.previousAngles[d.data.name].y0, 'y1': vis.previousAngles[d.data.name].y1 }
                 : {'x0': d.x0, 'x1': d.x1, 'y0': 0, 'y1': 0}
-        })
+        });
 
     vis.plotAreas
         .attr("value", function(d) {
@@ -239,20 +254,74 @@ Sunburst.prototype.updateVis = function() {
             .ease(d3.easePoly)
             .attrTween("d", arcTweenPath);
 
+    function arcTweenPath(a, i) {
+
+        // Starting point for the angles will be determined from the previousAngles dict
+        var oi = d3.interpolate({
+            x0: vis.previousAngles[a.data.name].x0,
+            x1: vis.previousAngles[a.data.name].x1,
+            y0: vis.previousAngles[a.data.name].y0,
+            y1: vis.previousAngles[a.data.name].y1
+        }, a);
+
+        // Custom interpolator to smoothly transition the x values on a given arc from previous position to new one
+        // This function is what's returned to the attrTween attribute as the interpolator to use for the transition
+        function tween(t) {
+            var b = oi(t);
+            a.x0s = b.x0;
+            a.x1s = b.x1;
+            return vis.arc(b);
+        }
+
+        vis.previousAngles[a.data.name].x0 = a.x0;
+        vis.previousAngles[a.data.name].x1 = a.x1;
+        vis.previousAngles[a.data.name].y0 = a.y0;
+        vis.previousAngles[a.data.name].y1 = a.y1;
+
+        return tween;
+    }
+
+    // If there's an existing moused-over element (triggered by annotations), then on any filter change (by annotation or user),
+    // we'll want to update the numbers in the center text, as if it had been mousedover, so cause an artificial trigger of the mosueover function
+    if (vis.mousedOverElement != null) {
+
+        if (sunburst.plotAreas._groups[0].includes(sunburst.mousedOverElement)) {
+            const guiltyFindingElement = $(vis.mousedOverElement)[0];
+            const guiltyValue = guiltyFindingElement.getAttribute("value");
+            vis.mouseover(guiltyValue, vis.mousedOverElement);
+        }
+        else {
+            vis.mouseout();
+        }
+
+    }
+};
+
+
+Sunburst.prototype.addSunburstLabels = function() {
+    var vis = this;
+
+    // Join data to text labels, using the outcome name as a key
     vis.labels = vis.labelGroup.selectAll("text")
         .data(vis.root.descendants().filter(d => d.depth && (d.y0 + d.y1) / 2 * (d.x1 - d.x0) > 10)
             , function(d) {
                 return d.data.name;
             })
 
+    // Remove anylabels that are not present in current filtering
+    // (e.g. if there are no 'guilty findings' with a particular filter set, remove the 'guilty finding' label)
     vis.labels
         .exit()
         .remove();
 
+    // Add new outcomes to sunburst as labels
     vis.labels
         .enter()
         .append("text")
         .attr("class", "sunburst-chart-labels")
+        // The entrance of a 'new' label will be different if it is genuinely new vs. if it just didn't appear in the last filtering
+        // A truly new label (on sunburst entrance) will 'spawn' from the center of the sunburst, one that is making a 're-entrance'
+        // will initially re-appear where it was last located before making its way to its new position
         .attr("transform", function(d) {
             if (vis.previouslyAddedLabels.includes(d.data.name)) {
                 const x = (d.x0 + d.x1) / 2 * 180 / Math.PI;
@@ -275,6 +344,7 @@ Sunburst.prototype.updateVis = function() {
                 return `translate(${vis.radius}, ${vis.radius}) rotate(${x - 90}) translate(${y},0) rotate(${90 - x}) rotate(${90-x < 180 ? 0 : 180})`;
             });
 
+    // Update existing labels position to center them on new corresponding slice position
     vis.labels
         .transition()
         .delay(0)
@@ -287,44 +357,8 @@ Sunburst.prototype.updateVis = function() {
         })
 
     vis.labelGroup.raise();
+};
 
-    function arcTweenPath(a, i) {
-
-        var oi = d3.interpolate({
-            x0: vis.previousAngles[a.data.name].x0,
-            x1: vis.previousAngles[a.data.name].x1,
-            y0: vis.previousAngles[a.data.name].y0,
-            y1: vis.previousAngles[a.data.name].y1
-        }, a);
-
-        function tween(t) {
-            var b = oi(t);
-            a.x0s = b.x0;
-            a.x1s = b.x1;
-            return vis.arc(b);
-        }
-
-        vis.previousAngles[a.data.name].x0 = a.x0;
-        vis.previousAngles[a.data.name].x1 = a.x1;
-        vis.previousAngles[a.data.name].y0 = a.y0;
-        vis.previousAngles[a.data.name].y1 = a.y1;
-
-        return tween;
-    }
-
-    if (vis.mousedOverElement != null) {
-
-        if (sunburst.plotAreas._groups[0].includes(sunburst.mousedOverElement)) {
-            const guiltyFindingElement = $(vis.mousedOverElement)[0];
-            const guiltyValue = guiltyFindingElement.getAttribute("value");
-            vis.mouseover(guiltyValue, vis.mousedOverElement);
-        }
-        else {
-            vis.mouseout();
-        }
-
-    }
-}
 
 // Restore normal opacity levels and clear center text
 Sunburst.prototype.mouseout = function() {
@@ -358,6 +392,8 @@ Sunburst.prototype.mouseover = function(value, element) {
     $("." + parentName).attr("fill-opacity", 0.8);
 }
 
+// Outline sections provided as parameter (array) for annotation comparative purposes
+// Remove these on hover
 Sunburst.prototype.createOutlineSections = function(sectionNames) {
     var vis = this;
 
@@ -383,7 +419,7 @@ Sunburst.prototype.createOutlineSections = function(sectionNames) {
     })
 }
 
-
+// Remove any outlined sections if the user hovers over them
 Sunburst.prototype.removeOutlineSections = function() {
     var vis = this;
 
