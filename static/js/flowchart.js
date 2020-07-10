@@ -442,9 +442,9 @@ FlowChart.prototype.returnTile = function() {
             .style("opacity", 0.9)
             .attr("box-shadow", "none")
         .on("end", function() {
-            if (activeIndex === 12) {
+            // if (activeIndex === 12) {
                 vis.wrangleData();
-            }
+            // }
         });
 };
 
