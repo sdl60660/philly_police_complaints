@@ -680,13 +680,6 @@ scroll.on('active', function(index){
 })
 
 scroll.on('progress', function(index, progress) {
-    // const existingTipElement = $(".d3-tip");
-    //
-    // // if (index >= 10 && lastIndex === index && existingTipElement.css("opacity") &&
-    // //     existingTipElement.css("opacity") !== "0") {
-    // //     flowChart.repositionTooltip();
-    // // }
-
     // console.log(index, progress);
 
     if (index >= 14 && progress > 2.0 && $("section.step").eq(13).css("opacity") !== "0" && phoneBrowsing === true) {

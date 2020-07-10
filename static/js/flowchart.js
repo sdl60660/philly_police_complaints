@@ -387,8 +387,6 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
         vis.featuredTile = vis.g.selectAll("rect.complaint-box").filter(function(d,i) { return i === tileIndex});
     }
 
-    // console.log(vis.featuredTile);
-
     vis.highlightTileX = vis.featuredTile.attr("x");
     vis.highlightTileY = vis.featuredTile.attr("y");
 
@@ -427,12 +425,6 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
 FlowChart.prototype.returnTile = function() {
     const vis = this;
 
-    // vis.tip.hide();
-    // d3.selectAll(".d3-tip")._groups[0].forEach(function(d) {
-    //     d.remove();
-    // });
-    // vis.svg.call(vis.tip);
-
     vis.tip.hide();
     d3.selectAll(".d3-tip").remove();
     // vis.svg.call(vis.tip);
@@ -460,8 +452,6 @@ FlowChart.prototype.returnTile = function() {
 FlowChart.prototype.highlightTileSection = function(sectionName) {
     const vis = this;
 
-    // console.log(vis.flowchart);
-
     vis.g.selectAll("rect")
         .transition("fade-opacity")
             .duration(600)
@@ -482,23 +472,7 @@ FlowChart.prototype.returnTileSections = function() {
 
     vis.flowchart
         .style("fill-opacity", 0.9);
-        // .on("end", vis.wrangleData());
 };
-
-
-FlowChart.prototype.repositionTooltip = function() {
-    const vis = this;
-    const d3Tip = $(".d3-tip");
-
-    const currentY = parseInt(d3Tip.css("top"));
-    const newOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
-
-    const newY = currentY + (vis.lastTooltipOffset - newOffset);
-
-    vis.lastTooltipOffset = newOffset;
-
-    d3Tip.css("top", newY);
-}
 
 
 FlowChart.prototype.setToolTips = function() {
