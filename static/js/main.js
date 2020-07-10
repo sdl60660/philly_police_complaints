@@ -98,6 +98,16 @@ function determinePhoneBrowsing() {
         setDynamicPadding('#sunburst-tile', 1, 7);
         setDynamicPadding('#flowchart-tile', 8, 12);
     }
+
+    if (phoneBrowsing === true) {
+        $(".downArrow img")
+            .attr("width", "70px")
+            .attr("height", "70px")
+
+        $(".downArrow")
+            .css("text-align", "center")
+            .css("position", "fixed");
+    }
 }
 
 
@@ -287,8 +297,31 @@ $("#play-button")
         
     });
 
+// For initial scroll, to be reset
+let scrollSpeed = 'slow';
+// Down arrow scroll trigger
 $(".downArrow").on("click", function() {
-    document.getElementById("sunburst-wrapper").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+    // If mobile, arrow will be with them the whole time
+    if (phoneBrowsing === true) {
+        // If at joint between sunburst/flowchart, be specific
+        if ($("#last-sunburst-annotation").css("opacity") === "1") {
+            $('html, body').animate({scrollTop: $('#flowchart-wrapper').offset().top }, 'slow');
+        }
+        // If at joint between flowchart and conclusion, be specific
+        else if ($("#last-flowchart-annotation").css("opacity") === "1") {
+            $('html, body').animate({scrollTop: $('#end-text-block').offset().top - 100 }, 'slow');
+        }
+        else {
+            $('html, body').animate({scrollTop: `+=${$(".mobile-spacer").css("height")}`}, scrollSpeed);
+        }
+
+        scrollSpeed = 'fast';
+    }
+
+    // If on Desktop, arrow stays at the top and only needs this one trigger
+    else {
+        $('html, body').animate({scrollTop: $('#first-annotation').offset().top - 100 }, 'slow');
+    }
 });
 
 
@@ -306,6 +339,27 @@ $(window)
         }
 
     })
+    .scroll(function() {
+        if (phoneBrowsing === true) {
+            var arrowFadeHeight = $('#end-text-block').offset().top - 110;
+        }
+        else {
+            var arrowFadeHeight = $('#sunburst-wrapper').offset().top;
+        }
+
+        console.log(arrowFadeHeight, $(window).scrollTop());
+
+        if ($(window).scrollTop() > arrowFadeHeight) {
+            $(".downArrow")
+                .css("opacity", 0.0);
+                // .fadeTo( "fast" , 0);
+        }
+        else {
+            $(".downArrow")
+                .css("opacity", 1.0);
+                // .fadeTo( "fast" , 1);
+        }
+    });
 
 
 function step() {

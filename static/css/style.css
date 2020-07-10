@@ -101,6 +101,7 @@ strong {
 	/*background-color: rgba(0,0,0,0) !important;*/
     opacity: 0.0;
     z-index: -1;
+    margin-bottom: 61vh;
 }
 
 .step .title {
@@ -184,7 +185,7 @@ strong {
 
 #end-text-block {
     /*margin-bottom: 200px;*/
-    margin-bottom: 30vh;
+    margin-bottom: 25vh;
     padding: 20px;
     padding-top: 25px;
     padding-bottom: 30px;
