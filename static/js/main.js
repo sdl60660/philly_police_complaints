@@ -623,6 +623,10 @@ function highlightTile() {
     if (scrollDirection === 'down' && flowChart.flowchartReady === true) {
         resetFlowchartTooltips();
 
+        // startRange = startDate;
+        // endRange = addMonths(startDate, maxDateOffset);
+        // updateFlowchartDates();
+
         flowChart.highlightTile(selectedStory);
     }
 
