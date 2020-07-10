@@ -473,6 +473,12 @@ function displayIntroText() {
             return function(t) { return format(this._current = i(t)); };
         })
         .end();
+
+    if (phoneBrowsing === false && sunburstEntered === false) {
+        sunburst = new Sunburst("#sunburst-area");
+        sunburstEntered = true;
+        disableSunburstUserControl();
+    }
 }
 
 
@@ -483,7 +489,7 @@ function showSunburst() {
     $("#sunburst-tile")
         .css("opacity", 1.0);
 
-    if (sunburstEntered === false) {
+    if (phoneBrowsing === true && sunburstEntered === false) {
         sunburst = new Sunburst("#sunburst-area");
         sunburstEntered = true;
         disableSunburstUserControl();
