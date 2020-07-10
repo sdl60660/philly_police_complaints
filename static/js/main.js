@@ -297,14 +297,17 @@ $("#play-button")
         
     });
 
-// For initial scroll, to be reset
-let scrollSpeed = 'slow';
 // Down arrow scroll trigger
 $(".downArrow").on("click", function() {
     // If mobile, arrow will be with them the whole time
     if (phoneBrowsing === true) {
+
+        // If first scroll from intro block
+        if ($(window).scrollTop() < window.innerHeight) {
+            $('html, body').animate({scrollTop: $('#sunburst-wrapper').offset().top }, 'slow');
+        }
         // If at joint between sunburst/flowchart, be specific
-        if ($("#last-sunburst-annotation").css("opacity") === "1") {
+        else if ($("#last-sunburst-annotation").css("opacity") === "1") {
             $('html, body').animate({scrollTop: $('#flowchart-wrapper').offset().top }, 'slow');
         }
         // If at joint between flowchart and conclusion, be specific
@@ -312,7 +315,7 @@ $(".downArrow").on("click", function() {
             $('html, body').animate({scrollTop: $('#end-text-block').offset().top - 100 }, 'slow');
         }
         else {
-            $('html, body').animate({scrollTop: `+=${$(".mobile-spacer").css("height")}`}, scrollSpeed);
+            $('html, body').animate({scrollTop: `+=${$(".mobile-spacer").css("height")}`}, 'fast');
         }
 
         scrollSpeed = 'fast';
