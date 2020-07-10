@@ -287,6 +287,10 @@ $("#play-button")
         
     });
 
+$(".downArrow").on("click", function() {
+    document.getElementById("sunburst-wrapper").scrollIntoView({ block: 'start',  behavior: 'smooth' });
+});
+
 
 // Resize timeline on window size/jquery ui slider size change
 $(window)

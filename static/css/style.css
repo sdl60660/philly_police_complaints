@@ -475,10 +475,12 @@ hr {
 
 /*Scroll Arrow at Top of Page*/
 
-.downArrow{
+.downArrow {
 	position: absolute;
 	bottom: 8%;
 	left: 50%;
+
+    cursor: pointer;
 }
 
 .bounce {
