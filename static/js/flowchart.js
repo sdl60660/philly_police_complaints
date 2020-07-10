@@ -407,6 +407,18 @@ FlowChart.prototype.highlightTile = function(disciplineID) {
         .on("end", function() {
             if (activeIndex === 11) {
                 vis.tip.show(vis.featuredTile._groups[0][0].__data__, vis.featuredTile.node());
+
+                let tileY = flowChart.featuredTile.node().getBoundingClientRect().y;
+                let tileHeight = flowChart.featuredTile.node().getBoundingClientRect().height;
+
+                let tooltipHeight = $(".d3-tip")[0].getBoundingClientRect().height;
+
+                let tileRight = flowChart.featuredTile.node().getBoundingClientRect().right;
+
+                $(".d3-tip")
+                    .css("position", "fixed")
+                    .css("top", tileY + (tileHeight / 2) - (tooltipHeight / 2))
+                    .css("left", tileRight + 3);
             }
         });
 }
@@ -476,13 +488,13 @@ FlowChart.prototype.returnTileSections = function() {
 
 FlowChart.prototype.repositionTooltip = function() {
     const vis = this;
-
     const d3Tip = $(".d3-tip");
 
     const currentY = parseInt(d3Tip.css("top"));
     const newOffset = $("#flowchart-wrapper")[0].getBoundingClientRect().y;
 
     const newY = currentY + (vis.lastTooltipOffset - newOffset);
+
     vis.lastTooltipOffset = newOffset;
 
     d3Tip.css("top", newY);
