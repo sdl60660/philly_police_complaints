@@ -88,7 +88,7 @@ function determinePhoneBrowsing() {
     // If mobile, and annotations are up top, adjust top-padding on viz-tiles to make room for fixed-position annotation
     if (phoneBrowsing === true) {
         setDynamicPadding('#sunburst-tile', 1, 7);
-        setDynamicPadding('#flowchart-tile', 8, 12);
+        setDynamicPadding('#flowchart-tile', 8, 13);
     }
 }
 
