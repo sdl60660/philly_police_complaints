@@ -1029,12 +1029,13 @@ function main() {
         officerDisciplineResults = allData[0];
         // districtGeoJSON = allData[1];
 
+
         $(".loadring-container")
             .hide();
 
         $("#intro-wrapper")
             .css("visibility", "visible");
-
+        
         const datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
             return new Date(d.date_received);
         });
