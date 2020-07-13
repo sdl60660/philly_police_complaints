@@ -1036,9 +1036,6 @@ function main() {
         $("#intro-wrapper")
             .css("visibility", "visible");
 
-        // Allow user to scroll now that elements are loaded
-        enableScroll();
-
         const datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
             return new Date(d.date_received);
         });
