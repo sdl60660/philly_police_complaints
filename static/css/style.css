@@ -371,19 +371,19 @@ span.category-text {
 }
 
 select.white, span.white {
-	background-color: rgba(255,25,25,0.5);
+	background-color: rgba(255,25,25,0.4);
 }
 
 select.black, span.black {
-	background-color: rgba(50,50,255,0.5);
+	background-color: rgba(50,50,255,0.4);
 }
 
 select.latino, span.latino {
-	background-color: rgba(255,172,20,0.5);
+	background-color: rgba(255,172,20,0.4);
 }
 
 select.other, span.other {
-	background-color: rgba(128,128,128,0.5);
+	background-color: rgba(128,128,128,0.4);
 }
 
 #slider-div {
