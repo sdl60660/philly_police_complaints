@@ -1029,7 +1029,6 @@ function main() {
         officerDisciplineResults = allData[0];
         // districtGeoJSON = allData[1];
 
-
         $(".loadring-container")
             .hide();
 
