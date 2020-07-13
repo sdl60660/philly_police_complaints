@@ -364,6 +364,8 @@ Sunburst.prototype.addSunburstLabels = function() {
 Sunburst.prototype.mouseout = function() {
     var vis = this;
 
+    vis.mousedOverElement = null;
+
     $(".sunburst-segment").attr("fill-opacity", 0.6);
 
     vis.selectedValPct
