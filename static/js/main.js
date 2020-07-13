@@ -1000,26 +1000,6 @@ function setTileWrapperHeights() {
 }
 
 
-// Used to temporarily disable user scroll
-function disableScroll() {
-    // Get the current page scroll position
-    scrollTop =
-      window.pageYOffset || document.documentElement.scrollTop;
-
-    // if any scroll is attempted,
-    // set this to the previous value
-    window.onscroll = function() {
-        window.scrollTo(scrollLeft, scrollTop);
-    };
-}
-
-// Used to re-enable user scroll
-function enableScroll() {
-    window.onscroll = function() {};
-    window.scrollTo(0, 0);
-}
-
-
 function main() {
 
     // Begin loading datafiles
@@ -1091,8 +1071,7 @@ function main() {
         }
     });
 }
-// Temporarily disable user scroll until elements are loaded (1-2 seconds, max)
-// disableScroll();
+
 main();
 
 
