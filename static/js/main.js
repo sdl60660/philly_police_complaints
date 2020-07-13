@@ -1003,8 +1003,8 @@ function main() {
 
     // Begin loading datafiles
     var promises = [
-        d3.json("static/data/complaint_discipline_viz_data.json"),
-        d3.json("static/data/district_demos.geojson")
+        d3.json("static/data/complaint_discipline_viz_data.json")
+        // d3.json("static/data/district_demos.geojson")
     ];
 
     // Initialize both main viz tiles to faded
@@ -1026,7 +1026,7 @@ function main() {
     Promise.all(promises).then(function(allData) {
 
         officerDisciplineResults = allData[0];
-        districtGeoJSON = allData[1];
+        // districtGeoJSON = allData[1];
 
         const datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
             return new Date(d.date_received);
