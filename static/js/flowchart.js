@@ -652,6 +652,9 @@ FlowChart.prototype.setToolTips = function() {
             tipText += "<br><br></span>";
 
             tipText += "<span class='detail-title'>Complaint Type</span>: <span class='details'>" + d.general_cap_classification + "<br></span>";
+            if (d.allegations_investigated) {
+                tipText += "<span class='detail-title'>Allegations Investigated</span>: <span class='details'>" + d.allegations_investigated + "<br></span>";
+            }
 
             if (d.summary) {
                 var summaryText = d.summary;

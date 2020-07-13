@@ -1,0 +1,14 @@
+Original Complaint Type,Lack of Service,Physical Abuse,Verbal Abuse,Departmental Violation,Unprofessional Conduct,Criminal Allegation,Sexual Crime/Misconduct,Harassment,Falsification,Disciplinary Code Violation,Investigation OnGoing,Referred to Other Agency/C.A.P. Investigation,No C.A.P. Investigation,Civil Rights Complaint,Domestic,Other Misconduct,Drugs
+Physical Abuse,95,1215,370,661,73,40,7,33,2,1,91,13,1,4,,,
+Verbal Abuse,72,10,535,155,85,6,1,22,3,2,12,1,,10,1,,
+Departmental Violations,183,143,229,1861,184,51,8,54,9,3,152,11,7,17,2,9,1
+Harassment,18,13,45,138,27,9,1,280,4,3,19,3,,4,1,,1
+Non-Investigatory Incident,18,2,2,21,11,1,,1,,,1,,189,,,,
+Lack Of Service,1464,15,42,207,94,3,,5,1,6,82,16,1,1,1,1,
+Criminal Allegation,18,38,38,159,7,210,1,12,1,5,27,4,,,1,3,1
+Unprofessional Conduct,90,13,72,133,349,5,,5,2,1,30,3,1,4,,1,1
+Domestic,8,4,1,24,,5,1,5,,,3,1,2,,39,1,1
+Sexual Crime/Misconduct,,8,12,20,1,,13,2,1,,5,,,,1,1,
+Falsification,2,,2,11,,,,1,9,,5,11,,,,,
+Civil Rights Complaint,18,11,23,102,22,,,9,,,19,2,,170,,,
+Drugs,2,,,2,,,,,,,,,1,,,,2
