@@ -999,6 +999,27 @@ function setTileWrapperHeights() {
         .css("height", flowChartWrapperHeight);
 }
 
+
+// Used to temporarily disable user scroll
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop =
+      window.pageYOffset || document.documentElement.scrollTop;
+
+    // if any scroll is attempted,
+    // set this to the previous value
+    window.onscroll = function() {
+        window.scrollTo(scrollLeft, scrollTop);
+    };
+}
+
+// Used to re-enable user scroll
+function enableScroll() {
+    window.onscroll = function() {};
+    window.scrollTo(0, 0);
+}
+
+
 function main() {
 
     // Begin loading datafiles
@@ -1014,11 +1035,11 @@ function main() {
     $("#flowchart-tile")
         .css("opacity", 0.2);
 
+    determinePhoneBrowsing();
     setAnnotationTooltips();
     setPlayButton();
     setScrollArrow();
     setWindowFunctions();
-    determinePhoneBrowsing();
     setScrollDispatcher();
     setActivateFunctions();
     setTileWrapperHeights();
@@ -1027,6 +1048,16 @@ function main() {
 
         officerDisciplineResults = allData[0];
         // districtGeoJSON = allData[1];
+
+
+        $(".loadring-container")
+            .hide();
+
+        $("#intro-wrapper")
+            .css("visibility", "visible");
+
+        // Allow user to scroll now that elements are loaded
+        enableScroll();
 
         const datasetDateRange = d3.extent(officerDisciplineResults, function(d) {
             return new Date(d.date_received);
@@ -1060,7 +1091,8 @@ function main() {
         }
     });
 }
-
+// Temporarily disable user scroll until elements are loaded (1-2 seconds, max)
+// disableScroll();
 main();
 
 
