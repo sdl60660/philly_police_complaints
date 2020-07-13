@@ -45,6 +45,7 @@
 
 <body>
 
+    <!-- Hover tooltips (default hidden) -->
     <div id="annotation-tooltip" style="opacity: 0.0; position:absolute;">Default Text</div>
     <div id="category-tooltip" style="opacity: 0.0; position:absolute;">Default Text</div>
     <div id='sample-tooltip' style="opacity: 0.0; position:absolute;z-index:-1;">
@@ -66,6 +67,7 @@
         wrote the can size on the citation as being 16 ounces instead of 24 ounces.<br></span>
     </div>
 
+    <!-- Annotations -->
     <div id="sections">
 
         <div class="mobile-spacer"></div>
@@ -236,10 +238,13 @@
     </div>
 
     <!-- Bootstrap grid setup -->
+
+    <!-- Load Wheel -->
     <div class="loadring-container" style="text-align: center">
         <div class="lds-ring" style="margin-top: 30vh;"><div></div><div></div><div></div><div></div></div>
     </div>
 
+    <!-- Intro Text Wrapper/Tile -->
     <div class="tile-wrapper" id="intro-wrapper" style="visibility: hidden">
     <div class="container viz-tile" id="intro-tile">
         <div class="row">
@@ -297,6 +302,7 @@
 {#    </div>#}
 {#    </div>#}
 
+    <!-- Sunburst Viz Wrapper/Tile -->
     <div class="tile-wrapper" id="sunburst-wrapper">
     <div class="container viz-tile" id="sunburst-tile">
         <div class="row">
@@ -335,6 +341,7 @@
     </div>
     </div>
 
+    <!-- Flowchart Viz Wrapper/Tile -->
     <div class="tile-wrapper" id="flowchart-wrapper">
     <div class="container viz-tile" id="flowchart-tile">
         <div class="row viz-area">
@@ -369,17 +376,17 @@
             </div>
             <div class="col-md-3 col-sm-3 chosen-container-div" style="text-align:center;">
                 <div class="row" style="text-align: center; font-size: 11pt; width: 100%; margin-left: 0;">Complaint Classification</div>
-                <select data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:250px; margin-top: 5px;" tabindex="4" id="incident-type-select"></select>
+                <select title="Click to add other complaint types." data-placeholder="Select Complaint Types" class="chosen-select" multiple style="width:250px; margin-top: 5px;" tabindex="4" id="incident-type-select"></select>
             </div>
         </div>
         <div class="row">
             <div class="col-md-1"></div>
             <div class="col-md-11 col-sm-12" id="chart-area" style="width:100%; margin-top: -52px;"></div>
-{#            <div class="col-md-1"></div>#}
         </div>
     </div>
     </div>
 
+    <!-- Conclusion Text  -->
     <div class="container">
         <div class="col-md-1"></div>
         <div class="col-md-10" id="end-text-block">
@@ -407,6 +414,7 @@
 
     <div class="spacer"></div>
 
+    <!-- Footer  -->
     <div class="container footer" style="text-align:justify; max-width: 950px; z-index: 200;">
 {#        <div class="row">#}
             <div class="col-md-1"></div>
