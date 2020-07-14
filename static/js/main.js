@@ -201,14 +201,7 @@ function setAnnotationTooltips() {
     }
     else {
         $(window).on("scroll", function () {
-            if ($(this).attr("id") === 'sample-investigation') {
-                var tooltipSelect = $("#sample-tooltip");
-            }
-            else {
-                var tooltipSelect = $("#annotation-tooltip");
-            }
-
-           tooltipSelect
+           $("#annotation-tooltip, #sample-tooltip")
                 .css("opacity", 0.0)
                 .css("z-index", -1);
         });
