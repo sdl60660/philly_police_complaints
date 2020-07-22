@@ -6,7 +6,7 @@ Sunburst = function(_parentElement) {
 }
 
 Sunburst.prototype.initVis = function() {
-    var vis = this;
+    const vis = this;
 
     // Dimensions of sunburst. Max width of 850, then scale down based on available window width.
     const dimensions = Math.min(850, $("#sunburst-area").width());
@@ -126,20 +126,22 @@ Sunburst.prototype.wrangleData = function() {
     vis.totalSize = vis.chartData.length;
 
     // Put data into nest
-    var nest = d3.nest()
+    let nest = d3.nest()
         .key(function(d) {return d.investigative_findings})
         .map(vis.chartData);
 
     // Format data with parents/children and counts rather than full arrays of data
-    var investigative_result_counts = [];
+    let investigative_result_counts = [];
     ["Sustained Finding", "No Sustained Findings", "Investigation Pending"].forEach(function(i_key) {
 
+        let subnest;
+        let disciplinary_result_counts;
         if (i_key === "Sustained Finding" && nest.get("Sustained Finding") !== undefined) {
-            var subnest = d3.nest()
+            subnest = d3.nest()
                 .key(function(d) {return d.disciplinary_findings})
                 .map(nest.get(i_key))
 
-            var disciplinary_result_counts = [];
+            disciplinary_result_counts = [];
             ["Guilty Finding", "Training/Counseling", "No Guilty Findings", "Discipline Pending"].forEach(function(d_key) {
                 if (subnest.get(d_key) !== undefined) {
                     disciplinary_result_counts.push({'name': d_key, 'value': subnest.get(d_key).length})
@@ -166,7 +168,7 @@ Sunburst.prototype.wrangleData = function() {
 
 // Main function to draw and set up the visualization, once we have the data.
 Sunburst.prototype.updateVis = function() {
-    var vis = this;
+    const vis = this;
 
     vis.addSunburstSlices();
     vis.addSunburstLabels();
@@ -174,7 +176,7 @@ Sunburst.prototype.updateVis = function() {
 
 
 Sunburst.prototype.addSunburstSlices = function() {
-    var vis = this;
+    const vis = this;
 
     // Join partition data to paths, match existing slices with the outcome name
     vis.plotAreas = vis.g.selectAll("path")
@@ -257,7 +259,7 @@ Sunburst.prototype.addSunburstSlices = function() {
     function arcTweenPath(a, i) {
 
         // Starting point for the angles will be determined from the previousAngles dict
-        var oi = d3.interpolate({
+        let oi = d3.interpolate({
             x0: vis.previousAngles[a.data.name].x0,
             x1: vis.previousAngles[a.data.name].x1,
             y0: vis.previousAngles[a.data.name].y0,
@@ -267,7 +269,7 @@ Sunburst.prototype.addSunburstSlices = function() {
         // Custom interpolator to smoothly transition the x values on a given arc from previous position to new one
         // This function is what's returned to the attrTween attribute as the interpolator to use for the transition
         function tween(t) {
-            var b = oi(t);
+            let b = oi(t);
             a.x0s = b.x0;
             a.x1s = b.x1;
             return vis.arc(b);
@@ -299,7 +301,7 @@ Sunburst.prototype.addSunburstSlices = function() {
 
 
 Sunburst.prototype.addSunburstLabels = function() {
-    var vis = this;
+    const vis = this;
 
     // Join data to text labels, using the outcome name as a key
     vis.labels = vis.labelGroup.selectAll("text")
@@ -362,7 +364,7 @@ Sunburst.prototype.addSunburstLabels = function() {
 
 // Restore normal opacity levels and clear center text
 Sunburst.prototype.mouseout = function() {
-    var vis = this;
+    const vis = this;
 
     vis.mousedOverElement = null;
 
@@ -376,7 +378,7 @@ Sunburst.prototype.mouseout = function() {
 
 // Fade all but the current sequence, and display center text
 Sunburst.prototype.mouseover = function(value, element) {
-    var vis = this;
+    const vis = this;
 
     vis.mousedOverElement = element;
 
@@ -388,7 +390,7 @@ Sunburst.prototype.mouseover = function(value, element) {
     vis.selectedValTotals
         .text(`(${value} of ${vis.totalSize} investigations)`)
 
-    var parentName = $(element).attr("parent");
+    let parentName = $(element).attr("parent");
 
     $(element).attr("fill-opacity", 0.8);
     $("." + parentName).attr("fill-opacity", 0.8);
@@ -397,13 +399,13 @@ Sunburst.prototype.mouseover = function(value, element) {
 // Outline sections provided as parameter (array) for annotation comparative purposes
 // Remove these on hover
 Sunburst.prototype.createOutlineSections = function(sectionNames) {
-    var vis = this;
+    const vis = this;
 
     vis.mousedOverElement = null;
 
     sectionNames.forEach(function(sectionName) {
-        var idName = sectionName.replace(" ", "-");
-        var originalElement = vis.g.select(`path#${idName}`);
+        let idName = sectionName.replace(" ", "-");
+        let originalElement = vis.g.select(`path#${idName}`);
 
         vis.svg.append("path")
             .attr("class", "chart-section-outline")
@@ -423,7 +425,7 @@ Sunburst.prototype.createOutlineSections = function(sectionNames) {
 
 // Remove any outlined sections if the user hovers over them
 Sunburst.prototype.removeOutlineSections = function() {
-    var vis = this;
+    const vis = this;
 
     vis.svg.selectAll(".chart-section-outline").remove();
 
