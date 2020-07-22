@@ -1,53 +1,53 @@
 
 // ======== GLOBALS ======== //
-var officerDisciplineResults;
-var phoneBrowsing = false;
+let officerDisciplineResults;
+let phoneBrowsing = false;
 
-var districtGeoJSON;
+let districtGeoJSON;
 
 // Set the startDate, which will be used to calculate other date offsets
 const startDate = new Date("01/01/2013");
 // Initialize start/end range for timeline dates
 // startRange will initially be the same as startDate
 // endRange will update as soon as we've loaded the dataset and determined the latest date
-var startRange = addMonths(startDate, 0);
-var endRange = addMonths(startDate, 1);
+let startRange = addMonths(startDate, 0);
+let endRange = addMonths(startDate, 1);
 
 // Declare tile visualization elements
-var flowChart;
-var sunburst;
-var timeline;
+let flowChart;
+let sunburst;
+let timeline;
 
 // Declare interval for timeline
-var interval;
+let interval;
 
 // Initialize opacity level for hidden annotation slides (this will be overriden to 0 if the slides are fixed at the top on mobile)
-var hiddenOpacity = 0.2;
+let hiddenOpacity = 0.2;
 
 // Declare indices to be used by scroll controller
-var activeIndex;
-var lastIndex;
+let activeIndex;
+let lastIndex;
 
 // Declare maxDateOffset (months) to be determined by last investigation date on dataset when it is loaded
-var maxDateOffset;
+let maxDateOffset;
 
 // Flowchart still in "initialization mode" to prevent events from triggering on fast that shouldn't until it's rendered for the first time
-var initFlowChart = true;
+let initFlowChart = true;
 // Sunburst has not entered yet, meaning on mobile it will grow from center on entrance
-var sunburstEntered = false;
+let sunburstEntered = false;
 
 // Initial scroll direction is set to down since the user can only move in one direction
 // (this will override almost immediately anyway)
-var scrollDirection = 'down';
+let scrollDirection = 'down';
 
 // Declare scrollerDiv, which will designate which set of divs are used to track scroll steps ('.step' on Desktop, '.mobile-spacer' on Mobile)
 // And scrollerDivObjects, an array of all divs of this type, used for setting dynamic heights for tile wrappers
-var scrollerDiv;
-var scrollerDivObjects;
+let scrollerDiv;
+let scrollerDivObjects;
 // Declare scroll object, which dispatch scroll trigger events (using code in scroller.js)
-var scroll;
+let scroll;
 // Initialize an array of activate functions which will activate on scroll for corresponding annotation slides
-var activateFunctions = [];
+let activateFunctions = [];
 
 // Min width that browser window must be before switching to phoneBrowsing mode (even on Desktop, it will display everything as if on Mobile)
 const phoneBrowsingCutoff = 1100;
@@ -153,10 +153,10 @@ function setAnnotationTooltips() {
             // This will be used for both the sample investigation and other annotation tooltips
             // Determine which tooltip to trigger based on ID of highlighted text
             if ($(this).attr("id") === 'sample-investigation') {
-                var tooltipSelect = $("#sample-tooltip");
+                let tooltipSelect = $("#sample-tooltip");
             }
             else {
-                var tooltipSelect = $("#annotation-tooltip");
+                let tooltipSelect = $("#annotation-tooltip");
 
                 tooltipSelect
                     .text(textAnnotations[$(this).text().toLowerCase()]);
@@ -188,10 +188,10 @@ function setAnnotationTooltips() {
             .on("mouseout", function () {
 
                 if ($(this).attr("id") === 'sample-investigation') {
-                    var tooltipSelect = $("#sample-tooltip");
+                    let tooltipSelect = $("#sample-tooltip");
                 }
                 else {
-                    var tooltipSelect = $("#annotation-tooltip");
+                    let tooltipSelect = $("#annotation-tooltip");
                 }
 
                 tooltipSelect
@@ -306,7 +306,7 @@ function initSlider(maxDate) {
 function setPlayButton() {
     $("#play-button")
         .on("tap click", function () {
-            var button = $(this);
+            let button = $(this);
 
             if (button.text() == "▶") {
                 button.text("❙❙");
@@ -387,12 +387,9 @@ function setWindowFunctions() {
         // Hide the scroll arrow if the user passes a certain scroll height (past the top of the sunburst on Desktop,
         // a little before the end text on mobile)
         .scroll(function () {
-            if (phoneBrowsing === true) {
-                var arrowFadeHeight = $('#end-text-block').offset().top - 110;
-            }
-            else {
-                var arrowFadeHeight = $('#sunburst-wrapper').offset().top;
-            }
+            let arrowFadeHeight = (phoneBrowsing === true) ?
+                $('#end-text-block').offset().top - 110 : 
+                $('#sunburst-wrapper').offset().top;
 
             if ($(window).scrollTop() > arrowFadeHeight) {
                 $(".downArrow")
@@ -413,7 +410,7 @@ function step() {
     // or resets to one month past the start date if the user has hit the max end date
     endRange = monthDiff(startDate, endRange) >= maxDateOffset ? addMonths(startRange, 1) : addMonths(endRange, 1);
     
-    var sliderValue = monthDiff(startDate, endRange);
+    let sliderValue = monthDiff(startDate, endRange);
     $("#slider-div")
         .slider("values", 1, sliderValue);
 
@@ -464,8 +461,8 @@ function updateFlowchartDates() {
         .text( d3.timeFormat("%B %Y")(endRange));
 
     // Update the slider
-    var startSliderValue = monthDiff(startDate, startRange);
-    var endSliderValue = monthDiff(startDate, endRange);
+    let startSliderValue = monthDiff(startDate, startRange);
+    let endSliderValue = monthDiff(startDate, endRange);
     $("#slider-div")
         .slider("values", 0, startSliderValue)
         .slider("values", 1, endSliderValue);
@@ -490,8 +487,8 @@ function artificialHover(outcomeName) {
 // Takes as an input an array of key-value pairs
 function setSelectOptions(optionPairs) {
     optionPairs.forEach(function(pair) {
-        var selectID = pair[0];
-        var optionVal = pair[1];
+        let selectID = pair[0];
+        let optionVal = pair[1];
 
         $(`select#${selectID}`)
             .val(optionVal)
@@ -996,7 +993,7 @@ function setTileWrapperHeights() {
 function main() {
 
     // Begin loading datafiles
-    var promises = [
+    let promises = [
         d3.json("static/data/complaint_discipline_viz_data.json")
         // d3.json("static/data/district_demos.geojson")
     ];
