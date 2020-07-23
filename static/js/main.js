@@ -152,11 +152,12 @@ function setAnnotationTooltips() {
 
             // This will be used for both the sample investigation and other annotation tooltips
             // Determine which tooltip to trigger based on ID of highlighted text
+            let tooltipSelect;
             if ($(this).attr("id") === 'sample-investigation') {
-                let tooltipSelect = $("#sample-tooltip");
+                tooltipSelect = $("#sample-tooltip");
             }
             else {
-                let tooltipSelect = $("#annotation-tooltip");
+                tooltipSelect = $("#annotation-tooltip");
 
                 tooltipSelect
                     .text(textAnnotations[$(this).text().toLowerCase()]);
@@ -186,13 +187,9 @@ function setAnnotationTooltips() {
     if (phoneBrowsing === false) {
         $('.annotated-text')
             .on("mouseout", function () {
-
-                if ($(this).attr("id") === 'sample-investigation') {
-                    let tooltipSelect = $("#sample-tooltip");
-                }
-                else {
-                    let tooltipSelect = $("#annotation-tooltip");
-                }
+                let tooltipSelect = $(this).attr("id") === 'sample-investigation' ? 
+                    $("#sample-tooltip") : 
+                    $("#annotation-tooltip");
 
                 tooltipSelect
                     .css("opacity", 0.0)
