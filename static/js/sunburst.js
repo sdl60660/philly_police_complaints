@@ -90,7 +90,7 @@ Sunburst.prototype.initVis = function() {
 }
 
 Sunburst.prototype.wrangleData = function() {
-    let vis = this;
+    const vis = this;
 
     vis.chartData = officerDisciplineResults;
 
