@@ -511,7 +511,7 @@ function displayIntroText() {
 
     // Animate complaint count from 0 to total
     d3.select("#total-complaints")
-        .datum("5099")
+        .datum("5296")
         .transition()
         .delay(300)
         .duration(1200)
@@ -524,7 +524,7 @@ function displayIntroText() {
 
     // Animate investigation count from 0 to total
     d3.select("#total-investigations")
-        .datum("12930")
+        .datum("13332")
         .transition()
         .delay(400)
         .duration(1300)
