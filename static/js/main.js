@@ -524,7 +524,7 @@ function displayIntroText() {
 
     // Animate investigation count from 0 to total
     d3.select("#total-investigations")
-        .datum("13332")
+        .datum("11313")
         .transition()
         .delay(400)
         .duration(1300)
