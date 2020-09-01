@@ -275,6 +275,8 @@ FlowChart.prototype.wrangleData = function() {
         })
         .sort((a, b) => a.date_received - b.date_received)
 
+    console.log(vis.chartData.length);
+
     // Update the counts on the complaint types in the 'Complaint Classification' multi-select with counts based on filtered dataset
     vis.updateComplaintTypes();
 

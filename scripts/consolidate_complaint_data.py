@@ -74,7 +74,7 @@ for k, v in disciplines.items():
     except KeyError:
         v = {**v, **{'complainant_race': '', 'complainant_sex': '', 'complainant_age': ''}}
 
-    v['general_cap_classification'] = v['general_cap_classification'].title()
+    v['general_cap_classification'] = v['general_cap_classification'].title().strip(' ')
 
     try:
         try:
